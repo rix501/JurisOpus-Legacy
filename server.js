@@ -26,7 +26,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res){
-  res.send('index');
+  res.sendfile('/public/index.html');
 });
 
 app.listen(3000);
