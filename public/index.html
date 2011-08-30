@@ -13,50 +13,75 @@
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css">    
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css" media="screen" charset="utf-8" />    
     <link rel="stylesheet" href="/stylesheets/demo_table.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
-</head>
-<body>
-    <div class="topbar">
-        <div class="fill">
-            <div class="container">
-                <h3><a href="/">Housing Promoters</a></h3>
-                <ul>
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/">Tables</a></li>
-                </ul>
+    <!-- Templates -->
+    <script type="text/template" id="page-template">
+        <div class="topbar">
+            <div class="fill">
+                <div class="container">
+                    <h3><a href="/">Housing Promoters</a></h3>
+                    <ul>
+                        <li class="home"><a href="/#/">Home</a></li>
+                        <li class="tables"><a href="/#/tables">Tables</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <ul class="pills">
-          <li class="active"><a href="#">Add</a></li>
-          <li><a href="#">Remove</a></li>
-        </ul>
-        
-        <form>
-            <fieldset>
-                <legend>Add New Record</legend>
-                <div class="clearfix">
-                    <label for="xlInput">Name:</label>
-                    <div class="input">
-                        <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
-                    </div>
+        <div id="content"></div>
+    </script>
+    <script type="text/template" id="container-tables-template">
+        <table id="table_id">
+        	<thead>
+        		<tr>
+        			<th>Column 1</th>
+        			<th>Column 2</th>
+        			<th>etc</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<tr>
+        			<td>Row 1 Data 1</td>
+        			<td>Glock</td>
+        			<td>etc</td>
+        		</tr>
+        		<tr>
+        			<td>Row 2 Data 1</td>
+        			<td>Test</td>
+        			<td>etc</td>
+        		</tr>
+        	</tbody>
+        </table>
+    </script>
+    <script type="text/template" id="container-home-template">
+            <ul class="pills">
+              <li class="active"><a href="#">Add</a></li>
+              <li><a href="#">Remove</a></li>
+            </ul>
+    </script>
+    <script type="text/template" id="form-add-template">
+        <fieldset>
+            <legend>Add New Record</legend>
+            <div class="clearfix">
+                <label for="xlInput">Name:</label>
+                <div class="input">
+                    <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
                 </div>
-                <div class="clearfix">
-                    <label for="xlInputA">Area:</label>
-                    <div class="input">
-                        <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
-                    </div>
+            </div>
+            <div class="clearfix">
+                <label for="xlInputA">Area:</label>
+                <div class="input">
+                    <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
                 </div>
-                <div class="submit-btns">
-                    <button type="submit" class="btn primary">Save Changes</button>
-                    <button type="reset" class="btn">Cancel</button>
-                </div>                
-            </fieldset>
-        </form>
-    </div>    
+            </div>
+            <div class="submit-btns">
+                <button type="submit" class="btn primary">Save Changes</button>
+                <button type="reset" class="btn">Cancel</button>
+            </div>                
+        </fieldset>
+    </script>  
+</head>
+<body>
 </body>
 </html>
