@@ -1,6 +1,6 @@
 (function($) {
     
-    
+    //Models and Collections go here
     
     
     //Views and Router
@@ -26,25 +26,17 @@
 
             initialize: function() {
                 _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.home').addClass('active');
             },
 
             render: function() {
                 $(this.el).html(this.template());
-                return this;
-            }
-        });
-        
-        window.ContainerTablesView = Backbone.View.extend({
-            template: _.template($("#container-tables-template").html()),
-            tagName: 'div',
-            className: 'container',
-
-            initialize: function() {
-                _.bindAll(this, 'render');
-            },
-
-            render: function() {
-                $(this.el).html(this.template());
+                
+                var formAddView = new FormAddView();
+                
+                $(this.el).append(formAddView.render().el);
+                
                 return this;
             }
         });
@@ -61,7 +53,41 @@
                 $(this.el).html(this.template());
                 return this;
             }
-        });        
+        });
+        
+        window.FormRemoveView = Backbone.View.extend({
+            template: _.template($("#form-remove-template").html()),
+            tagName: 'form',
+
+            initialize: function() {
+                _.bindAll(this, 'render');
+            },
+
+            render: function() {
+                $(this.el).html(this.template());
+                return this;
+            }
+        });
+        
+        window.ContainerTablesView = Backbone.View.extend({
+            template: _.template($("#container-tables-template").html()),
+            tagName: 'div',
+            className: 'container',
+
+            initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.tables').addClass('active');
+            },
+
+            render: function() {
+                $(this.el).html(this.template());
+                
+                $(this.el).children('#table_id').dataTable();
+                
+                return this;
+            }
+        });
         
         window.Housing = Backbone.Router.extend({
             routes: {
@@ -76,27 +102,15 @@
             },
 
             home: function() {
-                $('li.active').removeClass('active');
-                $('li.home').addClass('active');
-                
                 this.containerHomeView = new ContainerHomeView();
-                this.formAddView = new FormAddView();
-                
                 $('#content').empty();
                 $('#content').append(this.containerHomeView.render().el);
-                $('#content .container').append(this.formAddView.render().el);
             },
             
-            table: function(){
-                $('li.active').removeClass('active');
-                $('li.tables').addClass('active');
-                
+            table: function(){                
                 this.containerTablesView = new ContainerTablesView();
-                
                 $('#content').empty();
                 $('#content').append(this.containerTablesView.render().el);
-                
-            	$('#table_id').dataTable();
             }
         });
 
