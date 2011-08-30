@@ -8,10 +8,14 @@ body {
 	font-size: 15px;
 }
 
+.container {
+	width: 540px;
+}
+
 .pills {
-	margin: 0 auto;
+	margin-left: 140px;
 }
 
 .submit-btns {
-	margin: 0 auto;
+    margin-left: 115px;
 }
