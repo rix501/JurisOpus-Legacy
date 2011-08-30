@@ -1,10 +1,20 @@
 {
-    "name": "housing"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.4.6"
-    , "backbone": "0.5.3"
-    , "mysql":"0.9.3"
-  }
+  "author": "Ricardo J. Vazquez <rix501@gmail.com>",
+  "name": "housing",
+  "description": "test",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rix501/housing.git"
+  },
+  "main": "server.js",
+  "engines": {
+    "node": "~v0.4.11"
+  },
+  "dependencies": {
+      "express":"2.4.6",
+      "backbone":"0.5.3",
+      "mysql":"0.9.3"
+  },
+  "devDependencies": {}
 }
