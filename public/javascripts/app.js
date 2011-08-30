@@ -21,7 +21,7 @@
         
         window.ContainerHomeView = Backbone.View.extend({
             template: _.template($("#container-home-template").html()),
-            tag: 'div',
+            tagName: 'div',
             className: 'container',
 
             initialize: function() {
@@ -36,7 +36,7 @@
         
         window.ContainerTablesView = Backbone.View.extend({
             template: _.template($("#container-tables-template").html()),
-            tag: 'div',
+            tagName: 'div',
             className: 'container',
 
             initialize: function() {
@@ -51,7 +51,7 @@
         
         window.FormAddView = Backbone.View.extend({
             template: _.template($("#form-add-template").html()),
-            tag: 'form',
+            tagName: 'form',
 
             initialize: function() {
                 _.bindAll(this, 'render');
