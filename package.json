@@ -4,7 +4,7 @@
   , "private": true
   , "dependencies": {
       "express": "2.4.6"
-     ,"backbone": "0.5.3"
-     ,"mysql":"0.9.3"
+    , "backbone": "0.5.3"
+    , "mysql":"0.9.3"
   }
 }
