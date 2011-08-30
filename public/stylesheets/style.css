@@ -1,8 +1,17 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+	background-color: whiteSmoke;
 }
 
-a {
-  color: #00B7FF;
+body {
+	background-color: whiteSmoke;
+	padding-top: 40px;
+	font-size: 15px;
+}
+
+.pills {
+	margin: 0 auto;
+}
+
+.submit-btns {
+	margin: 0 auto;
 }
