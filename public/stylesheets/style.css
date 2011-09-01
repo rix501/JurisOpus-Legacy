@@ -9,11 +9,15 @@ body {
 }
 
 .container {
-	width: 540px;
+	width: 900px;
 }
 
-.pills {
-	margin-left: 140px;
+form.entrar {
+	margin-top: 10px;
+}
+
+.form-row .form-cell {
+	display: inline-block;
 }
 
 .submit-btns {

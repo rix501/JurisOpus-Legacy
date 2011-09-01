@@ -19,23 +19,23 @@
             }
         });
         
-        window.ContainerHomeView = Backbone.View.extend({
-            template: _.template($("#container-home-template").html()),
+        window.ContainerEntrarView = Backbone.View.extend({
+            template: _.template($("#container-entrar-template").html()),
             tagName: 'div',
             className: 'container',
 
             initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
-                $('li.home').addClass('active');
+                $('li.entrar').addClass('active');
             },
 
             render: function() {
                 $(this.el).html(this.template());
                 
-                var formAddView = new FormAddView();
-                
-                $(this.el).append(formAddView.render().el);
+                // var formAddView = new FormAddView();
+                // 
+                // $(this.el).append(formAddView.render().el);
                 
                 return this;
             }
@@ -91,9 +91,13 @@
         
         window.Housing = Backbone.Router.extend({
             routes: {
-                '': 'home',
-                '/': 'home',
-                '/tables': 'table'
+                '': 'entrar',
+                '/': 'entrar',
+                '/buscar': 'table',
+                '/demandas': 'table',
+                '/informes': 'table',
+                '/actualizar': 'table',
+                '/resolucion': 'table'
             },
 
             initialize: function() {
@@ -101,10 +105,10 @@
                 this.pageView.render();
             },
 
-            home: function() {
-                this.containerHomeView = new ContainerHomeView();
+            entrar: function() {
+                this.containerEntrarView = new ContainerEntrarView();
                 $('#content').empty();
-                $('#content').append(this.containerHomeView.render().el);
+                $('#content').append(this.containerEntrarView.render().el);
             },
             
             table: function(){                
