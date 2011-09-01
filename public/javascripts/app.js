@@ -45,10 +45,6 @@
             render: function() {
                 $(this.el).html(this.template());
                 
-                // var formAddView = new FormAddView();
-                // 
-                // $(this.el).append(formAddView.render().el);
-                
                 return this;
             }
         });

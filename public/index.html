@@ -13,8 +13,8 @@
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
-    <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css" media="screen" charset="utf-8" />    
     <link rel="stylesheet" href="/stylesheets/demo_table.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css" media="screen" charset="utf-8" />    
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
     <!-- Templates -->
     <script type="text/template" id="page-template">
@@ -277,7 +277,7 @@
     <script type="text/template" id="container-buscar-template">
         <form class="entrar form-stacked">
             <fieldset>
-                <legend>Entrar Nuevo Caso</legend>
+                <legend>Buscar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="stackedSelect">Residencial</label>
@@ -486,7 +486,7 @@
                 <hr>
                 <div class="clearfix form-row">
                     <div class="form-cell">
-                        <label for="xlInputA">Select:</label>
+                        <label for="xlInputA">Re-diligenciar:</label>
                         <div class="input check">
                             <label>
                                 <input type="checkbox" name="optionsCheckboxes" value="option1">
@@ -494,7 +494,7 @@
                         </div>                       
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Select:</label>
+                        <label for="xlInputA">Ejecutar:</label>
                         <div class="input check">
                             <label>
                                 <input type="checkbox" name="optionsCheckboxes" value="option1">
@@ -502,10 +502,19 @@
                         </div>                       
                     </div>
                 </div>
-                <div class="clearfix submit-btns">
-                    <button type="submit" class="btn primary">Save Changes</button>
-                    <button type="reset" class="btn">Cancel</button>
-                </div>                
+                <div class="clearfix">
+                    <div class="prev">
+                        <button class="btn">&lt; Anterior</button>
+                    </div>
+                    <div class="next">
+                        <button class="btn">Próximo &gt;</button>
+                    </div>
+                    <div class="submit-btns">
+                        <button type="submit" class="btn primary">Guardar</button>
+                        <button type="reset" class="btn">Cancel</button>
+                    </div>  
+
+                </div>            
             </fieldset>
         </form>
     </script>

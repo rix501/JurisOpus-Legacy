@@ -37,6 +37,19 @@ hr {
     margin-bottom: -9px;
 }
 
+.prev {
+    float: left;
+}
+
+.next {
+    float: right;
+}
+
 .submit-btns {
     text-align: center;
+}
+
+textarea.xxlarge {
+    width:900px;
+    resize:none;
 }
