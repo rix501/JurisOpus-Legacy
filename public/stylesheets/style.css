@@ -16,10 +16,27 @@ form.entrar {
 	margin-top: 10px;
 }
 
+hr {
+	border: 1px solid #919191;
+}
+
 .form-row .form-cell {
 	display: inline-block;
+	margin-right: 5px;
+}
+
+.input.check {
+    margin-top: 3px;
+}
+
+.input.check label {
+    text-align: center;
+}
+
+.input-prepend {
+    margin-bottom: -9px;
 }
 
 .submit-btns {
-    margin-left: 115px;
+    text-align: center;
 }
