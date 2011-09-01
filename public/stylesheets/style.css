@@ -49,6 +49,14 @@ hr {
     text-align: center;
 }
 
+form.list li {
+    margin: 10px 0;
+}
+
+form.list li label {
+    float: none;
+}
+
 textarea.xxlarge {
     width:900px;
     resize:none;

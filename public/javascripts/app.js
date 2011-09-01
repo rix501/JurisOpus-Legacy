@@ -57,6 +57,15 @@
                 $('li.buscar').addClass('active');
             },
         });
+        
+        window.ContainerDemandasView = ContainerEntrarView.extend({
+           template:  _.template($("#container-demandas-template").html()),
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.demandas').addClass('active');
+            },
+        });
                 
         window.ContainerTablesView = Backbone.View.extend({
             template: _.template($("#container-tables-template").html()),
@@ -83,7 +92,7 @@
                 '': 'entrar',
                 '/': 'entrar',
                 '/buscar': 'buscar',
-                '/demandas': 'table',
+                '/demandas': 'demandas',
                 '/informes': 'table',
                 '/actualizar': 'table',
                 '/resolucion': 'table'
@@ -104,6 +113,12 @@
                 this.containerBuscarView = new ContainerBuscarView();
                 $('#content').empty();
                 $('#content').append(this.containerBuscarView.render().el);
+            },
+            
+            demandas: function(){
+                this.containerDemandasView = new ContainerDemandasView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasView.render().el);  
             },
             
             table: function(){                
