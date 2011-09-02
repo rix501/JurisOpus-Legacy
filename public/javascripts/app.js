@@ -19,19 +19,12 @@
             }
         });
         
-        window.ContainerEntrarView = Backbone.View.extend({
-            template: _.template($("#container-entrar-template").html()),
+        window.ContainerMainFormView = Backbone.View.extend({
             tagName: 'div',
             className: 'container',
             
             events: {
                 'click .add-on :checkbox' : 'togglePreCheck'
-            },
-
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.entrar').addClass('active');
             },
             
             togglePreCheck: function(){
@@ -49,36 +42,49 @@
             }
         });
         
-        window.ContainerBuscarView = ContainerEntrarView.extend({
+        window.ContainerEntrarView = ContainerMainFormView.extend({
+           template: _.template($("#container-entrar-template").html()),
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.entrar').addClass('active');
+            }
+        });
+
+        window.ContainerBuscarView = ContainerMainFormView.extend({
            template:  _.template($("#container-buscar-template").html()),
            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');
-            },
+            }
         });
         
-        window.ContainerDemandasView = ContainerEntrarView.extend({
+        window.ContainerDemandasView = ContainerMainFormView.extend({
            template:  _.template($("#container-demandas-template").html()),
+           
+            events: {
+                'click .redirect':'redirect'  
+            },
+           
+           redirect: function(event){
+                  App.navigate('/demandas/'+event.target.id ,true);
+            },
+           
            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
-            },
+            }
         });
-                
-        window.ContainerTablesView = Backbone.View.extend({
-            template: _.template($("#container-tables-template").html()),
-            tagName: 'div',
-            className: 'container',
-
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.tables').addClass('active');
+        
+        window.ContainerDemandasTablesView = ContainerDemandasView.extend({
+            initialize: function(){
+                this.template = _.template($("#demandas-" + this.options.listName+  "-tables-template").html());
+                ContainerDemandasView.prototype.initialize.call(this);
             },
-
-            render: function() {
+            
+            render: function(){
                 $(this.el).html(this.template());
                 
                 $(this.el).children('#table_id').dataTable();
@@ -87,15 +93,91 @@
             }
         });
         
+        window.ContainerInformesView = ContainerMainFormView.extend({
+           template:  _.template($("#container-informes-template").html()),
+           
+            events: {
+                'click .redirect':'redirect'  
+            },
+           
+           redirect: function(event){
+                  App.navigate('/informes/'+event.target.id ,true);
+            },
+           
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.informes').addClass('active');
+            }
+        });
+        
+        
+                window.ContainerInformesView = ContainerMainFormView.extend({
+           template:  _.template($("#container-informes-template").html()),
+           
+            events: {
+                'click .redirect':'redirect'  
+            },
+           
+           redirect: function(event){
+                  App.navigate('/informes/'+event.target.id ,true);
+            },
+           
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.informes').addClass('active');
+            }
+        });
+        
+        window.ContainerActualizarView = ContainerMainFormView.extend({
+           template:  _.template($("#container-actualizar-template").html()),
+           
+            events: {
+                'click .redirect':'redirect'  
+            },
+           
+           redirect: function(event){
+                  App.navigate('/informes/'+event.target.id ,true);
+            },
+           
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.actualizar').addClass('active');
+            }
+        });
+        
+        window.ContainerResolucionView = ContainerMainFormView.extend({
+           template:  _.template($("#container-resolucion-template").html()),
+           
+            events: {
+                'click .redirect':'redirect'  
+            },
+           
+           redirect: function(event){
+                  App.navigate('/informes/'+event.target.id ,true);
+            },
+           
+           initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.resolucion').addClass('active');
+            }
+        });
+        
+        //Super => Backbone.Model.prototype.set.call(this, attributes, options);
+        
         window.Housing = Backbone.Router.extend({
             routes: {
                 '': 'entrar',
                 '/': 'entrar',
                 '/buscar': 'buscar',
                 '/demandas': 'demandas',
-                '/informes': 'table',
-                '/actualizar': 'table',
-                '/resolucion': 'table'
+                '/demandas/:listName': 'demandas',
+                '/informes': 'informes',
+                '/actualizar': 'actualizar',
+                '/resolucion': 'resolucion'
             },
 
             initialize: function() {
@@ -115,17 +197,39 @@
                 $('#content').append(this.containerBuscarView.render().el);
             },
             
-            demandas: function(){
-                this.containerDemandasView = new ContainerDemandasView();
-                $('#content').empty();
-                $('#content').append(this.containerDemandasView.render().el);  
+            demandas: function(listName){    
+                if(listName){
+                    this.containerTablesView = new ContainerDemandasTablesView({
+                        listName:listName
+                    });
+                    $('#content').empty();
+                    $('#content').append(this.containerTablesView.render().el);
+                }
+                else{
+                    this.containerDemandasView = new ContainerDemandasView();
+                    $('#content').empty();
+                    $('#content').append(this.containerDemandasView.render().el);  
+                }
             },
             
-            table: function(){                
-                this.containerTablesView = new ContainerTablesView();
+            informes: function(){
+                this.containerInformesView = new ContainerInformesView();
                 $('#content').empty();
-                $('#content').append(this.containerTablesView.render().el);
+                $('#content').append(this.containerInformesView.render().el); 
+            },
+            
+            actualizar: function(){
+                this.containerActualizarView = new ContainerActualizarView();
+                $('#content').empty();
+                $('#content').append(this.containerActualizarView.render().el);                 
+            },
+            
+            resolucion: function(){
+                this.containerResolucionView = new ContainerResolucionView();
+                $('#content').empty();
+                $('#content').append(this.containerResolucionView.render().el);                 
             }
+            
         });
 
         // Kick off the application
