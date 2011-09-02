@@ -37,9 +37,28 @@
             togglePreCheck: function(){
                 if ($('.add-on :checkbox').attr('checked')) {
                     $('.add-on :checkbox').parents('.add-on').addClass('active');
-                } else {
+                } 
+                else {
                     $('.add-on :checkbox').parents('.add-on').removeClass('active');
                 }
+            },
+            render: function(){
+                $(this.el).html(this.template());
+                
+                var datepickers = $(this.el).find(".datepicker");
+                
+                _.forEach(datepickers, function(datepicker){
+                    $(datepicker).datepicker({beforeShow: function(input) {
+                        var field = $(input);
+                        var left = field.position().left;
+                        var top = field.position().top + 28;
+                        setTimeout(function(){
+                            $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                        },1);                    
+                    }});
+                });
+                          
+                return this;
             }
         });
         
@@ -197,7 +216,7 @@
             entrar: function() {
                 this.containerEntrarView = new ContainerEntrarView();
                 $('#content').empty();
-                $('#content').append(this.containerEntrarView.render().el);
+                $('#content').append(this.containerEntrarView.render().el);    
             },
             
             buscar: function() {
@@ -237,8 +256,7 @@
                 this.containerResolucionView = new ContainerResolucionView();
                 $('#content').empty();
                 $('#content').append(this.containerResolucionView.render().el);                 
-            }
-            
+            } 
         });
 
         // Kick off the application

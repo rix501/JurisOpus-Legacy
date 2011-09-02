@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>
-        Housing
-    </title>
+    <title>Housing Promoters</title>
     <!-- Local Libs -->
     <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>
     <script type="text/javascript" src="/javascripts/underscore.js"></script>
@@ -13,6 +12,7 @@
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
+    <link rel="stylesheet" href="/stylesheets/jquery-ui.custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/stylesheets/demo_table.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/stylesheets/bootstrap.css" type="text/css" media="screen" charset="utf-8" />    
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
@@ -34,29 +34,6 @@
             </div>
         </div>
         <div id="content"></div>
-    </script>
-    <script type="text/template" id="container-tables-template">
-        <table id="table_id">
-        	<thead>
-        		<tr>
-        			<th>Column 1</th>
-        			<th>Column 2</th>
-        			<th>etc</th>
-        		</tr>
-        	</thead>
-        	<tbody>
-        		<tr>
-        			<td>Row 1 Data 1</td>
-        			<td>Glock</td>
-        			<td>etc</td>
-        		</tr>
-        		<tr>
-        			<td>Row 2 Data 1</td>
-        			<td>Test</td>
-        			<td>etc</td>
-        		</tr>
-        	</tbody>
-        </table>
     </script>
     <script type="text/template" id="container-entrar-template">
             <form class="main-form form-stacked">
@@ -104,7 +81,7 @@
                         <div class="form-cell">
                             <label for="xlInput">Caso Recibido:</label>
                             <div class="input">
-                                <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
+                                <input class="medium datepicker" id="datepicker-demo" name="xlInput" size="30" type="text">
                             </div>
                         </div>
                         <div class="form-cell">
@@ -167,7 +144,7 @@
                         <div class="form-cell">
                             <label for="xlInputA">Deuda Recibida:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -181,7 +158,7 @@
                         <div class="form-cell">
                             <label for="xlInputA">Ultimo Re-examen:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -202,7 +179,7 @@
                         <div class="form-cell">
                             <label for="xlInputA">Presentacion:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -210,7 +187,7 @@
                             <div class="input">
                                 <div class="input-prepend">
                                     <label class="add-on"><input type="checkbox" name="" id="" value=""></label>
-                                    <input class="small" id="prependedInput2" name="prependedInput2" size="16" type="text">
+                                    <input class="small datepicker" id="prependedInput2" name="prependedInput2" size="16" type="text">
                                 </div>
                             </div>                        
                         </div>
@@ -231,31 +208,31 @@
                         <div class="form-cell">
                             <label for="xlInputA">1ra Comparecencia:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="xlInputA">2da Comparecencia:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="xlInputA">Vista en su Segundo:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="xlInputA">Sentencia:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="xlInputA" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="xlInputA">Lanzamiento:</label>
                             <div class="input">
-                                <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                                <input class="medium datepicker" id="datepicker-demo2" name="xlInputA" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -268,7 +245,7 @@
                         </div>
                     </div>
                     <div class="clearfix submit-btns">
-                        <button type="submit" class="btn primary">Save Changes</button>
+                        <button type="submit" class="btn primary">Guardar</button>
                         <button type="reset" class="btn">Cancel</button>
                     </div>                
                 </fieldset>
