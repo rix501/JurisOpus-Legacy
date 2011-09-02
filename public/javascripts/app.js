@@ -19,10 +19,17 @@
             }
         });
         
-        window.ContainerMainFormView = Backbone.View.extend({
+        window.ContainerView = Backbone.View.extend({
             tagName: 'div',
             className: 'container',
-            
+            render: function() {
+                $(this.el).html(this.template());
+                
+                return this;
+            }
+        });
+        
+        window.ContainerMainFormView = ContainerView.extend({
             events: {
                 'click .add-on :checkbox' : 'togglePreCheck'
             },
@@ -33,12 +40,6 @@
                 } else {
                     $('.add-on :checkbox').parents('.add-on').removeClass('active');
                 }
-            },
-
-            render: function() {
-                $(this.el).html(this.template());
-                
-                return this;
             }
         });
         
@@ -60,8 +61,8 @@
             }
         });
         
-        window.ContainerDemandasView = ContainerMainFormView.extend({
-           template:  _.template($("#container-demandas-template").html()),
+        window.ContainerDemandasView = ContainerView.extend({
+            template:  _.template($("#container-demandas-template").html()),
            
             events: {
                 'click .redirect':'redirect'  
@@ -79,9 +80,17 @@
         });
         
         window.ContainerDemandasTablesView = ContainerDemandasView.extend({
+            events: {
+                'click .back.btn':'goBack'  
+            },
+            
             initialize: function(){
                 this.template = _.template($("#demandas-" + this.options.listName+  "-tables-template").html());
                 ContainerDemandasView.prototype.initialize.call(this);
+            },
+            
+            goBack: function(){
+                App.navigate('/demandas' ,true);
             },
             
             render: function(){
@@ -93,8 +102,8 @@
             }
         });
         
-        window.ContainerInformesView = ContainerMainFormView.extend({
-           template:  _.template($("#container-informes-template").html()),
+        window.ContainerInformesView = ContainerView.extend({
+            template:  _.template($("#container-informes-template").html()),
            
             events: {
                 'click .redirect':'redirect'  
@@ -112,8 +121,8 @@
         });
         
         
-                window.ContainerInformesView = ContainerMainFormView.extend({
-           template:  _.template($("#container-informes-template").html()),
+        window.ContainerInformesView = ContainerView.extend({
+            template:  _.template($("#container-informes-template").html()),
            
             events: {
                 'click .redirect':'redirect'  
@@ -130,15 +139,15 @@
             }
         });
         
-        window.ContainerActualizarView = ContainerMainFormView.extend({
-           template:  _.template($("#container-actualizar-template").html()),
+        window.ContainerActualizarView = ContainerView.extend({
+            template:  _.template($("#container-actualizar-template").html()),
            
             events: {
                 'click .redirect':'redirect'  
             },
            
            redirect: function(event){
-                  App.navigate('/informes/'+event.target.id ,true);
+                  App.navigate('/actualizar/'+event.target.id ,true);
             },
            
            initialize: function() {
@@ -148,15 +157,15 @@
             }
         });
         
-        window.ContainerResolucionView = ContainerMainFormView.extend({
-           template:  _.template($("#container-resolucion-template").html()),
+        window.ContainerResolucionView = ContainerView.extend({
+            template:  _.template($("#container-resolucion-template").html()),
            
             events: {
                 'click .redirect':'redirect'  
             },
            
            redirect: function(event){
-                  App.navigate('/informes/'+event.target.id ,true);
+                  App.navigate('/resolucion/'+event.target.id ,true);
             },
            
            initialize: function() {

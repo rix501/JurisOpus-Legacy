@@ -8,10 +8,6 @@ body {
 	font-size: 15px;
 }
 
-.container {
-	width: 900px;
-}
-
 .main-form {
 	margin-top: 10px;
 }
@@ -47,6 +43,48 @@ hr {
 
 .submit-btns {
     text-align: center;
+}
+
+.back.btn {
+    margin: 10px 0;
+}
+
+h2.tables {
+    display: inline-block;
+    margin-left: 10px;
+    line-height: 10px;
+}
+
+form.list {
+    margin: 10px auto;
+    border: 3px solid #919191;
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 5px 5px 5px #ccc;
+    -webkit-box-shadow: 5px 5px 5px #ccc;
+    box-shadow: 5px 5px 5px #ccc;
+}
+
+form.list.demandas {
+    width: 430px;
+}
+
+form.list.informes {
+    width: 270px;
+}
+
+form.list.actualizar {
+    width: 355px;
+}
+
+form.list.resolucion {
+    width: 440px;
+}
+
+form.list ul {
+    margin: 0px;
 }
 
 form.list li {
