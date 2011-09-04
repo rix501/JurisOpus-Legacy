@@ -1,6 +1,6 @@
 {
   "author": "Ricardo J. Vazquez <rix501@gmail.com>",
-  "name": "housing",
+  "name": "Juris Opus",
   "description": "test",
   "version": "0.0.1",
   "repository": {
@@ -9,9 +9,10 @@
   },
   "main": "server.js",
   "engines": {
-    "node": "~v0.4.11"
+    "node >=0.4.10"
   },
   "dependencies": {
+	  "pdfkit":"0.1.5",
       "express":"2.4.6",
       "backbone":"0.5.3",
       "mysql":"0.9.3"
