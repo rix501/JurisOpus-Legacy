@@ -3,6 +3,7 @@
  */
 
 var express = require('express');
+var PDFDocument = require('pdfkit');
 
 var app = module.exports = express.createServer();
 
@@ -29,16 +30,20 @@ app.get('/', function(req, res){
   res.sendfile('/public/index.html');
 });
 
-app.get('/pdf', function(req, res){
-	var PDFDocument = require('pdfkit');
-    var doc = new PDFDocument({size: 'legal',layout: 'landscape'});
+app.get('/test', function(req, res){
+    var doc = new PDFDocument();
     
-    doc.text('This text is left aligned. ');
+    doc.text('This text is dummy text');
     
     doc.path('M 100,20 L 200,160 Q 230,00 250,120 C 290,-40 300,200 400,150 L 500,90')
        .stroke();
     
-    res.send(doc.output(),{'Content-type':'application/pdf'});
+    // doc.write('./output.pdf', function(){
+    //      res.sendfile('./output.pdf');
+    // });
+                
+    res.header('Content-type','application/pdf');
+    res.end(doc.output(), 'binary');    
 });
 
 app.listen(process.env.PORT || 8001);
