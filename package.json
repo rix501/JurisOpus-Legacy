@@ -9,7 +9,7 @@
   },
   "main": "server.js",
   "engines": {
-    "node >=0.4.10"
+    "node":">=0.4.10"
   },
   "dependencies": {
 	  "pdfkit":"0.1.5",
