@@ -250,22 +250,6 @@ app.get('/test', function(req, res){
     
     doc.addPage();
     
-    //Left Margin lines
-    doc.moveTo(70,50)
-       .lineWidth(3)
-       .lineTo(70,710)
-       .stroke()
-       .moveTo(67,50)
-       .lineWidth(1)
-       .lineTo(67,710)
-       .stroke();
-    //Right Margin Lines
-    doc.moveTo(552,50)
-       .lineWidth(0.5)
-       .lineTo(552,710)
-       .stroke();
-    
-    
     doc.font('Arial-Bold', 11)
     .text('ESTADO LIBRE ASOCIADO DE PUERTO RICO',{
         align: 'center'
@@ -370,7 +354,84 @@ app.get('/test', function(req, res){
     })
     .text("EL PRESIDENTE DE LOS ESTADOS UNIDOS")
     .text("EL ESTADO LIBRE ASOCIADO DE PUERTO RICO");
-                
+    
+    doc.font('Arial');
+    
+    doc.text('A. «NOMBRE»',{
+        indent: 36
+    })
+    .text('RESIDENCIAL «RESIDENCIAL»',{
+        indent: 52
+    })
+    .text('EDIF. «EDIFICIO» APTO. «APARTAMENTO»',{
+        indent: 52
+    })
+    .text('SAN JUAN PR',{
+        indent: 52
+    });
+    
+    doc.moveDown();
+    
+    doc.text('Parte Demandada arriba mencionada:',{
+           indent: 36
+    });
+    
+    doc.moveDown();
+    
+    doc.text('POR CUANTO: Conforme Orden Administrativa se calendariza automáticamente la vista en el caso de epígrafe. Se expide la presente a la parte Demandante para que de inmediato proceda a su diligenciamiento.',{
+           indent: 36
+    });
+
+    doc.moveDown();
+    
+    doc.text('POR CUANTO: De conformidad al Artículo 624 del Código de Enjuiciamiento Civil, 32 L.P.R.A. 2825, quedan citadas las partes para que comparezcan a vista el día _______ de ______________ de 2011, a las _______ de la A.M. en el Tribunal de Primera Instancia de Puerto Rico, Sala de San Juan, Puerto Rico. SE LE APERCIBE que de no comparecer se dictará Sentencia sin más citarle ni oírle, declarando CON LUGAR la demanda y ordenando su lanzamiento y de cuantas personas se encuentren en la ocupación del inmueble bajo o en virtud de la autoridad de la parte demandada.',{
+           indent: 36
+    });
+             
+    doc.moveDown();
+    
+    doc.text('POR LO TANTO: Usted, la parte Demandada, por la presente es requerida y citada oficialmente para que se sirva comparecer a la Sala de este Tribunal, según señalado.',{
+           indent: 36
+    });         
+
+    doc.moveDown();
+    
+    doc.text('Expedida bajo mi firma, y el sello del Tribunal, hoy día _______ de',{
+           indent: 36
+    });
+    
+    doc.addPage();
+    
+    doc.text('DILIGENCIAMIENTO POR PERSONA PARTICULAR',{
+        align: 'center'
+    });
+    
+    doc.moveDown();
+    
+    doc.text('YO,______________________________________,previamente juramentado declaro:',{
+        indent: 36
+    });
+    
+    doc.text('Que me llamo como queda dicho; soy mayor de 21 años de edad, sé leer y escribir; y no soy abogado de la parte Demandante en este asunto ni parte en este pleito, no teniendo tampoco interés en el mismo.',{
+        indent: 36
+    });
+    
+    doc.text('Que recibí esta Citación-Emplazamiento el día_______de ______________ de 2011, notificándola personalmente a __________________________________, a su dirección_________________________________________________, o sea, el(la) Demandado(a) en dicha citación, el día______de ____________________ de 2011, a las_________de la_______en_________________, P.R., al dorso de cuya Citación-Emplazamiento hice constar mi firma, la fecha y sitio de su entrega y notificación.',{
+        indent: 36
+    });
+    
+    doc.text('__________________________',{
+        align: 'center'
+    });
+    
+    doc.text('DILIGENCIANTE',{
+        align: 'center'
+    });
+    
+    doc.text('JURADO Y SUSCRITO ante mi por ___________________________ de las circunstancias personales anteriormente expresadas, y a quien conozco personalmente. En , P.R., a_____ de ___________________ de 2011.',{
+         indent: 36
+     });
+    
     res.header('Content-type','application/pdf');
     res.end(doc.output(), 'binary');    
 });
