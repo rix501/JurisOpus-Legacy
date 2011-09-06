@@ -33,10 +33,17 @@ app.get('/', function(req, res){
 app.get('/test', function(req, res){
     var doc = new PDFDocument();
     
-    doc.text('This text is dummy text');
-    
-    doc.path('M 100,20 L 200,160 Q 230,00 250,120 C 290,-40 300,200 400,150 L 500,90')
-       .stroke();
+    var loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in...'
+
+    doc.text(loremIpsum,100,100,{
+        width: 200,
+        align: 'left'
+    });
+    doc.text(loremIpsum,500,100,{
+        width: 200,
+        align: 'left'
+    });
+    doc.text(loremIpsum);
     
     // doc.write('./output.pdf', function(){
     //      res.sendfile('./output.pdf');
