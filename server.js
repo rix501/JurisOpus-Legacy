@@ -33,8 +33,14 @@ app.get('/', function(req, res){
 
 app.get('/rtftest',function(req,res){
    
-    fs.readFile('/etc/passwd', function (err, data) {
-        res.send(data, { 'Content-Type': 'application/rtf' })
+    fs.readFile('./public/Modelo.rtf', 'binary' ,function (err, data) {
+
+        data = data.replace(/%%var%%/gi,'HOLYSHITYES');
+                                        
+        res.send(data, { 'Content-Type': 'application/rtf' });
+        
+        // res.send(data);
+    
     });
     
 });
