@@ -6,6 +6,9 @@ Icon?
 Thumbs.db
 
 
+node_modules/pdfkit/
+
+
 # Project files #
 #################
 *.chproj
