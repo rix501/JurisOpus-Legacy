@@ -2,12 +2,7 @@ var PDFDocument = require('pdfkit');
 
 var PDFFactory = {};
 
-PDFFactory.DemandaCobro = function(nombre){
-    var doc = new PDFDocument();
-
-    doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
-    doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
-
+var drawMarginLines = function(doc){
     //Left Margin lines
     doc.moveTo(70,50)
        .lineWidth(3)
@@ -22,6 +17,40 @@ PDFFactory.DemandaCobro = function(nombre){
        .lineWidth(0.5)
        .lineTo(552,710)
        .stroke();
+};
+
+var drawTopLeftBox = function(doc, x, y){
+    //Top left box
+    doc.moveTo(x, y + 10)                         
+       .lineTo(250+x, y + 10)
+       .lineTo(250+x, y - 130)
+       .moveTo(x, y + 12)
+       .lineTo(250+x, y + 12)
+       .stroke();
+
+    doc.moveTo(x,y);
+};
+
+var drawFooterLine = function(doc, x, y){
+    //Footer Line
+    doc.moveTo(x, y - 40)                         
+       .lineTo(460+x, y - 40)
+       .stroke();
+};
+
+
+
+PDFFactory.DemandaCobro = function(nombre){
+    var y, x, width, height;
+    
+    var doc = new PDFDocument({
+        size: "legal"
+    });
+
+    doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
+    doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+
+    drawMarginLines(doc);
 
     doc.font('Arial-Bold', 11)
     .text('ESTADO LIBRE ASOCIADO DE PUERTO RICO',{
@@ -47,7 +76,7 @@ PDFFactory.DemandaCobro = function(nombre){
        align: 'center',
        width: 250
     })
-    doc.moveDown();
+    .moveDown();
     doc.text('VS.',{
        align: 'center',
        width: 250
@@ -62,18 +91,7 @@ PDFFactory.DemandaCobro = function(nombre){
        width: 250
     });
 
-    var y = doc.y;
-    var x = doc.x;
-
-    //Top left box
-    doc.moveTo(x, y + 10)                         
-       .lineTo(250+x, y + 10)
-       .lineTo(250+x, y - 130)
-       .moveTo(x, y + 12)
-       .lineTo(250+x, y + 12)
-       .stroke();
-
-    doc.moveTo(x,y);
+    drawTopLeftBox(doc, doc.x,  doc.y);
 
     doc.moveUp();
     doc.moveUp();
@@ -196,17 +214,13 @@ PDFFactory.DemandaCobro = function(nombre){
     });
 
 
-    var y = doc.y;
-    var x = doc.x;
-
-    //Footer Line
-    doc.moveTo(x, y - 40)                         
-       .lineTo(460+x, y - 40)
-       .stroke();
+    drawFooterLine(doc, doc.x,  doc.y);
 
     /**** NEW PAGE ****/
 
-    doc.addPage();
+    doc.addPage({
+        size: "legal"
+    });
 
     doc.font('Arial-Bold', 11)
     .text('ESTADO LIBRE ASOCIADO DE PUERTO RICO',{
@@ -232,7 +246,7 @@ PDFFactory.DemandaCobro = function(nombre){
        align: 'center',
        width: 250
     })
-    doc.moveDown();
+    .moveDown();
     doc.text('VS.',{
        align: 'center',
        width: 250
@@ -247,16 +261,15 @@ PDFFactory.DemandaCobro = function(nombre){
        width: 250
     });
 
-    var y = doc.y;
-    var x = doc.x;
-
+    drawTopLeftBox(doc, doc.x,  doc.y);
+    
     //Top left box
-    doc.moveTo(x, y)                         
-       .lineTo(250+x, y)
-       .lineTo(250+x, y - 130)
-       .moveTo(x, y + 2)
-       .lineTo(250+x, y + 2)
-       .stroke();
+   // doc.moveTo(x, y)                         
+    //   .lineTo(250+x, y)
+    //   .lineTo(250+x, y - 130)
+    //   .moveTo(x, y + 2)
+    //   .lineTo(250+x, y + 2)
+    //   .stroke();
 
     doc.moveTo(x,y);
 
@@ -299,8 +312,8 @@ PDFFactory.DemandaCobro = function(nombre){
 
     doc.moveDown();
 
-    var width = doc.widthOfString('CITACION Y EMPLAZAMIENTO');
-    var height = doc.currentLineHeight();
+    width = doc.widthOfString('CITACION Y EMPLAZAMIENTO');
+    height = doc.currentLineHeight();
 
     doc.text('CITACION Y EMPLAZAMIENTO',doc.x - 100)
        .moveTo(doc.x, doc.y - 2)
@@ -358,7 +371,9 @@ PDFFactory.DemandaCobro = function(nombre){
 
     /**** NEW PAGE ****/
 
-    doc.addPage();
+    doc.addPage({
+        size: "legal"
+    });
 
     doc.text('DILIGENCIAMIENTO POR PERSONA PARTICULAR',{
         align: 'center',
@@ -372,12 +387,12 @@ PDFFactory.DemandaCobro = function(nombre){
         lineGap: 15
     });
 
-    doc.text('Que me llamo como queda dicho; soy mayor de 21 años de edad, sé leer y escribir; y no soy abogado de la parte Demandante en este asunto ni parte en este pleito, no teniendo tampoco interés en el mismo.',{
+    doc.text('Que me llamo como queda dicho; soy mayor de 21 años de edad, sé leer y escribir; y no soy abogado de la parte Demandante en este asunto ni parte en este pleito, no teniendo tampoco interés en el mismo.',{
         indent: 36,
         lineGap: 15
     });
 
-    doc.text('Que recibí esta Citación-Emplazamiento el día_______de ______________ de 2011, notificándola personalmente a __________________________________, a su dirección_________________________________________________, o sea, el(la) Demandado(a) en dicha citación, el día______de ____________________ de 2011, a las_________de la_______en_________________, P.R., al dorso de cuya Citación-Emplazamiento hice constar mi firma, la fecha y sitio de su entrega y notificación.',{
+    doc.text('Que recibí esta Citación-Emplazamiento el día_______de ______________ de 2011, notificándola personalmente a __________________________________, a su dirección_________________________________________________, o sea, el(la) Demandado(a) en dicha citación, el día______de ____________________ de 2011, a las_________de la_______en_________________, P.R., al dorso de cuya Citación-Emplazamiento hice constar mi firma, la fecha y sitio de su entrega y notificación.',{
         indent: 36,
         lineGap: 15
     });
