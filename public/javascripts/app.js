@@ -148,7 +148,7 @@
             },
            
            redirect: function(event){
-                  App.navigate('/informes/'+event.target.id ,true);
+                  location.href = '/test/'+event.target.id;
             },
            
            initialize: function() {
