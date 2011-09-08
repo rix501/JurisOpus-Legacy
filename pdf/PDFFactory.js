@@ -270,8 +270,8 @@ PDFFactory.DemandaCobro = function(nombre){
     //   .moveTo(x, y + 2)
     //   .lineTo(250+x, y + 2)
     //   .stroke();
+    //  doc.moveTo(x,y);
 
-    doc.moveTo(x,y);
 
     doc.moveUp();
     doc.moveUp();
