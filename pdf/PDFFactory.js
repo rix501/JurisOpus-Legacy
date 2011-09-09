@@ -6,16 +6,16 @@ var drawMarginLines = function(doc){
     //Left Margin lines
     doc.moveTo(70,50)
        .lineWidth(3)
-       .lineTo(70,710)
+       .lineTo(70,940)
        .stroke()
        .moveTo(67,50)
        .lineWidth(1)
-       .lineTo(67,710)
+       .lineTo(67,940)
        .stroke();
     //Right Margin Lines
     doc.moveTo(552,50)
        .lineWidth(0.5)
-       .lineTo(552,710)
+       .lineTo(552,940)
        .stroke();
 };
 
@@ -134,33 +134,40 @@ PDFFactory.DemandaCobro = function(nombre){
 
     doc.text('DEMANDA',1,0,{
         width: 612,
-        align: 'center'
+        align: 'center',
+        lineGap: 10
     });
     
     doc.text('AL HONORABLE TRIBUNAL:',80,0,{
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     });
     
     doc.font('Arial')
     .text('Comparece la parte Demandante, por conducto de sus abogados que suscriben, y muy respetuosamente expone y solicita:',{
         indent: 36,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial «RESIDENCIAL», ubicado en el Municipio de San Juan.",{
         indent: 72,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .text("2. La parte Demandada ocupa el apartamento «APARTAMENTO» en el edificio «EDIFICIO» de dicho complejo en virtud de un contrato de arrendamiento.",{
         indent: 72,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de «DEUDA_TOTAL», por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
         indent: 72,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .text("4. Mediante la presente se informa que la dirección postal de la parte Demandante es la siguiente:",{
         indent: 72,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .text("Housing Promoters, Inc",{
         indent: 72,
@@ -176,7 +183,8 @@ PDFFactory.DemandaCobro = function(nombre){
     })
     .text("Tel.   (787) 760-3030",{
         indent: 72,
-        align: 'left'
+        align: 'left',
+        lineGap: 10
     })
     .font('Arial-Bold')
     .text("POR TODO LO CUAL, ",{
@@ -186,8 +194,9 @@ PDFFactory.DemandaCobro = function(nombre){
     .font('Arial')
     .moveUp()
     .text("muy respetuosamente se solicita a este Hon. Tribunal decrete con lugar la presente demanda** y ordene el lanzamiento de la parte Demandada y de cualquier persona que en su nombre y/o con su consentimiento ocupe la propiedad descrita en esta Demanda.",{
-        indent: 150,
-        align: 'left'
+        indent: 154,
+        align: 'left',
+        lineGap: 10
     })
     .font('Arial-Bold')
     .text("RESPETUOSAMENTE SOMETIDA",{
@@ -195,7 +204,7 @@ PDFFactory.DemandaCobro = function(nombre){
         align: 'left'
     })
     .font('Arial')
-    .text("en San Juan, P.R., a 06 de September de 2011.", 295, doc.y - 13, {
+    .text("en San Juan, P.R., a 06 de September de 2011.", 295, doc.y - 12, {
         align: 'left'
     })
     .moveDown();
@@ -207,6 +216,8 @@ PDFFactory.DemandaCobro = function(nombre){
     .text("Trujillo Alto, PR  00977-2500.")
     .text("Tel. (787) 294-6397, 6398 / Fax 294-6399")
     .text("hasantiago.law@gmail.com");
+
+    doc.moveDown();
 
     doc.text("*17 LPRA sección 103", 80, doc.y + 5)
     .text("**La parte Demandante renuncia al término de diez (10) días para señalar vista contenido en la Ley #129 de 27 de septiembre de 2007." ,{
@@ -310,7 +321,8 @@ PDFFactory.DemandaCobro = function(nombre){
         align:'center'
     });     
 
-    doc.moveDown();
+    doc.moveDown()
+    .moveDown();
 
     width = doc.widthOfString('CITACION Y EMPLAZAMIENTO');
     height = doc.currentLineHeight();
