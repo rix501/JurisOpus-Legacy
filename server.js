@@ -51,7 +51,19 @@ app.get('/test/:nombre', function(req, res){
     
     //data = req.params.nombre;
     
-    var demandaPdf = pdfFactory('DemandaCobro',data);
+    var demandaPdf = pdfFactory('SanJuan','FaltaPago',data);
+    
+    res.header('Content-type','application/pdf');
+    res.end(demandaPdf, 'binary');    
+});
+
+app.get('/pdf/:municipio/:nombre', function(req, res){ 
+    
+    var data = ["test", "test"];
+    
+    //data = req.params.nombre;
+    
+    var demandaPdf = pdfFactory(req.params.municipio, req.params.nombre, data);
     
     res.header('Content-type','application/pdf');
     res.end(demandaPdf, 'binary');    
