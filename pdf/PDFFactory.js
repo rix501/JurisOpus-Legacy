@@ -1,6 +1,24 @@
 var PDFDocument = require('pdfkit');
+var _ = require('underscore');
 
-var PDFFactory = {};
+
+var templates = {};
+
+var PDFFactory = function(name, data){  
+    var doc;
+    
+    if(Object.prototype.toString.apply(data) === '[object Array]'){
+        //It's an array
+        _.forEach(data, function(single){
+            doc = templates[name](doc, single);
+        });
+    }
+    else {
+        doc = templates[name](doc, data);
+    }    
+    
+    return doc.output();
+};
 
 var drawMarginLines = function(doc){
     //Left Margin lines
@@ -38,17 +56,21 @@ var drawFooterLine = function(doc, x, y){
        .stroke();
 };
 
-
-
-PDFFactory.DemandaCobro = function(nombre){
+templates.DemandaCobro = function(doc, nombre){
     var y, x, width, height;
     
-    var doc = new PDFDocument({
-        size: "legal"
-    });
-
-    doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
-    doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+    if(doc === undefined || doc === null){
+        doc = new PDFDocument({
+            size: "legal"
+        });
+        
+        doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
+        doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+    }
+    
+    if(doc.pages.length > 1){
+        doc.addPage();
+    }
 
     drawMarginLines(doc);
 
