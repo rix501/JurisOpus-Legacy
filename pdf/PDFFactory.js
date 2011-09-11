@@ -6,7 +6,7 @@ var templates = {};
 var PDFFactory = function(municipio, name, data){
     var doc;
     
-    if(Object.prototype.toString.apply(data) === '[object Array]'){
+    if(_.isArray(data)){
         //It's an array
         _.forEach(data, function(single){
             doc = templates[municipio][name](doc, single);
@@ -1024,7 +1024,6 @@ templates.SanJuan.OcupacionIlegal = function(doc, nombre){
     .moveDown();
     
     doc.text("HECTOR A. SANTIAGO ROMERO (RUA 10101)",270,0)
-    .text("Abogados parte Demandante")
     .text("PMB 273,")
     .text("PO Box 2500,")
     .text("Trujillo Alto, PR  00977-2500.")
