@@ -338,6 +338,8 @@ PDFFactory.DemandaCobro = function(nombre){
     .text("EL PRESIDENTE DE LOS ESTADOS UNIDOS")
     .text("EL ESTADO LIBRE ASOCIADO DE PUERTO RICO");
 
+    doc.moveDown();
+
     doc.font('Arial');
 
     doc.text('A. '+ nombre,{
