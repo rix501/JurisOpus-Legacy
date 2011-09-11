@@ -88,7 +88,7 @@
             },
            
            redirect: function(event){
-                  App.navigate('/demandas/'+event.target.id ,true);
+                  location.href = '/pdf/SanJuan/'+event.target.id;
             },
            
            initialize: function() {

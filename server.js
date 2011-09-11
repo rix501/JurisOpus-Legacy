@@ -46,10 +46,27 @@ app.get('/rtftest',function(req,res){
 });
 
 app.get('/test/:nombre', function(req, res){ 
-    var demandaPdf = pdfFactory.DemandaCobro(req.params.nombre);
+    
+    var data = [req.params.nombre, req.params.nombre];
+    
+    //data = req.params.nombre;
+    
+    var demandaPdf = pdfFactory('SanJuan','FaltaPago',data);
     
     res.header('Content-type','application/pdf');
-    res.end(demandaPdf.output(), 'binary');    
+    res.end(demandaPdf, 'binary');    
+});
+
+app.get('/pdf/:municipio/:nombre', function(req, res){ 
+    
+    var data = ["test", "test"];
+    
+    //data = req.params.nombre;
+    
+    var demandaPdf = pdfFactory(req.params.municipio, req.params.nombre, data);
+    
+    res.header('Content-type','application/pdf');
+    res.end(demandaPdf, 'binary');    
 });
 
 app.listen(process.env.PORT || 8001);
