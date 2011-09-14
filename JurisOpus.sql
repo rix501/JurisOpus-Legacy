@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: 127.0.0.1 (MySQL 5.5.10)
+# Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-13 03:21:21 +0000
+# Generation Time: 2011-09-14 03:52:15 +0000
 # ************************************************************
 
 
@@ -61,11 +61,23 @@ CREATE TABLE `Casos` (
   `desistido` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `residencial` (`residencial`),
-  KEY `causal` (`causal`),
-  CONSTRAINT `casos_ibfk_1` FOREIGN KEY (`residencial`) REFERENCES `Residenciales` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `casos_ibfk_2` FOREIGN KEY (`causal`) REFERENCES `Causales` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `causal` (`causal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `Casos` WRITE;
+/*!40000 ALTER TABLE `Casos` DISABLE KEYS */;
+
+INSERT INTO `Casos` (`id`, `residencial`, `edificio`, `apartamento`, `nombre`, `ingresado`, `area`, `completado`, `renta_mensual`, `meses_adeudados`, `deuda_renta`, `deuda_recargo`, `deuda_renta_negativa`, `deuda_total`, `ultimo_reexamen`, `incumplimiento`, `causal`, `caso`, `fecha_presentacion`, `sala`, `hora`, `primera_comparecencia`, `segunda_comparecencia`, `vista_en_su_fondo`, `lanzamiento`, `observaciones`, `sentencia`, `diligenciado`, `seleccionado`, `diligenciado_en`, `ejecutar`, `rediligenciar`, `desistido`)
+VALUES
+	(1,NULL,NULL,NULL,'t',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(2,NULL,NULL,NULL,'edsaf',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(3,NULL,NULL,NULL,'ricardo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(4,NULL,NULL,NULL,'ricardo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'juan',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(5,NULL,NULL,NULL,'sdf',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+	(6,NULL,'qwe','rty','fg',NULL,'asd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'z',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `Casos` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Causales
