@@ -53,13 +53,36 @@ Models.Caso = Backbone.Model.extend({
 
                 break;
             case "create":
-                resp.query = 'CALL Create_Case(?,?,?,?,?)';
+                resp.query = 'CALL Create_Case(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
                 resp.args = [
-                    this.get('edificio'), 
+                    this.get('edificio'),
                     this.get('apartamento'),
                     this.get('area'),
                     this.get('nombre'),
-                    this.get('caso')
+                    this.get('casoRecibidO'),
+                    this.get('seleccionado'),
+                    this.get('completado'),
+                    this.get('causal'),
+                    this.get('rentaMensual'),
+                    this.get('mesesAdeudados'),
+                    this.get('deudaRenta'),
+                    this.get('deudaRentaNegativa'),
+                    this.get('deudaRecibida'),
+                    this.get('deudaTotal'),
+                    this.get('ultimoReexamen'),
+                    this.get('incumplimiento'),
+                    this.get('caso'),
+                    this.get('presentacion'),
+                    this.get('diligenciado'),
+                    this.get('diligenciadoEn'),
+                    this.get('sala'),
+                    this.get('hora'),
+                    this.get('primeraComparecencia'),
+                    this.get('segundaComparecencia'),
+                    this.get('vistaSegundo'),
+                    this.get('sentencia'),
+                    this.get('lanzamiento'),
+                    this.get('observaciones')
                 ];
                                 
                 break;
@@ -77,6 +100,20 @@ Models.Caso = Backbone.Model.extend({
 
 Models.Casos = Backbone.Collection.extend({
     model: Models.Caso
+});
+
+Models.Residencial = Backbone.Model.extend({
+});
+
+Models.Residenciales = Backbone.Collection.extend({
+    model: Models.Residencial
+});
+
+Models.Causal = Backbone.Model.extend({
+});
+
+Models.Causales = Backbone.Collection.extend({
+    model: Models.Causal
 });
 
 module.exports = Models;

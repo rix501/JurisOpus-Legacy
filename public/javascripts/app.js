@@ -73,9 +73,7 @@
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
             },
-            submitForm: function(event){
-                console.log(event);
-                
+            submitForm: function(event){                
                 event.preventDefault();
                 
                 var caso = new Models.Caso();
@@ -85,11 +83,37 @@
                     apartamento: $('#apartamento').val(),
                     area: $('#area').val(),
                     nombre: $('#nombre').val(),
-                    caso: $('#caso').val()
+                    casoRecibidO: $('#casoRecibido').val(),
+                    seleccionado: $('#seleccionado').val(),
+                    completado: $('#completado').val(),
+                    causal: $('#causal').val(),
+                    rentaMensual: $('#rentaMensual').val(),
+                    mesesAdeudados: $('#mesesAdeudados').val(),
+                    deudaRenta: $('#deudaRenta').val(),
+                    deudaRentaNegativa: $('#deudaRentaNegativa').val(),
+                    deudaRecibida: $('#deudaRecibida').val(),
+                    deudaTotal: $('#deudaTotal').val(),
+                    ultimoReexamen: $('#ultimoReexamen').val(),
+                    incumplimiento: $('#incumplimiento').val(),
+                    caso: $('#caso').val(),
+                    presentacion: $('#presentacion').val(),
+                    diligenciado: $('#diligenciado').val(),
+                    diligenciadoEn: $('#diligenciadoEn').val(),
+                    sala: $('#sala').val(),
+                    hora: $('#hora').val(),
+                    primeraComparecencia: $('#primeraComparecencia').val(),
+                    segundaComparecencia: $('#segundaComparecencia').val(),
+                    vistaSegundo: $('#vistaSegundo').val(),
+                    sentencia: $('#sentencia').val(),
+                    lanzamiento: $('#lanzamiento').val(),
+                    observaciones: $('#observaciones').val()
                 },{
-                   success: function(){
-                       alert('kthxbie');
-                   } 
+                    success: function(){
+                        alert('kthxbie');
+                    },
+                    error: function(){
+                        alert('Oops, something didnt work');
+                    }
                 });
                 
                 return false;
@@ -102,6 +126,11 @@
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');
+            },
+            submitForm: function(event){
+                event.preventDefault();
+                
+                return false;
             }
         });
         
