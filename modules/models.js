@@ -53,8 +53,14 @@ Models.Caso = Backbone.Model.extend({
 
                 break;
             case "create":
-                resp.query = 'CALL Create_Case(?,?)';
-                resp.args = [this.get('caso'), this.get('nombre')];
+                resp.query = 'CALL Create_Case(?,?,?,?,?)';
+                resp.args = [
+                    this.get('edificio'), 
+                    this.get('apartamento'),
+                    this.get('area'),
+                    this.get('nombre'),
+                    this.get('caso')
+                ];
                                 
                 break;
             case "update":

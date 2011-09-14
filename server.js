@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 //system and npm libs
 var express = require('express');
 var fs = require('fs');

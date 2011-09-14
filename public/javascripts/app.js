@@ -1,7 +1,10 @@
 (function($) {
+    //Models and Collections
+    var Models = {};
     
-    //Models and Collections go here
-    
+    Models.Caso = Backbone.Model.extend({
+        urlRoot: '/cases'
+    });
     
     //Views and Router
     $(document).ready(function(){
@@ -31,6 +34,7 @@
         
         window.ContainerMainFormView = ContainerView.extend({
             events: {
+                'submit':'submitForm',
                 'click .add-on :checkbox' : 'togglePreCheck'
             },
             
@@ -63,11 +67,32 @@
         });
         
         window.ContainerEntrarView = ContainerMainFormView.extend({
-           template: _.template($("#container-entrar-template").html()),
-           initialize: function() {
+            template: _.template($("#container-entrar-template").html()),
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
+            },
+            submitForm: function(event){
+                console.log(event);
+                
+                event.preventDefault();
+                
+                var caso = new Models.Caso();
+                
+                caso.save({
+                    edificio: $('#edificio').val(),
+                    apartamento: $('#apartamento').val(),
+                    area: $('#area').val(),
+                    nombre: $('#nombre').val(),
+                    caso: $('#caso').val()
+                },{
+                   success: function(){
+                       alert('kthxbie');
+                   } 
+                });
+                
+                return false;
             }
         });
 
@@ -196,7 +221,7 @@
         
         //Super => Backbone.Model.prototype.set.call(this, attributes, options);
         
-        window.Housing = Backbone.Router.extend({
+        window.JurisOpus = Backbone.Router.extend({
             routes: {
                 '': 'entrar',
                 '/': 'entrar',
@@ -260,7 +285,7 @@
         });
 
         // Kick off the application
-        window.App = new Housing();
+        window.App = new JurisOpus();
         Backbone.history.start();
         
     });

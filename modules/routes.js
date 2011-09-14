@@ -1,17 +1,12 @@
 exports.setup = function(app, Models){
     app.get('/', function(req, res){
-      res.sendfile('/public/index.html');
+        res.sendfile('/public/index.html');
     });
 
-    app.post('/cases', function(req,res){
-        var dummyCase = {
-            caso: 123,
-            nombre: 'Ricardo'
-        };
-        
+    app.post('/cases', function(req,res){        
         var caso = new Models.Caso();
-        
-        caso.save(dummyCase,{
+                
+        caso.save(req.body,{
             success: function(model, fields){
                 res.send(model);
             }
