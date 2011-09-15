@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-14 03:52:15 +0000
+# Generation Time: 2011-09-15 06:02:05 +0000
 # ************************************************************
 
 
@@ -109,6 +109,27 @@ CREATE TABLE `Residenciales` (
 
 
 
+
+--
+-- Dumping routines (PROCEDURE) for database 'JurisOpus'
+--
+DELIMITER ;;
+
+# Dump of PROCEDURE Create_Case
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Create_Case` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Create_Case`(IN p_edificio VARCHAR(11), IN p_apartamento VARCHAR(11), IN p_area VARCHAR(11), IN p_nombre VARCHAR(11), IN p_caso VARCHAR(11))
+BEGIN
+	INSERT INTO Casos
+	(caso, nombre, edificio, apartamento, area)
+	VALUES
+	(p_caso,p_nombre, p_edificio, p_apartamento, p_area);
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+DELIMITER ;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
