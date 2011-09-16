@@ -83,7 +83,7 @@
                     apartamento: $('#apartamento').val(),
                     area: $('#area').val(),
                     nombre: $('#nombre').val(),
-                    casoRecibidO: $('#casoRecibido').val(),
+                    casoRecibido: $('#casoRecibido').val(),
                     seleccionado: $('#seleccionado').val(),
                     completado: $('#completado').val(),
                     causal: $('#causal').val(),
@@ -169,8 +169,15 @@
             render: function(){
                 $(this.el).html(this.template());
                 
-                $(this.el).children('#table_id').dataTable();
-                
+                var oTable = $(this.el).children('#table_id').dataTable( {
+                    "sScrollX": "100%",
+                    "sScrollXInner": "1100px",
+                    "bScrollCollapse": true
+                });
+
+                $(window).bind('resize', function () {
+                    oTable.fnAdjustColumnSizing();
+                } );
                 return this;
             }
         });
