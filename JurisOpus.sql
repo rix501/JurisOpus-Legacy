@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-16 00:29:39 +0000
+# Generation Time: 2011-09-16 01:06:22 +0000
 # ************************************************************
 
 
@@ -96,6 +96,15 @@ CREATE TABLE `Causales` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `Causales` WRITE;
+/*!40000 ALTER TABLE `Causales` DISABLE KEYS */;
+
+INSERT INTO `Causales` (`id`, `causal`, `siglas`)
+VALUES
+	(1,'Test Caus','TC');
+
+/*!40000 ALTER TABLE `Causales` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Residenciales
@@ -111,6 +120,15 @@ CREATE TABLE `Residenciales` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `Residenciales` WRITE;
+/*!40000 ALTER TABLE `Residenciales` DISABLE KEYS */;
+
+INSERT INTO `Residenciales` (`id`, `residencial`, `num_proyecto`, `area`)
+VALUES
+	(1,'Test Resi','1','1');
+
+/*!40000 ALTER TABLE `Residenciales` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
@@ -119,12 +137,12 @@ CREATE TABLE `Residenciales` (
 --
 DELIMITER ;;
 
-# Dump of PROCEDURE Create_Case
+# Dump of PROCEDURE Create_Caso
 # ------------------------------------------------------------
 
-/*!50003 DROP PROCEDURE IF EXISTS `Create_Case` */;;
+/*!50003 DROP PROCEDURE IF EXISTS `Create_Caso` */;;
 /*!50003 SET SESSION SQL_MODE=""*/;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Create_Case`(
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Create_Caso`(
 	IN p_edificio VARCHAR(11), 
 	IN p_apartamento VARCHAR(11), 
 	IN p_area VARCHAR(11), 
@@ -159,6 +177,45 @@ BEGIN
 	(edificio, apartamento, area, nombre, caso_recibido, seleccionado, completado, causal, renta_mensual, meses_adeudados, deuda_renta, deuda_renta_negativa, deuda_recibida, deuda_total, ultimo_reexamen, incumplimiento, caso, presentacion, diligenciado, diligenciado_en, sala, hora, primera_comparecencia, segunda_comparecencia, vista_en_su_fondo, sentencia, lanzamiento, observaciones)
 	VALUES
 	(p_edificio, p_apartamento, p_area, p_nombre, p_casoRecibido, p_seleccionado, p_completado, p_causal, p_rentaMensual, p_mesesAdeudados, p_deudaRenta, p_deudaRentaNegativa, p_deudaRecibida, p_deudaTotal, p_ultimoReexamen, p_incumplimiento, p_caso, p_presentacion, p_diligenciado, p_diligenciadoEn, p_sala, p_hora, p_primeraComparecencia, p_segundaComparecencia, p_vistaSegundo, p_sentencia, p_lanzamiento, p_observaciones);
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Get_Casos
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Get_Casos` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Casos`()
+BEGIN
+	SELECT 
+		*
+	FROM Casos;
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Get_Causales
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Get_Causales` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Causales`()
+BEGIN
+	SELECT 
+		*
+	FROM Causales;
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Get_Residenciales
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Get_Residenciales` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Residenciales`()
+BEGIN
+	SELECT 
+		*
+	FROM Residenciales;
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
