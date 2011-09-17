@@ -1,9 +1,25 @@
 (function($) {
-    //Models and Collections
+    //Models and Collections  
     var Models = {};
     
     Models.Caso = Backbone.Model.extend({
         urlRoot: '/cases'
+    });
+    
+    Models.Residencial = Backbone.Model.extend({
+    });
+
+    Models.Residenciales = Backbone.Collection.extend({
+        model: Models.Residencial,
+        url: '/residenciales'
+    });
+
+    Models.Causal = Backbone.Model.extend({
+    });
+
+    Models.Causales = Backbone.Collection.extend({
+        model: Models.Causal,
+        url: '/causales'
     });
     
     //Views and Router
@@ -72,7 +88,58 @@
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
+                
+                this.loadResidenciales();
+                this.loadCausales();
             },
+            
+            loadResidenciales: function(){
+                var residenciales = new Models.Residenciales();
+                   
+                residenciales.fetch({
+                    success: function(collection){
+                        collection.each(function(model){
+                            var elOptNew = document.createElement('option');
+                            elOptNew.text = model.get('residencial');
+                            elOptNew.value = model.get('id');
+                            var elSel = document.getElementById('residencial');
+
+                            try {
+                              elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+                            }
+                            catch(ex) {
+                              elSel.add(elOptNew); // IE only
+                            } 
+                        });
+                    },
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+            },
+            
+            loadCausales: function(){
+                var causales = new Models.Causales();
+                
+                causales.fetch({
+                    success: function(collection){
+                        collection.each(function(model){
+                            var elOptNew = document.createElement('option');
+                            elOptNew.text = model.get('causal');
+                            elOptNew.value = model.get('id');
+                            var elSel = document.getElementById('causal');
+
+                            try {
+                              elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+                            }
+                            catch(ex) {
+                              elSel.add(elOptNew); // IE only
+                            } 
+                        });
+                    }
+                });
+            },
+            
             submitForm: function(event){                
                 event.preventDefault();
                 

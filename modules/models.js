@@ -4,7 +4,31 @@ var Backbone = require('backbone');
 var client = require('./db');
 
 //Backbone Modification
-Backbone.Model.prototype.procedure = Backbone.Collection.prototype.procedure = function(method){
+Backbone.Model.prototype.procedure = function(method){
+    var resp = {
+        query: "",
+        args: []        
+    };
+
+    switch (method) {
+        case "read":
+            if(this.read) this.read(resp);
+            break;
+        case "create":   
+            if(this.create) this.create(resp);
+            break;
+        case "update":
+            if(this.upd) this.upd(resp);
+            break;
+        case "delete":
+            if(this.del) this.del(resp);
+            break;
+    }
+
+    return resp;
+};
+
+Backbone.Collection.prototype.procedure = function(method){
     var resp = {
         query: "",
         args: []        
