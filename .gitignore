@@ -13,3 +13,4 @@ node_modules/mysql/
 #################
 *.chproj
 *.tmproj
+*.esproj
