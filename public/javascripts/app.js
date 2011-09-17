@@ -3,7 +3,7 @@
     var Models = {};
     
     Models.Caso = Backbone.Model.extend({
-        urlRoot: '/cases'
+        urlRoot: '/casos'
     });
     
     Models.Residencial = Backbone.Model.extend({
@@ -68,14 +68,17 @@
                 var datepickers = $(this.el).find(".datepicker");
                 
                 _.forEach(datepickers, function(datepicker){
-                    $(datepicker).datepicker({beforeShow: function(input) {
-                        var field = $(input);
-                        var left = field.position().left;
-                        var top = field.position().top + 28;
-                        setTimeout(function(){
-                            $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                        },1);                    
-                    }});
+                    $(datepicker).datepicker({
+                        beforeShow: function(input) {
+                            var field = $(input);
+                            var left = field.position().left;
+                            var top = field.position().top + 28;
+                            setTimeout(function(){
+                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                            },1);                    
+                        },
+                        dateFormat: 'yy-mm-dd'
+                    });
                 });
                           
                 return this;
@@ -140,19 +143,20 @@
                 });
             },
             
-            submitForm: function(event){                
+            submitForm: function(event){
                 event.preventDefault();
                 
                 var caso = new Models.Caso();
-                
+            
                 caso.save({
+                    residencial: $('#residencial').val(),
                     edificio: $('#edificio').val(),
                     apartamento: $('#apartamento').val(),
                     area: $('#area').val(),
                     nombre: $('#nombre').val(),
                     casoRecibido: $('#casoRecibido').val(),
-                    seleccionado: $('#seleccionado').val(),
-                    completado: $('#completado').val(),
+                    seleccionado: $('#seleccionado:checked').length,
+                    completado: $('#completado:checked').length,
                     causal: $('#causal').val(),
                     rentaMensual: $('#rentaMensual').val(),
                     mesesAdeudados: $('#mesesAdeudados').val(),
@@ -164,7 +168,7 @@
                     incumplimiento: $('#incumplimiento').val(),
                     caso: $('#caso').val(),
                     presentacion: $('#presentacion').val(),
-                    diligenciado: $('#diligenciado').val(),
+                    diligenciado: $('#diligenciado:checked').length,
                     diligenciadoEn: $('#diligenciadoEn').val(),
                     sala: $('#sala').val(),
                     hora: $('#hora').val(),
@@ -175,7 +179,7 @@
                     lanzamiento: $('#lanzamiento').val(),
                     observaciones: $('#observaciones').val()
                 },{
-                    success: function(){
+                    success: function(model){
                         alert('kthxbie');
                     },
                     error: function(){
@@ -225,7 +229,7 @@
             },
             
             initialize: function(){
-                this.template = _.template($("#demandas-" + this.options.listName+  "-tables-template").html());
+                this.template = _.template($("#demandas-tables-template").html());
                 ContainerDemandasView.prototype.initialize.call(this);
             },
             
@@ -238,13 +242,12 @@
                 
                 var oTable = $(this.el).children('#table_id').dataTable( {
                     "sScrollX": "100%",
-                    "sScrollXInner": "1100px",
-                    "bScrollCollapse": true
+                    "sScrollXInner": "1300px",
+                    "bScrollCollapse": true,
+                    "bProcessing": true,
+                    "sAjaxSource": '/casos/true'
                 });
 
-                $(window).bind('resize', function () {
-                    oTable.fnAdjustColumnSizing();
-                } );
                 return this;
             }
         });
@@ -354,18 +357,18 @@
             },
             
             demandas: function(listName){    
-                if(listName){
+                // if(listName){
                     this.containerTablesView = new ContainerDemandasTablesView({
                         listName:listName
                     });
                     $('#content').empty();
                     $('#content').append(this.containerTablesView.render().el);
-                }
-                else{
-                    this.containerDemandasView = new ContainerDemandasView();
-                    $('#content').empty();
-                    $('#content').append(this.containerDemandasView.render().el);  
-                }
+                // }
+                // else{
+                //     this.containerDemandasView = new ContainerDemandasView();
+                //     $('#content').empty();
+                //     $('#content').append(this.containerDemandasView.render().el);  
+                // }
             },
             
             informes: function(){

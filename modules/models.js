@@ -4,31 +4,7 @@ var Backbone = require('backbone');
 var client = require('./db');
 
 //Backbone Modification
-Backbone.Model.prototype.procedure = function(method){
-    var resp = {
-        query: "",
-        args: []        
-    };
-
-    switch (method) {
-        case "read":
-            if(this.read) this.read(resp);
-            break;
-        case "create":   
-            if(this.create) this.create(resp);
-            break;
-        case "update":
-            if(this.upd) this.upd(resp);
-            break;
-        case "delete":
-            if(this.del) this.del(resp);
-            break;
-    }
-
-    return resp;
-};
-
-Backbone.Collection.prototype.procedure = function(method){
+Backbone.Model.prototype.procedure = Backbone.Collection.prototype.procedure = function(method){
     var resp = {
         query: "",
         args: []        
@@ -72,12 +48,56 @@ Backbone.Model.prototype.save = function(attrs, options) {
     return (this.sync || Backbone.sync).call(this, method, this, options);
 };
 
+Backbone.Model.prototype.toDatatableColumns = function(){
+    var dt = { aoColumns : [] };
+    
+    dt.aoColumns = _.map(this.toJSON(), function(attribute, key){
+        return {sTitle: key};
+    });
+    
+    return dt;
+};
+
+Backbone.Model.prototype.toDatatableArray = function(){
+    var fields = [ 'residencial', 'edificio', 'apartamento', 'casoRecibido', 'seleccionado', 'causal', 'deudaTotal', 'incumplimiento', 'caso', 'presentacion', 'observaciones' ];
+    
+    var data = _.select(this.toJSON(), function(attribute,key){
+        return fields.indexOf(key) !== -1;
+    });
+    
+    return _.map(data, function(attribute){
+       if(attribute === null){
+           return "";
+       }
+       
+       if(_.isDate(attribute)){
+           return attribute.getFullYear() + " - " + (attribute.getMonth() + 1)  + " - " +  attribute.getDate(); 
+       }
+             
+       return  attribute;
+    });
+};
+
+Backbone.Collection.prototype.toDatatableColumns = function(){
+    return this.at(0).toDatatableColumns();
+};
+
+Backbone.Collection.prototype.toDatatableArray = function(){
+    var dt = { aaData : [] };
+    
+    dt.aaData = _.map(this.models, function(model, key){
+        return model.toDatatableArray();
+    });
+        
+    return dt;
+};
+
 Backbone.sync = function(method, model, options) {
     var procedure = model.procedure(method);
       
     client.query(procedure.query, procedure.args, function(err, results, fields){
         if(err) options.error(err);
-        options.success(results, fields);git 
+        options.success(results, fields);
     });
 };
 
@@ -87,8 +107,9 @@ var Models = {};
 
 Models.Caso = Backbone.Model.extend({
     create: function(resp){
-        resp.query = 'CALL Create_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        resp.query = 'CALL Create_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         resp.args = [
+			this.get('residencial'),
             this.get('edificio'),
             this.get('apartamento'),
             this.get('area'),

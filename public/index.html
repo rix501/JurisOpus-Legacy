@@ -83,7 +83,7 @@
                             <label for="seleccionado">Seleccionado:</label>
                             <div class="input check">
                                 <label>
-                                    <input type="checkbox" name="seleccionado" id="seleccionado" value="option1">
+                                    <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
                                 </label>
                             </div>                        
                         </div>
@@ -91,7 +91,7 @@
                             <label for="completado">Completado:</label>
                             <div class="input check">
                                 <label>
-                                    <input type="checkbox" id="completado" name="completado" value="option1">
+                                    <input type="checkbox" id="completado" name="completado" value="1">
                                 </label>
                             </div>                        
                         </div>
@@ -523,55 +523,26 @@
             </ul>
         </form>
     </script>
-    <script type="text/template" id="demandas-cobro-tables-template">
-        <button class="back btn">&lt; Menu Anterior</button>
-        <h2 class="tables">Demandas de Cobro de Dinero</h2>
+    <script type="text/template" id="demandas-tables-template">
+        <!-- <button class="back btn">&lt; Menu Anterior</button> -->
+        <h2 class="tables">Demandas</h2>
         <table id="table_id">
         	<thead>
         		<tr>
-        			<th>Seleccionado</th>
+	    			<th>Residencial</th>
+	                <th>Edificio</th>
+	        		<th>Apartamento</th>
         			<th>Ingresado</th>
-        			<th>Fecha Presentacion</th>
-                    <th>Causal</th>
-            		<th>Deuda Total</th>
-        			<th>Residencial</th>
-                    <th>Edificio</th>
-            		<th>Apartamento</th>
-        			<th>Nombre</th>
-                    <th>Incumplimiento</th>
+        			<th>Seleccionado</th>
+					<th>Causal</th>        	
+					<th>Deuda Total</th>
+					<th>Incumplimiento</th>
+			        <th>Caso</th>
+					<th>Fecha Presentacion</th>
             		<th>Observaciones</th>
-        			<th>Caso</th>
         		</tr>
         	</thead>
         	<tbody>
-        		<tr>
-        			<td>Row 1 Data 1</td>
-        			<td>Glock</td>
-        			<td>etc</td>
-                    <td>Row 1 Data 1</td>
-            		<td>Glock</td>
-        			<td>etc</td>
-                    <td>Row 1 Data 1</td>
-            		<td>Glock</td>
-        			<td>etc</td>
-                    <td>Row 1 Data 1</td>
-            		<td>Glock</td>
-        			<td>etc</td>
-        		</tr>
-        		<tr>
-        			<td>Row 2 Data 1</td>
-        			<td>Test</td>
-        			<td>etc</td>
-                    <td>Row 2 Data 1</td>
-            		<td>Test</td>
-        			<td>etc</td>
-                    <td>Row 2 Data 1</td>
-            		<td>Test</td>
-        			<td>etc</td>
-                    <td>Row 2 Data 1</td>
-            		<td>Test</td>
-        			<td>etc</td>
-        		</tr>
         	</tbody>
         </table>        
     </script>

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-16 01:06:22 +0000
+# Generation Time: 2011-09-17 22:46:23 +0000
 # ************************************************************
 
 
@@ -63,7 +63,9 @@ CREATE TABLE `Casos` (
   `deuda_recibida` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `residencial` (`residencial`),
-  KEY `causal` (`causal`)
+  KEY `causal` (`causal`),
+  CONSTRAINT `casos_ibfk_2` FOREIGN KEY (`causal`) REFERENCES `Causales` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `casos_ibfk_1` FOREIGN KEY (`residencial`) REFERENCES `Residenciales` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `Casos` WRITE;
@@ -71,14 +73,8 @@ LOCK TABLES `Casos` WRITE;
 
 INSERT INTO `Casos` (`id`, `residencial`, `edificio`, `apartamento`, `nombre`, `ingresado`, `area`, `completado`, `renta_mensual`, `meses_adeudados`, `deuda_renta`, `deuda_recargo`, `deuda_renta_negativa`, `deuda_total`, `ultimo_reexamen`, `incumplimiento`, `causal`, `caso`, `presentacion`, `sala`, `hora`, `primera_comparecencia`, `segunda_comparecencia`, `vista_en_su_fondo`, `lanzamiento`, `observaciones`, `sentencia`, `diligenciado`, `seleccionado`, `diligenciado_en`, `ejecutar`, `rediligenciar`, `desistido`, `caso_recibido`, `deuda_recibida`)
 VALUES
-	(1,NULL,NULL,NULL,'t',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(2,NULL,NULL,NULL,'edsaf',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(3,NULL,NULL,NULL,'ricardo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(4,NULL,NULL,NULL,'ricardo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'juan',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(5,NULL,NULL,NULL,'sdf',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(6,NULL,'qwe','rty','fg',NULL,'asd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'z',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(7,NULL,NULL,NULL,'rix',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-	(8,NULL,'ldsk','dkls','sdkl',NULL,'klsd',0,0,0,0,NULL,0,0,'0000-00-00','dsf',1,'sdf','0000-00-00','sdf','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'09/04/2011',NULL,NULL,NULL,'0000-00-00','0000-00-00');
+	(1,1,'0','123','sadf',NULL,'12',0,12,12,12,NULL,12,12,'2011-09-27','asd',1,'asd','2011-09-14','as','12:00:00','2011-09-21','2011-09-08','2011-09-04','2011-09-05','test','2011-09-13',0,1,'0000-00-00',NULL,NULL,NULL,'2011-09-20','0000-00-00'),
+	(2,1,'0','','',NULL,'',0,0,0,0,NULL,0,0,'0000-00-00','',2,'','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'0000-00-00',NULL,NULL,NULL,'0000-00-00','0000-00-00');
 
 /*!40000 ALTER TABLE `Casos` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -101,7 +97,8 @@ LOCK TABLES `Causales` WRITE;
 
 INSERT INTO `Causales` (`id`, `causal`, `siglas`)
 VALUES
-	(1,'Test Caus','TC');
+	(1,'Test Caus','TC'),
+	(2,'Causal2','C2');
 
 /*!40000 ALTER TABLE `Causales` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -143,40 +140,100 @@ DELIMITER ;;
 /*!50003 DROP PROCEDURE IF EXISTS `Create_Caso` */;;
 /*!50003 SET SESSION SQL_MODE=""*/;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Create_Caso`(
-	IN p_edificio VARCHAR(11), 
+	IN p_residencial INT(11), 
+	IN p_edificio INT(11), 
 	IN p_apartamento VARCHAR(11), 
 	IN p_area VARCHAR(11), 
 	IN p_nombre VARCHAR(11), 
-	IN p_casoRecibido VARCHAR(11), 
-	IN p_seleccionado VARCHAR(11), 
-	IN p_completado VARCHAR(11), 
-	IN p_causal VARCHAR(11), 
-	IN p_rentaMensual VARCHAR(11), 
-	IN p_mesesAdeudados VARCHAR(11), 
-	IN p_deudaRenta VARCHAR(11), 
-	IN p_deudaRentaNegativa VARCHAR(11), 
-	IN p_deudaRecibida VARCHAR(11), 
-	IN p_deudaTotal VARCHAR(11), 
-	IN p_ultimoReexamen VARCHAR(11), 
+	IN p_casoRecibido DATE, 
+	IN p_seleccionado TINYINT(1), 
+	IN p_completado TINYINT(1), 
+	IN p_causal INT(11), 
+	IN p_rentaMensual DECIMAL(11,0), 
+	IN p_mesesAdeudados INT(11), 
+	IN p_deudaRenta DECIMAL(11,0), 
+	IN p_deudaRentaNegativa DECIMAL(11,0), 
+	IN p_deudaRecibida DECIMAL(11,0), 
+	IN p_deudaTotal DECIMAL(11,0), 
+	IN p_ultimoReexamen DATE, 
 	IN p_incumplimiento VARCHAR(11), 
 	IN p_caso VARCHAR(11), 
-	IN p_presentacion VARCHAR(11), 
-	IN p_diligenciado VARCHAR(11), 
-	IN p_diligenciadoEn VARCHAR(11), 
+	IN p_presentacion DATE, 
+	IN p_diligenciado TINYINT(1), 
+	IN p_diligenciadoEn DATE, 
 	IN p_sala VARCHAR(11), 
-	IN p_hora VARCHAR(11), 
-	IN p_primeraComparecencia VARCHAR(11), 
-	IN p_segundaComparecencia VARCHAR(11), 
-	IN p_vistaSegundo VARCHAR(11), 
-	IN p_sentencia VARCHAR(11), 
-	IN p_lanzamiento VARCHAR(11), 
+	IN p_hora TIME, 
+	IN p_primeraComparecencia DATE, 
+	IN p_segundaComparecencia DATE, 
+	IN p_vistaSegundo DATE, 
+	IN p_sentencia DATE, 
+	IN p_lanzamiento DATE, 
 	IN p_observaciones VARCHAR(11)
 )
 BEGIN
 	INSERT INTO Casos
-	(edificio, apartamento, area, nombre, caso_recibido, seleccionado, completado, causal, renta_mensual, meses_adeudados, deuda_renta, deuda_renta_negativa, deuda_recibida, deuda_total, ultimo_reexamen, incumplimiento, caso, presentacion, diligenciado, diligenciado_en, sala, hora, primera_comparecencia, segunda_comparecencia, vista_en_su_fondo, sentencia, lanzamiento, observaciones)
+	(
+		residencial,
+		edificio, 
+		apartamento, 
+		area, 
+		nombre, 
+		caso_recibido, 
+		seleccionado, 
+		completado, 
+		causal, 
+		renta_mensual, 
+		meses_adeudados, 
+		deuda_renta, 
+		deuda_renta_negativa, 
+		deuda_recibida, 
+		deuda_total, 
+		ultimo_reexamen, 
+		incumplimiento, 
+		caso, 
+		presentacion, 
+		diligenciado, 
+		diligenciado_en, 
+		sala, 
+		hora, 
+		primera_comparecencia, 
+		segunda_comparecencia, 
+		vista_en_su_fondo, 
+		sentencia, 
+		lanzamiento, 
+		observaciones
+	)
 	VALUES
-	(p_edificio, p_apartamento, p_area, p_nombre, p_casoRecibido, p_seleccionado, p_completado, p_causal, p_rentaMensual, p_mesesAdeudados, p_deudaRenta, p_deudaRentaNegativa, p_deudaRecibida, p_deudaTotal, p_ultimoReexamen, p_incumplimiento, p_caso, p_presentacion, p_diligenciado, p_diligenciadoEn, p_sala, p_hora, p_primeraComparecencia, p_segundaComparecencia, p_vistaSegundo, p_sentencia, p_lanzamiento, p_observaciones);
+	(
+		p_residencial,
+		p_edificio, 
+		p_apartamento, 
+		p_area, 
+		p_nombre,
+		p_casoRecibido, 
+		p_seleccionado, 
+		p_completado, 
+		p_causal, 
+		p_rentaMensual, 
+		p_mesesAdeudados, 
+		p_deudaRenta, 
+		p_deudaRentaNegativa, 
+		p_deudaRecibida, 
+		p_deudaTotal, 
+		p_ultimoReexamen, 
+		p_incumplimiento, 
+		p_caso, 
+		p_presentacion, 
+		p_diligenciado, 
+		p_diligenciadoEn, 
+		p_sala, p_hora, 
+		p_primeraComparecencia, 
+		p_segundaComparecencia, 
+		p_vistaSegundo, 
+		p_sentencia, 
+		p_lanzamiento, 
+		p_observaciones
+	);
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
@@ -188,8 +245,44 @@ END */;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Casos`()
 BEGIN
 	SELECT 
-		*
-	FROM Casos;
+		( SELECT 
+				`residencial`
+			FROM Residenciales re
+			WHERE re.id = ca.residencial
+		) AS 'residencial',
+		edificio AS 'edificio', 
+		apartamento AS 'apartamento', 
+		area AS 'area', 
+		nombre AS 'nombre', 
+		caso_recibido AS 'casoRecibido', 
+		seleccionado AS 'seleccionado', 
+		completado AS 'completado', 
+		( SELECT 
+				`causal`
+			FROM Causales cau
+			WHERE cau.id = ca.causal
+		)  AS 'causal', 
+		renta_mensual AS 'rentaMensual', 
+		meses_adeudados AS 'mesesAdeudados', 
+		deuda_renta AS 'deudaRenta', 
+		deuda_renta_negativa AS 'deudaRentaNegativa', 
+		deuda_recibida AS 'deudaRecibida', 
+		deuda_total AS 'deudaTotal', 
+		ultimo_reexamen AS 'ultimoReexamen', 
+		incumplimiento AS 'incumplimiento', 
+		caso AS 'caso', 
+		presentacion AS 'presentacion', 
+		diligenciado AS 'diligenciado', 
+		diligenciado_en AS 'diligenciadoEn', 
+		sala AS 'sala', 
+		hora AS 'hora', 
+		primera_comparecencia AS 'primeraComparecencia', 
+		segunda_comparecencia AS 'segundaComparecencia', 
+		vista_en_su_fondo AS 'vistaEnSuFondo', 
+		sentencia AS 'sentencia', 
+		lanzamiento AS 'lanzamiento', 
+		observaciones AS 'observaciones'
+	FROM Casos ca;
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;

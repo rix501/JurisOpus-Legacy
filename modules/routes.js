@@ -29,12 +29,17 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/cases', function(req,res){
+    app.get('/casos/:datatable?', function(req,res){
         var cases = new Models.Casos();
                 
         cases.fetch({
-            success: function(model, fields){
-                res.send(model);
+            success: function(collection, fields){                
+                if(req.params.datatable === "true"){
+                    res.send(collection.toDatatableArray());
+                }
+                else{
+                    res.send(collection);
+                }
             },
             error: function(err){
                 console.log(err);
@@ -42,7 +47,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.post('/cases', function(req,res){
+    app.post('/casos', function(req,res){
         var caso = new Models.Caso();
                 
         caso.save(req.body,{
