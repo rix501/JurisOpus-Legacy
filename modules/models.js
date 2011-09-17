@@ -77,7 +77,7 @@ Backbone.sync = function(method, model, options) {
       
     client.query(procedure.query, procedure.args, function(err, results, fields){
         if(err) options.error(err);
-        options.success(results, fields);
+        options.success(results, fields);git 
     });
 };
 
