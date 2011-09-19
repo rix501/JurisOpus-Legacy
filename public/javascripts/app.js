@@ -331,7 +331,9 @@
             routes: {
                 '': 'entrar',
                 '/': 'entrar',
+                '/entrar': 'entrar',
                 '/buscar': 'buscar',
+                '/editar/:caseId': 'editar',
                 '/demandas': 'demandas',
                 '/demandas/:listName': 'demandas',
                 '/informes': 'informes',
@@ -354,6 +356,10 @@
                 this.containerBuscarView = new ContainerBuscarView();
                 $('#content').empty();
                 $('#content').append(this.containerBuscarView.render().el);
+            },
+            
+            editar: function(caseId){
+
             },
             
             demandas: function(listName){    

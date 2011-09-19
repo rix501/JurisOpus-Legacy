@@ -16,21 +16,22 @@ hr {
 	border: 1px solid #919191;
 }
 
+.search {
+    margin: 10px auto;
+    width: 510px;
+}
+
 .form-row .form-cell {
 	display: inline-block;
 	margin-right: 5px;
 }
 
-.input.check {
+.input .check {
     margin-top: 3px;
 }
 
-.input.check label {
+.input .check label {
     text-align: center;
-}
-
-.input-prepend {
-    /*margin-bottom: -9px;*/
 }
 
 .prev {
@@ -45,7 +46,7 @@ hr {
     text-align: center;
 }
 
-.back.btn {
+.back .btn {
     margin: 10px 0;
 }
 
@@ -67,24 +68,24 @@ form.list {
     box-shadow: 5px 5px 5px #ccc;
 }
 
-form.list.demandas {
+.demandas-list {
     width: 430px;
 }
 
-form.list.informes {
+.informes-list {
     width: 270px;
 }
 
-form.list.actualizar {
+.actualizar-list {
     width: 355px;
 }
 
-form.list.resolucion {
-    width: 440px;
+.resolucion-list {
+    width: 442px;
 }
 
 form.list ul {
-    margin: 0px;
+    margin: 0;
 }
 
 form.list li {
