@@ -6,6 +6,19 @@
         urlRoot: '/casos'
     });
     
+    Models.Casos = Backbone.Collection.extend({
+        model: Models.Caso,
+        
+        url: '/casos',
+        
+        search: function(query, options){
+            this.url = '/test';
+            
+            this.fetch(options);
+        }
+        
+    });
+    
     Models.Residencial = Backbone.Model.extend({
     });
 
@@ -50,18 +63,9 @@
         
         window.ContainerMainFormView = ContainerView.extend({
             events: {
-                'submit':'submitForm',
-                'click .add-on :checkbox' : 'togglePreCheck'
+                'submit':'submitForm'
             },
             
-            togglePreCheck: function(){
-                if ($('.add-on :checkbox').attr('checked')) {
-                    $('.add-on :checkbox').parents('.add-on').addClass('active');
-                } 
-                else {
-                    $('.add-on :checkbox').parents('.add-on').removeClass('active');
-                }
-            },
             render: function(){
                 $(this.el).html(this.template());
                 
@@ -191,15 +195,32 @@
             }
         });
 
-        window.ContainerBuscarView = ContainerMainFormView.extend({
-           template:  _.template($("#container-buscar-template").html()),
-           initialize: function() {
+        window.ContainerBuscarView = ContainerView.extend({
+            events: {
+                'submit':'submitForm'
+            },
+            
+            template:  _.template($("#container-buscar-template").html()),
+            
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');
             },
+            
             submitForm: function(event){
                 event.preventDefault();
+                
+                var resultCasos = new Models.Casos();
+                
+                resultCasos.search(query, {
+                    success:function(){
+                    
+                    },
+                    error: function(){
+                    
+                    }
+                });
                 
                 return false;
             }
@@ -363,18 +384,9 @@
             },
             
             demandas: function(listName){    
-                // if(listName){
-                    this.containerTablesView = new ContainerDemandasTablesView({
-                        listName:listName
-                    });
-                    $('#content').empty();
-                    $('#content').append(this.containerTablesView.render().el);
-                // }
-                // else{
-                //     this.containerDemandasView = new ContainerDemandasView();
-                //     $('#content').empty();
-                //     $('#content').append(this.containerDemandasView.render().el);  
-                // }
+                this.containerTablesView = new ContainerDemandasTablesView();
+                $('#content').empty();
+                $('#content').append(this.containerTablesView.render().el);
             },
             
             informes: function(){
