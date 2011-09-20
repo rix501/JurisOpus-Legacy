@@ -226,6 +226,27 @@
             }
         });
         
+        window.ContainerEditarView = ContainerMainFormView.extend({
+            template: _.template($("#container-editar-template").html()),
+            initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.entrar').addClass('active');
+                
+                this.model.bind('change', this.render);
+                
+                this.model = new Models.Caso({id: this.options.casoId});
+                
+                this.model.fetch();
+            },
+            
+            submitForm: function(event){
+                event.preventDefault();
+                
+                return false;
+            }
+        });
+        
         window.ContainerDemandasView = ContainerView.extend({
             template:  _.template($("#container-demandas-template").html()),
            
@@ -379,8 +400,12 @@
                 $('#content').append(this.containerBuscarView.render().el);
             },
             
-            editar: function(caseId){
-
+            editar: function(casoId){
+                this.containerEditaView = new ContainerEditarView({
+                    casoId: casoId
+                });
+                $('#content').empty();
+                $('#content').append(this.containerEditaView.render().el);
             },
             
             demandas: function(listName){    
