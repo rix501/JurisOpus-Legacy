@@ -93,10 +93,23 @@ Backbone.Collection.prototype.toDatatableArray = function(){
 };
 
 Backbone.sync = function(method, model, options) {
-    var procedure = model.procedure(method);
+    var procedure;
+    
+    if(!options.query){
+        procedure = model.procedure(method);
+    }
+    else{
+        procedure = {
+            query: options.query,
+            args: options.args
+        };
+    }
       
     client.query(procedure.query, procedure.args, function(err, results, fields){
-        if(err) options.error(err);
+        if(err) {
+            options.error(err);
+            model.trigger('error');
+        }
         options.success(results, fields);
     });
 };
@@ -109,7 +122,7 @@ Models.Caso = Backbone.Model.extend({
     create: function(resp){
         resp.query = 'CALL Create_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         resp.args = [
-    		this.get('residencial'),
+            this.get('residencial'),
             this.get('edificio'),
             this.get('apartamento'),
             this.get('area'),
@@ -146,6 +159,27 @@ Models.Casos = Backbone.Collection.extend({
     model: Models.Caso,
     read: function(resp){
         resp.query = 'CALL Get_Casos()';
+    },
+    search: function(query, options){
+        if(!_.isEmpty(query.caso)){
+            options.query = 'CALL Search_Casos(?)';
+            options.args = [1];
+        }
+        else if(!_.isEmpty(query.residencial) && !_.isEmpty(query.edificio) && !_.isEmpty(query.apartamento)){
+            options.query = 'CALL Search_Casos(?)';
+            options.args = [1];
+        }
+        else if(!_.isEmpty(query.nombre)){
+            options.query = 'CALL Search_Casos(?)';
+            options.args = [1];
+        }
+        else{
+            options.error('Need info to look');
+            
+            return;
+        }
+         
+        this.fetch(options);
     }
 });
 

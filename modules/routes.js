@@ -60,15 +60,19 @@ exports.setup = function(app, Models){
         });
     });
 
-    app.get('/rtftest',function(req,res){
-        fs.readFile('./public/Modelo.rtf',function (err, data) {
-
-           data = data.replace(/%%var%%/gi,'HOLYSHITYES');
-                                   
-           res.send(data, { 'Content-Type': 'application/rtf' });
-   
-           // res.send(data);
-        });
+    app.get('/search/:type', function(req,res){        
+        if(req.params.type === 'casos'){
+            var casos = new Models.Casos();
+                        
+            casos.search(req.query, {
+                success: function(collection, fields){
+                    res.send(collection);
+                },
+                error: function(err){
+                    res.send(err, 404);
+                }
+            });
+        }
     });
     
     app.get('/pdf/:municipio/:nombre', function(req, res){

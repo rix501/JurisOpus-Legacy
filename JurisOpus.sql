@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-17 22:46:23 +0000
+# Generation Time: 2011-09-20 03:44:37 +0000
 # ************************************************************
 
 
@@ -309,6 +309,56 @@ BEGIN
 	SELECT 
 		*
 	FROM Residenciales;
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Search_Casos
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Search_Casos` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Search_Casos`(IN p_query INT)
+BEGIN
+	SELECT
+		id,
+		( SELECT 
+				`residencial`
+			FROM Residenciales re
+			WHERE re.id = ca.residencial
+		) AS 'residencial',
+		edificio AS 'edificio', 
+		apartamento AS 'apartamento', 
+		area AS 'area', 
+		nombre AS 'nombre', 
+		caso_recibido AS 'casoRecibido', 
+		seleccionado AS 'seleccionado', 
+		completado AS 'completado', 
+		( SELECT 
+				`causal`
+			FROM Causales cau
+			WHERE cau.id = ca.causal
+		)  AS 'causal', 
+		renta_mensual AS 'rentaMensual', 
+		meses_adeudados AS 'mesesAdeudados', 
+		deuda_renta AS 'deudaRenta', 
+		deuda_renta_negativa AS 'deudaRentaNegativa', 
+		deuda_recibida AS 'deudaRecibida', 
+		deuda_total AS 'deudaTotal', 
+		ultimo_reexamen AS 'ultimoReexamen', 
+		incumplimiento AS 'incumplimiento', 
+		caso AS 'caso', 
+		presentacion AS 'presentacion', 
+		diligenciado AS 'diligenciado', 
+		diligenciado_en AS 'diligenciadoEn', 
+		sala AS 'sala', 
+		hora AS 'hora', 
+		primera_comparecencia AS 'primeraComparecencia', 
+		segunda_comparecencia AS 'segundaComparecencia', 
+		vista_en_su_fondo AS 'vistaEnSuFondo', 
+		sentencia AS 'sentencia', 
+		lanzamiento AS 'lanzamiento', 
+		observaciones AS 'observaciones'
+	FROM Casos ca;
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;

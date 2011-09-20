@@ -8,15 +8,14 @@
     
     Models.Casos = Backbone.Collection.extend({
         model: Models.Caso,
-        
         url: '/casos',
-        
-        search: function(query, options){
-            this.url = '/test';
+        search: function(query, options){            
+            //caso > residencial+apt+edificio > nombre
+            options.data = query;
             
+            options.url = '/search/casos';
             this.fetch(options);
         }
-        
     });
     
     Models.Residencial = Backbone.Model.extend({
@@ -66,40 +65,6 @@
                 'submit':'submitForm'
             },
             
-            render: function(){
-                $(this.el).html(this.template());
-                
-                var datepickers = $(this.el).find(".datepicker");
-                
-                _.forEach(datepickers, function(datepicker){
-                    $(datepicker).datepicker({
-                        beforeShow: function(input) {
-                            var field = $(input);
-                            var left = field.position().left;
-                            var top = field.position().top + 28;
-                            setTimeout(function(){
-                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                            },1);                    
-                        },
-                        dateFormat: 'yy-mm-dd'
-                    });
-                });
-                          
-                return this;
-            }
-        });
-        
-        window.ContainerEntrarView = ContainerMainFormView.extend({
-            template: _.template($("#container-entrar-template").html()),
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.entrar').addClass('active');
-                
-                this.loadResidenciales();
-                this.loadCausales();
-            },
-            
             loadResidenciales: function(){
                 var residenciales = new Models.Residenciales();
                    
@@ -147,6 +112,42 @@
                 });
             },
             
+            render: function(){
+                $(this.el).html(this.template());
+                
+                var datepickers = $(this.el).find(".datepicker");
+                
+                _.forEach(datepickers, function(datepicker){
+                    $(datepicker).datepicker({
+                        beforeShow: function(input) {
+                            var field = $(input);
+                            var left = field.position().left;
+                            var top = field.position().top + 28;
+                            setTimeout(function(){
+                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                            },1);                    
+                        },
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+                   
+                this.loadResidenciales();
+                this.loadCausales();   
+                                       
+                return this;
+            }
+        });
+        
+        window.ContainerEntrarView = ContainerMainFormView.extend({
+            template: _.template($("#container-entrar-template").html()),
+            initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.entrar').addClass('active');
+                
+
+            },
+                        
             submitForm: function(event){
                 event.preventDefault();
                 
@@ -202,10 +203,37 @@
             
             template:  _.template($("#container-buscar-template").html()),
             
+            loadResidenciales: function(){
+                var residenciales = new Models.Residenciales();
+                   
+                residenciales.fetch({
+                    success: function(collection){
+                        collection.each(function(model){
+                            var elOptNew = document.createElement('option');
+                            elOptNew.text = model.get('residencial');
+                            elOptNew.value = model.get('id');
+                            var elSel = document.getElementById('residencial');
+
+                            try {
+                              elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+                            }
+                            catch(ex) {
+                              elSel.add(elOptNew); // IE only
+                            } 
+                        });
+                    },
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+            },
+            
             initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');
+                
+                this.loadResidenciales();
             },
             
             submitForm: function(event){
@@ -213,12 +241,20 @@
                 
                 var resultCasos = new Models.Casos();
                 
+                var query = {
+                    residencial: $('#residencial').val(),
+                    edificio: $('#edificio').val(),
+                    apartamento: $('#apartamento').val(),
+                    nombre: $('#nombre').val(),
+                    caso: $('#caso').val()
+                };
+                
                 resultCasos.search(query, {
-                    success:function(){
-                    
+                    success:function(collection, resp){
+                        App.navigate('/editar/' + collection.at(0).id ,true);
                     },
-                    error: function(){
-                    
+                    error: function(collection, resp){
+                        alert(resp.responseText);
                     }
                 });
                 
@@ -229,15 +265,22 @@
         window.ContainerEditarView = ContainerMainFormView.extend({
             template: _.template($("#container-editar-template").html()),
             initialize: function() {
-                _.bindAll(this, 'render');
+                _.bindAll(this, 'render', 'fillForm', 'error');
                 $('li.active').removeClass('active');
-                $('li.entrar').addClass('active');
-                
-                this.model.bind('change', this.render);
+                $('li.buscar').addClass('active');
                 
                 this.model = new Models.Caso({id: this.options.casoId});
-                
-                this.model.fetch();
+                this.model.bind('change', this.fillForm);
+                this.model.bind('error', this.error);
+                this.model.fetch();                
+            },
+            
+            error: function(){
+                alert('fuck');
+            },
+            
+            fillForm: function(){
+                alert('cmn');
             },
             
             submitForm: function(event){
@@ -249,16 +292,16 @@
         
         window.ContainerDemandasView = ContainerView.extend({
             template:  _.template($("#container-demandas-template").html()),
-           
+
             events: {
                 'click .redirect':'redirect'  
             },
-           
-           redirect: function(event){
+
+            redirect: function(event){
                   location.href = '/pdf/SanJuan/'+event.target.id;
             },
-           
-           initialize: function() {
+
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
@@ -296,16 +339,16 @@
         
         window.ContainerInformesView = ContainerView.extend({
             template:  _.template($("#container-informes-template").html()),
-           
+
             events: {
                 'click .redirect':'redirect'  
             },
-           
-           redirect: function(event){
+
+            redirect: function(event){
                   App.navigate('/informes/'+event.target.id ,true);
             },
-           
-           initialize: function() {
+
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
@@ -315,16 +358,16 @@
         
         window.ContainerInformesView = ContainerView.extend({
             template:  _.template($("#container-informes-template").html()),
-           
+
             events: {
                 'click .redirect':'redirect'  
             },
-           
-           redirect: function(event){
+
+            redirect: function(event){
                   location.href = '/test/'+event.target.id;
             },
-           
-           initialize: function() {
+
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
@@ -333,17 +376,17 @@
         
         window.ContainerActualizarView = ContainerView.extend({
             template:  _.template($("#container-actualizar-template").html()),
-           
+
             events: {
                 'click .redirect':'redirect'  
             },
-           
-           redirect: function(event){
-                  App.navigate('/actualizar/'+event.target.id ,true);
+
+            redirect: function(event){
+                App.navigate('/actualizar/'+event.target.id ,true);
             },
-           
-           initialize: function() {
-                _.bindAll(this, 'render');
+
+            initialize: function() {
+            _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.actualizar').addClass('active');
             }
@@ -351,16 +394,16 @@
         
         window.ContainerResolucionView = ContainerView.extend({
             template:  _.template($("#container-resolucion-template").html()),
-           
+
             events: {
                 'click .redirect':'redirect'  
             },
-           
-           redirect: function(event){
-                  App.navigate('/resolucion/'+event.target.id ,true);
+
+            redirect: function(event){
+                App.navigate('/resolucion/'+event.target.id ,true);
             },
-           
-           initialize: function() {
+
+            initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.resolucion').addClass('active');
@@ -401,14 +444,14 @@
             },
             
             editar: function(casoId){
-                this.containerEditaView = new ContainerEditarView({
+                this.containerEditarView = new ContainerEditarView({
                     casoId: casoId
                 });
                 $('#content').empty();
-                $('#content').append(this.containerEditaView.render().el);
+                $('#content').append(this.containerEditarView.render().el);
             },
             
-            demandas: function(listName){    
+            demandas: function(listName){
                 this.containerTablesView = new ContainerDemandasTablesView();
                 $('#content').empty();
                 $('#content').append(this.containerTablesView.render().el);
@@ -430,13 +473,12 @@
                 this.containerResolucionView = new ContainerResolucionView();
                 $('#content').empty();
                 $('#content').append(this.containerResolucionView.render().el);                 
-            } 
+            }
         });
 
         // Kick off the application
         window.App = new JurisOpus();
         Backbone.history.start();
-        
     });
 
 })(jQuery);

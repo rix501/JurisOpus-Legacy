@@ -9,6 +9,7 @@
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
     <script type="text/javascript" src="/javascripts/underscore.min.js"></script>
     <script type="text/javascript" src="/javascripts/backbone.min.js"></script>
+    <!-- <script type="text/javascript" src="/javascripts/backbone.js"></script> -->
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
@@ -251,34 +252,22 @@
                 <legend>Buscar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="field1">Residencial</label>
+                        <label for="residencial">Residencial</label>
                         <div class="input">
-                            <input class="medium" id="field1" name="xlInput" size="30" type="text">
+	                        <select name="residencial" id="residencial">
+	                        </select>
                         </div>
                     </div>
                     <div class="form-cell">                        
-                        <label for="field1">Edificio</label>
+                        <label for="edificio">Edificio</label>
                         <div class="input">
-                            <input class="medium" id="field1" name="xlInput" size="30" type="text">
+                            <input class="medium" id="edificio" name="edificio" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">                        
-                        <label for="field1">Apartamento</label>
+                        <label for="apartamento">Apartamento</label>
                         <div class="input">
-                            <input class="medium" id="field1" name="xlInput" size="30" type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell"> 
-                        or
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="field1">Nombre</label>
-                        <div class="input">
-                            <input class="medium" id="field1" name="xlInput" size="30" type="text">
+                            <input class="medium" id="apartamento" name="apartamento" size="30" type="text">
                         </div>
                     </div>
                 </div>
@@ -289,9 +278,22 @@
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="field1">Caso</label>
+                        <label for="nombre">Nombre</label>
                         <div class="input">
-                            <input class="medium" id="field1" name="xlInput" size="30" type="text">
+                            <input class="medium" id="nombre" name="nombre" size="30" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell"> 
+                        or
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="caso">Caso</label>
+                        <div class="input">
+                            <input class="medium" id="caso" name="caso" size="30" type="text">
                         </div>
                     </div>
                 </div>
@@ -309,14 +311,9 @@
                 <legend>Editar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="stackedSelect">Residencial</label>
+                        <label for="residencial">Residencial</label>
                         <div class="input">
-                            <select name="stackedSelect" id="stackedSelect">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select name="residencial" id="residencial">
                             </select>
                         </div>
                     </div>
@@ -372,14 +369,9 @@
                 <hr>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="stackedSelect">Causal</label>
+                        <label for="causal">Causal</label>
                         <div class="input">
-                            <select name="stackedSelect" id="stackedSelect">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select name="causal" id="causal">
                             </select>
                         </div>
                     </div>
@@ -537,15 +529,8 @@
                     </div>
                 </div>
                 <div class="clearfix">
-                    <div class="prev">
-                        <button class="btn">&lt; Anterior</button>
-                    </div>
-                    <div class="next">
-                        <button class="btn">Próximo &gt;</button>
-                    </div>
                     <div class="submit-btns">
                         <button type="submit" class="btn primary">Guardar</button>
-                        <button type="reset" class="btn">Cancel</button>
                     </div>  
                 </div>            
             </fieldset>
