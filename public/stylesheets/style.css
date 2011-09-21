@@ -25,12 +25,11 @@ hr {
 	display: inline-block;
 	margin-right: 5px;
 }
-
-.input .check {
+.check {
     margin-top: 3px;
 }
 
-.input .check label {
+.check label {
     text-align: center;
 }
 

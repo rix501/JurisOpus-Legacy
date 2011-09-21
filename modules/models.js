@@ -4,6 +4,24 @@ var Backbone = require('backbone');
 var client = require('./db');
 
 //Backbone Modification
+Backbone.Model.prototype.fetch = function(options){
+    options || (options = {});
+    var model = this;
+    var success = options.success;
+    options.success = function(results, fields) {
+        if(_.isArray(results)) {
+            if (!model.set(model.parse(results[0]), options)) return false;
+        }
+        else {
+            if (!model.set(model.parse(results), options)) return false;
+        }
+        if (success) success(model, fields);
+    };
+    
+    options.error = Backbone.utils.wrapError(options.error, model, options);
+    return (this.sync || Backbone.sync).call(this, 'read', this, options);
+};
+
 Backbone.Model.prototype.procedure = Backbone.Collection.prototype.procedure = function(method){
     var resp = {
         query: "",
@@ -43,8 +61,8 @@ Backbone.Model.prototype.save = function(attrs, options) {
         if (success) success(model, fields);
     };
     
+    options.error = Backbone.utils.wrapError(options.error, model, options);
     var method = this.isNew() ? 'create' : 'update';
-    
     return (this.sync || Backbone.sync).call(this, method, this, options);
 };
 
@@ -71,7 +89,12 @@ Backbone.Model.prototype.toDatatableArray = function(){
        }
        
        if(_.isDate(attribute)){
-           return attribute.getFullYear() + " - " + (attribute.getMonth() + 1)  + " - " +  attribute.getDate(); 
+           if(isNaN( attribute.getTime() )){
+               return "";
+           }
+           else{
+               return Backbone.utils.dateToString(attribute);
+           }
        }
              
        return  attribute;
@@ -104,7 +127,7 @@ Backbone.sync = function(method, model, options) {
             args: options.args
         };
     }
-      
+        
     client.query(procedure.query, procedure.args, function(err, results, fields){
         if(err) {
             options.error(err);
@@ -112,6 +135,22 @@ Backbone.sync = function(method, model, options) {
         }
         options.success(results, fields);
     });
+};
+
+Backbone.utils = {};
+
+Backbone.utils.wrapError = function(onError, model, options) {
+    return function(resp) {
+        if (onError) {
+            onError(model, resp, options);
+        } else {
+            model.trigger('error', model, resp, options);
+        }
+    };
+};
+
+Backbone.utils.dateToString = function(dateObj){
+    return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1)  + "-" +  dateObj.getDate(); 
 };
 
 //My models
@@ -152,6 +191,24 @@ Models.Caso = Backbone.Model.extend({
             this.get('lanzamiento'),
             this.get('observaciones')
         ];
+    },
+    read: function(resp){
+        resp.query = 'CALL Get_Caso(?)';
+        resp.args = [this.id];
+    },
+    parse: function(results){
+        _.each(results, function(attribute, key){
+            if(_.isDate(attribute)){
+                if(isNaN( attribute.getTime() )){
+                    results[key] = "";
+                }
+                else{
+                    results[key] = Backbone.utils.dateToString(attribute);
+                }
+            }
+        });
+        
+        return results;
     }
 });
 
@@ -161,21 +218,22 @@ Models.Casos = Backbone.Collection.extend({
         resp.query = 'CALL Get_Casos()';
     },
     search: function(query, options){
+        //caso > residencial+apt+edificio > nombre
+        
         if(!_.isEmpty(query.caso)){
-            options.query = 'CALL Search_Casos(?)';
-            options.args = [1];
+            options.query = 'CALL Search_Casos_Caso(?)';
+            options.args = [query.caso];
         }
         else if(!_.isEmpty(query.residencial) && !_.isEmpty(query.edificio) && !_.isEmpty(query.apartamento)){
-            options.query = 'CALL Search_Casos(?)';
-            options.args = [1];
+            options.query = 'CALL Search_Casos_Apt_Edif_Resi(?,?,?)';
+            options.args = [query.apartamento, query.edificio, query.residencial];
         }
         else if(!_.isEmpty(query.nombre)){
-            options.query = 'CALL Search_Casos(?)';
-            options.args = [1];
+            options.query = 'CALL Search_Casos_Nombre(?)';
+            options.args = [query.nombre];
         }
         else{
             options.error('Need info to look');
-            
             return;
         }
          

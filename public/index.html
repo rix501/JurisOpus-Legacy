@@ -8,8 +8,8 @@
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
     <script type="text/javascript" src="/javascripts/underscore.min.js"></script>
-    <script type="text/javascript" src="/javascripts/backbone.min.js"></script>
-    <!-- <script type="text/javascript" src="/javascripts/backbone.js"></script> -->
+    <!-- <script type="text/javascript" src="/javascripts/backbone.min.js"></script> -->
+    <script type="text/javascript" src="/javascripts/backbone.js"></script>
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
@@ -318,50 +318,50 @@
                         </div>
                     </div>
                     <div class="form-cell">
-                        <label for="xlInput">Edificio:</label>
+                        <label for="edificio">Edificio:</label>
                         <div class="input">
-                            <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
+                            <input class="medium" id="edificio" name="edificio" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Apartamento:</label>
+                        <label for="apartamento">Apartamento:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="apartamento" name="apartamento" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Area:</label>
+                        <label for="area">Area:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="area" name="area" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="xlInput">Nombre:</label>
+                        <label for="nombre">Nombre:</label>
                         <div class="input">
-                            <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
+                            <input class="medium" id="nombre" name="nombre" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
-                        <label for="xlInput">Caso Recibido:</label>
+                        <label for="casoRecibido">Caso Recibido:</label>
                         <div class="input">
-                            <input class="medium" id="xlInput" name="xlInput" size="30" type="text">
+                            <input class="medium datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Select:</label>
+                        <label for="seleccionado">Seleccionado:</label>
                         <div class="input check">
                             <label>
-                                <input type="checkbox" name="optionsCheckboxes" value="option1">
+                                <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
                             </label>
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Completado:</label>
+                        <label for="completado">Completado:</label>
                         <div class="input check">
                             <label>
-                                <input type="checkbox" name="optionsCheckboxes" value="option1">
+                                <input type="checkbox" id="completado" name="completado" value="1">
                             </label>
                         </div>                        
                     </div>
@@ -378,152 +378,152 @@
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
-                        <label for="stackedSelect">Renta Mensual</label>
+                        <label for="rentaMensual">Renta Mensual</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="rentaMensual" name="rentaMensual" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Meses Adeudados:</label>
+                        <label for="mesesAdeudados">Meses Adeudados:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Deuda Renta:</label>
+                        <label for="deudaRenta">Deuda Renta:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="deudaRenta" name="deudaRenta" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Deuda Renta Negativa:</label>
+                        <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Deuda Recibida:</label>
+                        <label for="deudaRecibida">Deuda Recibida:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">
-                        <label for="xlInputA">Deuda Total:</label>
+                        <label for="deudaTotal">Deuda Total:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="deudaTotal" name="deudaTotal" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Ultimo Re-examen:</label>
+                        <label for="ultimoReexamen">Ultimo Re-examen:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Incumplimiento:</label>
+                        <label for="incumplimiento">Incumplimiento:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="incumplimiento" name="incumplimiento" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
                 <hr>
                 <div class="clearfix form-row">
                     <div class="form-cell">
-                        <label for="xlInputA">Caso:</label>
+                        <label for="caso">Caso:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium" id="caso" name="caso" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Presentacion:</label>
+                        <label for="presentacion">Presentacion:</label>
                         <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="medium datepicker" id="presentacion" name="presentacion" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="prependedInput2">Diligenciado:</label>
+                        <label for="diligenciado">Diligenciado:</label>
                         <div class="input check">
                             <label>
-                                <input type="checkbox" name="optionsCheckboxes" value="option1">
+                                <input type="checkbox" id="diligenciado" name="diligenciado" value="option1">
                             </label>
                         </div>                          
                     </div>
                     <div class="form-cell">
-                        <label for="prependedInput2">Diligenciado  En:</label>
+                        <label for="diligenciadoEn">Diligenciado  En:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="prependedInput2" name="prependedInput2" size="16"  type="text">
+                            <input class="medium datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Sala:</label>
+                        <label for="sala">Sala:</label>
                         <div class="input">
-                            <input class="small" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="small" id="sala" name="sala" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Hora:</label>
+                        <label for="hora">Hora:</label>
                         <div class="input">
-                            <input class="small" id="xlInputA" name="xlInputA" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="xlInputA">1ra Comparecencia:</label>
-                        <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="xlInputA">2da Comparecencia:</label>
-                        <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="xlInputA">Vista en su Segundo:</label>
-                        <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="xlInputA">Sentencia:</label>
-                        <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="xlInputA">Lanzamiento:</label>
-                        <div class="input">
-                            <input class="medium" id="xlInputA" name="xlInputA" size="30" type="text">
+                            <input class="small" id="hora" name="hora" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">
-                        <label for="xlInputA">Observaciones:</label>
+                        <label for="primeraComparecencia">1ra Comparecencia:</label>
                         <div class="input">
-                            <textarea class="xxlarge" id="textarea" name="textarea"></textarea>
+                            <input class="medium datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
+                        </div>                        
+                    </div>
+                    <div class="form-cell">
+                        <label for="segundaComparecencia">2da Comparecencia:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                        </div>                        
+                    </div>
+                    <div class="form-cell">
+                        <label for="vistaSegundo">Vista en su Segundo:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
+                        </div>                        
+                    </div>
+                    <div class="form-cell">
+                        <label for="sentencia">Sentencia:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="sentencia" name="sentencia" size="30" type="text">
+                        </div>                        
+                    </div>
+                    <div class="form-cell">
+                        <label for="lanzamiento">Lanzamiento:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
+                        </div>                        
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="observaciones">Observaciones:</label>
+                        <div class="input">
+                            <textarea class="xxlarge" id="observaciones" name="observaciones"></textarea>
                         </div>                        
                     </div>
                 </div>
                 <hr>
                 <div class="clearfix form-row">
                     <div class="form-cell">
-                        <label for="xlInputA">Re-diligenciar:</label>
+                        <label for="rediligenciar">Re-diligenciar:</label>
                         <div class="input check">
                             <label>
-                                <input type="checkbox" name="optionsCheckboxes" value="option1">
+                                <input type="checkbox" name="rediligenciar" value="rediligenciar">
                             </label>
                         </div>                       
                     </div>
                     <div class="form-cell">
-                        <label for="xlInputA">Ejecutar:</label>
+                        <label for="ejecutar">Ejecutar:</label>
                         <div class="input check">
                             <label>
-                                <input type="checkbox" name="optionsCheckboxes" value="option1">
+                                <input id="ejecutar" type="checkbox" name="ejecutar" value="1">
                             </label>
                         </div>                       
                     </div>

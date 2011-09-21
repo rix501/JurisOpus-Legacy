@@ -11,7 +11,7 @@ exports.setup = function(app, Models){
                 res.send(model);
             },
             error: function(err){
-                console.log(err);
+                res.send("couldn't get residenciales", 404);
             }
         });
     });
@@ -24,43 +24,81 @@ exports.setup = function(app, Models){
                 res.send(model);
             },
             error: function(err){
-                console.log(err);
+                res.send("couldn't get causales", 404);
             }
         });
     });
     
-    app.get('/casos/:datatable?', function(req,res){
+    app.get('/casos-datatable', function(req, res){
         var cases = new Models.Casos();
-                
+        
         cases.fetch({
-            success: function(collection, fields){                
-                if(req.params.datatable === "true"){
-                    res.send(collection.toDatatableArray());
-                }
-                else{
-                    res.send(collection);
-                }
+            success: function(collection, fields){
+                res.send(collection.toDatatableArray());
             },
             error: function(err){
-                console.log(err);
+                res.send("couldn't get cases", 404);
             }
         });
+    });
+    
+    app.get('/casos/:id?', function(req,res){
+        if(req.params.id){            
+            var caso = new Models.Caso({id: req.params.id});
+
+            caso.fetch({
+                success: function(model, fields){  
+                    res.send(model);
+                },
+                error: function(err){
+                    res.send("couldn't get cases", 404);
+                }
+            });
+        }
+        else{
+            var cases = new Models.Casos();
+
+            cases.fetch({
+                success: function(collection, fields){                
+                    res.send(collection);
+                },
+                error: function(err){
+                    res.send("couldn't get cases", 404);
+                }
+            });
+        }
     });
     
     app.post('/casos', function(req,res){
         var caso = new Models.Caso();
-                
+         
         caso.save(req.body,{
             success: function(model, fields){
                 res.send(model);
             },
             error: function(err){
-                console.log(err);
+                res.send('error saving case', 404);
             }
         });
     });
+    
+    app.put('/casos/:id', function(req,res){
+        
+        var caso = new Models.Caso({id: req.params.id});
 
-    app.get('/search/:type', function(req,res){        
+        res.send(req.query);
+         
+        // caso.save(req.body,{
+        //     success: function(model, fields){
+        //         res.send(model);
+        //     },
+        //     error: function(err){
+        //         res.send('error saving case', 404);
+        //     }
+        // });
+    });
+
+    app.get('/search/:type', function(req,res){
         if(req.params.type === 'casos'){
             var casos = new Models.Casos();
                         
