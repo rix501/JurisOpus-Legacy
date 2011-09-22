@@ -55,9 +55,12 @@ Backbone.Model.prototype.save = function(attrs, options) {
     var success = options.success;
     
     options.success = function(results, fields) {
-        //TODO Need to fix, for checking return values
-        //if (!model.set(model.parse(results[0]), options)) return false;
-        
+        if(_.isArray(results)) {
+            if (!model.set(model.parse(results[0]), options)) return false;
+        }
+        else {
+            if (!model.set(model.parse(results), options)) return false;
+        }        
         if (success) success(model, fields);
     };
     
@@ -128,12 +131,14 @@ Backbone.sync = function(method, model, options) {
         };
     }
         
-    client.query(procedure.query, procedure.args, function(err, results, fields){
+    client.query(procedure.query, procedure.args, function(err, results, fields){        
         if(err) {
+            console.log(err);
             options.error(err);
-            model.trigger('error');
+        }        
+        else{
+            options.success(results, fields);
         }
-        options.success(results, fields);
     });
 };
 
@@ -190,6 +195,43 @@ Models.Caso = Backbone.Model.extend({
             this.get('sentencia'),
             this.get('lanzamiento'),
             this.get('observaciones')
+        ];
+    },
+    upd: function(resp){
+        resp.query = 'CALL Update_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        resp.args = [
+            this.id,
+            this.get('residencial'),
+            this.get('edificio'),
+            this.get('apartamento'),
+            this.get('area'),
+            this.get('nombre'),
+            this.get('casoRecibido'),
+            this.get('seleccionado'),
+            this.get('completado'),
+            this.get('causal'),
+            this.get('rentaMensual'),
+            this.get('mesesAdeudados'),
+            this.get('deudaRenta'),
+            this.get('deudaRentaNegativa'),
+            this.get('deudaRecibida'),
+            this.get('deudaTotal'),
+            this.get('ultimoReexamen'),
+            this.get('incumplimiento'),
+            this.get('caso'),
+            this.get('presentacion'),
+            this.get('diligenciado'),
+            this.get('diligenciadoEn'),
+            this.get('sala'),
+            this.get('hora'),
+            this.get('primeraComparecencia'),
+            this.get('segundaComparecencia'),
+            this.get('vistaSegundo'),
+            this.get('sentencia'),
+            this.get('lanzamiento'),
+            this.get('observaciones'),
+            this.get('rediligenciar'),
+            this.get('ejecutar')
         ];
     },
     read: function(resp){

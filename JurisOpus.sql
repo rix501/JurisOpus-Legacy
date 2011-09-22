@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-21 04:26:11 +0000
+# Generation Time: 2011-09-22 03:15:29 +0000
 # ************************************************************
 
 
@@ -253,7 +253,9 @@ BEGIN
 		vista_en_su_fondo AS 'vistaEnSuFondo', 
 		sentencia AS 'sentencia', 
 		lanzamiento AS 'lanzamiento', 
-		observaciones AS 'observaciones'
+		observaciones AS 'observaciones',
+		rediligenciar AS 'rediligenciar', 
+		ejecutar AS 'ejecutar'
 	FROM Casos ca
 	WHERE ca.id = p_id;
 END */;;
@@ -486,6 +488,84 @@ BEGIN
 		observaciones AS 'observaciones'
 	FROM Casos ca
 	WHERE ca.nombre like CONCAT('%',p_nombre,'%');
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Update_Caso
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Update_Caso` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Update_Caso`(
+	IN p_id INT(11),
+	IN p_residencial INT(11), 
+	IN p_edificio INT(11), 
+	IN p_apartamento VARCHAR(11), 
+	IN p_area VARCHAR(11), 
+	IN p_nombre VARCHAR(11), 
+	IN p_casoRecibido DATE, 
+	IN p_seleccionado TINYINT(1), 
+	IN p_completado TINYINT(1), 
+	IN p_causal INT(11), 
+	IN p_rentaMensual DECIMAL(11,0), 
+	IN p_mesesAdeudados INT(11), 
+	IN p_deudaRenta DECIMAL(11,0), 
+	IN p_deudaRentaNegativa DECIMAL(11,0), 
+	IN p_deudaRecibida DECIMAL(11,0), 
+	IN p_deudaTotal DECIMAL(11,0), 
+	IN p_ultimoReexamen DATE, 
+	IN p_incumplimiento VARCHAR(11), 
+	IN p_caso VARCHAR(11), 
+	IN p_presentacion DATE, 
+	IN p_diligenciado TINYINT(1), 
+	IN p_diligenciadoEn DATE, 
+	IN p_sala VARCHAR(11), 
+	IN p_hora TIME, 
+	IN p_primeraComparecencia DATE, 
+	IN p_segundaComparecencia DATE, 
+	IN p_vistaSegundo DATE, 
+	IN p_sentencia DATE, 
+	IN p_lanzamiento DATE, 
+	IN p_observaciones VARCHAR(11),
+	IN p_rediligenciar TINYINT(1), 
+	IN p_ejecutar TINYINT(1)
+)
+BEGIN
+	UPDATE Casos
+	SET
+		residencial = p_residencial ,
+		edificio = p_edificio , 
+		apartamento = p_apartamento , 
+		area = p_area , 
+		nombre = p_nombre , 
+		caso_recibido = p_casoRecibido , 
+		seleccionado = p_seleccionado , 
+		completado = p_completado , 
+		causal = p_causal , 
+		renta_mensual = p_rentaMensual , 
+		meses_adeudados = p_mesesAdeudados , 
+		deuda_renta = p_deudaRenta , 
+		deuda_renta_negativa = p_deudaRentaNegativa , 
+		deuda_recibida = p_deudaRecibida , 
+		deuda_total = p_deudaTotal , 
+		ultimo_reexamen = p_ultimoReexamen , 
+		incumplimiento = p_incumplimiento , 
+		caso = p_caso , 
+		presentacion = p_presentacion , 
+		diligenciado = p_diligenciado , 
+		diligenciado_en = p_diligenciadoEn , 
+		sala = p_sala , 
+		hora = p_hora , 
+		primera_comparecencia = p_primeraComparecencia , 
+		segunda_comparecencia = p_segundaComparecencia , 
+		vista_en_su_fondo = p_vistaSegundo , 
+		sentencia = p_sentencia , 
+		lanzamiento = p_lanzamiento , 
+		observaciones = p_observaciones ,
+		rediligenciar = p_rediligenciar ,
+		ejecutar = p_ejecutar 
+	WHERE
+	Casos.id = p_id;
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;

@@ -348,7 +348,9 @@
                 $('#vistaSegundo').val(this.model.get('vistaSegundo') ? this.model.get('vistaSegundo') : '');
                 $('#sentencia').val(this.model.get('sentencia') ? this.model.get('sentencia') : '');
                 $('#lanzamiento').val(this.model.get('lanzamiento') ? this.model.get('lanzamiento') : '');
-                $('#observaciones').val(this.model.get('observaciones') ? this.model.get('observaciones') : '');                
+                $('#observaciones').val(this.model.get('observaciones') ? this.model.get('observaciones') : ''); 
+                if(this.model.get('rediligenciar')) $('#rediligenciar').prop("checked", true);
+                if(this.model.get('ejecutar')) $('#ejecutar').prop("checked", true);
             },
             
             submitForm: function(event){
@@ -390,7 +392,8 @@
                     success: function(model){
                         alert('kthxbie');
                     },
-                    error: function(){
+                    error: function(model,err){
+                        console.log(model,err);
                         alert('Oops, something didnt work');
                     }
                 });

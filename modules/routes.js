@@ -83,19 +83,16 @@ exports.setup = function(app, Models){
     });
     
     app.put('/casos/:id', function(req,res){
-        
         var caso = new Models.Caso({id: req.params.id});
-
-        res.send(req.query);
-         
-        // caso.save(req.body,{
-        //     success: function(model, fields){
-        //         res.send(model);
-        //     },
-        //     error: function(err){
-        //         res.send('error saving case', 404);
-        //     }
-        // });
+                
+        caso.save(req.body,{
+            success: function(model, fields){
+                res.send(model);
+            },
+            error: function(err){
+                res.send('error saving case: ' + JSON.stringify(err), 404);
+            }
+        });
     });
 
     app.get('/search/:type', function(req,res){
