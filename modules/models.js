@@ -291,7 +291,7 @@ Models.Casos = Backbone.Collection.extend({
 
             var demandaPdf = pdfFactory('SanJuan', 'OcupacionIlegal', data);
             
-            if(resSuccess) resSuccess(demandaPdf);
+            if(resSuccess) resSuccess(demandaPdf); 
         };
         
         options.query = 'CALL Search_Casos_PDF(?)';
