@@ -22,7 +22,6 @@ app.configure('production', function(){
 });
 
 //My Libs
-var pdfFactory = require('./modules/pdf/PDFFactory');
 var routes = require('./modules/routes');
 var Models = require('./modules/models');
 

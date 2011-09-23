@@ -1,6 +1,7 @@
 var _ = require('underscore')._;
 var Backbone = require('backbone');
 
+var pdfFactory = require('./pdf/PDFFactory');
 var client = require('./db');
 
 //Backbone Modification
@@ -251,6 +252,9 @@ Models.Caso = Backbone.Model.extend({
         });
         
         return results;
+    },
+    pdf: function(){
+        
     }
 });
 
@@ -261,7 +265,6 @@ Models.Casos = Backbone.Collection.extend({
     },
     search: function(query, options){
         //caso > residencial+apt+edificio > nombre
-        
         if(!_.isEmpty(query.caso)){
             options.query = 'CALL Search_Casos_Caso(?)';
             options.args = [query.caso];
@@ -277,8 +280,23 @@ Models.Casos = Backbone.Collection.extend({
         else{
             options.error('Need info to look');
             return;
-        }
-         
+        }  
+        this.fetch(options);
+    },
+    pdf: function(query, options){
+        var resSuccess = options.success;
+        
+        options.success = function(collection, fields){            
+            var data = ["test", "test"];
+
+            var demandaPdf = pdfFactory('SanJuan', 'OcupacionIlegal', data);
+            
+            if(resSuccess) resSuccess(demandaPdf);
+        };
+        
+        options.query = 'CALL Search_Casos_PDF(?)';
+        options.args = [query.casos];
+
         this.fetch(options);
     }
 });

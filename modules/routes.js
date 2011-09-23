@@ -110,15 +110,20 @@ exports.setup = function(app, Models){
         }
     });
     
-    app.get('/pdf/:municipio/:nombre', function(req, res){
-
-        var data = ["test", "test"];
-
-        //data = req.params.nombre;
-
-        var demandaPdf = pdfFactory(req.params.municipio, req.params.nombre, data);
-
-        res.header('Content-type','application/pdf');
-        res.end(demandaPdf, 'binary');    
+    app.get('/pdf', function(req, res){
+        var cases = new Models.Casos();
+        
+        cases.pdf(req.query, {
+           success: function(demandaPdf){
+               res.header('Content-type','application/pdf');
+               res.header('Content-disposition','attachment');
+               res.header('filename','demandas.pdf');
+               res.header('Content-Length', demandaPdf.length);
+               res.end(demandaPdf, 'binary');
+           },
+           error: function(err){
+               res.send(err, 404);
+           }
+        });
     });
 };

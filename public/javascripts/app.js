@@ -421,23 +421,48 @@
         });
         
         window.ContainerDemandasTablesView = ContainerDemandasView.extend({
+            template: _.template($("#demandas-tables-template").html()),
+            
             events: {
-                'click .back.btn':'goBack'  
+                'click .print.btn':'print',
+                'click #table_id tr': 'selectRow'
             },
             
             initialize: function(){
-                this.template = _.template($("#demandas-tables-template").html());
-                ContainerDemandasView.prototype.initialize.call(this);
+                _.bindAll(this, 'render', 'selectRow');
+                $('li.active').removeClass('active');
+                $('li.demandas').addClass('active');
             },
             
-            goBack: function(){
-                App.navigate('/demandas' ,true);
+            selectRow: function(event){
+                if ( $(event.currentTarget).hasClass('row_selected') ){
+                    $(event.currentTarget).removeClass('row_selected');   
+                }
+                else{
+                    $(event.currentTarget).addClass('row_selected');
+                }
+            },
+            
+            print: function(){
+                var aReturn = [];
+                var aTrs = this.oTable.fnGetNodes();
+
+                _.each(aTrs, function(aTr){
+                    if($(aTr).hasClass('row_selected')){
+                        aReturn.push( aTr );
+                    }
+                });
+                
+                var iframe = document.createElement("iframe");
+                iframe.src = "/pdf";
+                iframe.style.display = "none";
+                document.body.appendChild(iframe);
             },
             
             render: function(){
                 $(this.el).html(this.template());
                 
-                var oTable = $(this.el).children('#table_id').dataTable( {
+                this.oTable = $(this.el).children('#table_id').dataTable( {
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,

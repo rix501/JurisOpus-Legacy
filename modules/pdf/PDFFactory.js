@@ -55,18 +55,24 @@ var drawFooterLine = function(doc, x, y){
        .stroke();
 };
 
+var build = function(options){
+    var doc = new PDFDocument({
+        size: "legal"
+    });
+    
+    doc.registerFont('Arial', './modules/pdf/Fonts/arial.ttf');
+    doc.registerFont('Arial-Bold', './modules/pdf/Fonts/arial-bold.ttf');
+    
+    return doc;
+};
+
 templates.SanJuan = {};
 
 templates.SanJuan.DemandaMaster = function(){
      var y, x, width, height;
 
      if(doc === undefined || doc === null){
-         doc = new PDFDocument({
-             size: "legal"
-         });
-
-         doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
-         doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+         doc = build();
      }
 
      if(doc.pages.length > 1){
@@ -452,15 +458,12 @@ templates.SanJuan.DemandaMaster = function(){
 };
 
 templates.SanJuan.FaltaPago = function(doc, nombre){
+    //nombre, residencial, edificio, apartamento, deudaTotal
+    
     var y, x, width, height;
     
     if(doc === undefined || doc === null){
-        doc = new PDFDocument({
-            size: "legal"
-        });
-        
-        doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
-        doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+        doc = build();
     }
     
     if(doc.pages.length > 1){
@@ -567,17 +570,17 @@ templates.SanJuan.FaltaPago = function(doc, nombre){
         align: 'justify',
         lineGap: 10
     })
-    .text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial «RESIDENCIAL», ubicado en el Municipio de San Juan.",{
+    .text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial"+ residencial +", ubicado en el Municipio de San Juan.",{
         indent: 72,
         align: 'justify',
         lineGap: 10
     })
-    .text("2. La parte Demandada ocupa el apartamento «APARTAMENTO» en el edificio «EDIFICIO» de dicho complejo en virtud de un contrato de arrendamiento.",{
+    .text("2. La parte Demandada ocupa el apartamento "+ apartamento +" en el edificio "+ residencial +" de dicho complejo en virtud de un contrato de arrendamiento.",{
         indent: 72,
         align: 'justify',
         lineGap: 10
     })
-    .text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de «DEUDA_TOTAL», por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
+    .text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de "+ deudaTotal +", por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
         indent: 72,
         align: 'justify',
         lineGap: 10
@@ -850,12 +853,7 @@ templates.SanJuan.OcupacionIlegal = function(doc, nombre){
     var y, x, width, height;
     
     if(doc === undefined || doc === null){
-        doc = new PDFDocument({
-            size: "legal"
-        });
-        
-        doc.registerFont('Arial', './pdf/Fonts/arial.ttf');
-        doc.registerFont('Arial-Bold', './pdf/Fonts/arial-bold.ttf');
+        doc = build();
     }
     
     if(doc.pages.length > 1){

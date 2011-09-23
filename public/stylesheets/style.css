@@ -45,7 +45,7 @@ hr {
     text-align: center;
 }
 
-.back .btn {
+.print {
     margin: 10px 0;
 }
 
@@ -98,4 +98,12 @@ form.list li label {
 textarea.xxlarge {
     width:900px;
     resize:none;
+}
+
+tr.even.row_selected td {
+    background-color: #B0BED9;
+}
+
+tr.odd.row_selected td {
+    background-color: #9FAFD1;
 }
