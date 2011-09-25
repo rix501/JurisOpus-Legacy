@@ -387,7 +387,7 @@
                     lanzamiento: $('#lanzamiento').val(),
                     observaciones: $('#observaciones').val(),
                     rediligenciar: $('#rediligenciar:checked').length,
-                    ejecutar: $('#ejecutar:checked').length,
+                    ejecutar: $('#ejecutar:checked').length
                 },{
                     success: function(model){
                         alert('kthxbie');
@@ -444,17 +444,23 @@
             },
             
             print: function(){
-                var aReturn = [];
+                var casosString = "";
                 var aTrs = this.oTable.fnGetNodes();
 
                 _.each(aTrs, function(aTr){
                     if($(aTr).hasClass('row_selected')){
-                        aReturn.push( aTr );
+                        tdCase = $(aTr).children('td')[8];
+                        casosString += $(tdCase).text() + "|";
                     }
                 });
                 
+                casosString = casosString.substring(0, casosString.length - 1);
+                
                 var iframe = document.createElement("iframe");
-                iframe.src = "/pdf";
+                iframe.src = "/pdf?type=demandas&casos=" + casosString;
+                
+                console.log(iframe.src);
+                
                 iframe.style.display = "none";
                 document.body.appendChild(iframe);
             },

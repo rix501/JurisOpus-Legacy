@@ -1,4 +1,4 @@
-var _ = require('underscore')._;
+var _ = require('underscore');
 var Backbone = require('backbone');
 
 var pdfFactory = require('./pdf/PDFFactory');
@@ -155,7 +155,13 @@ Backbone.utils.wrapError = function(onError, model, options) {
     };
 };
 
-Backbone.utils.dateToString = function(dateObj){
+Backbone.utils.dateToString = function(dateObj, toString){
+    var monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    
+    if(toString){
+        return dateObj.getDate() + " de " + monthNames[dateObj.getMonth()] + " de " +dateObj.getFullYear(); 
+    }
+    
     return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1)  + "-" +  dateObj.getDate(); 
 };
 
@@ -254,7 +260,20 @@ Models.Caso = Backbone.Model.extend({
         return results;
     },
     pdf: function(){
+        var resSuccess = options.success;
         
+        options.success = function(model, fields){                 
+            var data = model.toJSON();
+
+            var demandaPdf = pdfFactory('SanJuan', 'OcupacionIlegal', data);
+            
+            if(resSuccess) resSuccess(demandaPdf); 
+        };
+        
+        options.query = 'CALL Search_Casos_PDF(?)';
+        options.args = ["^(" + query.casos + ")$"];
+
+        this.fetch(options);
     }
 });
 
@@ -286,16 +305,37 @@ Models.Casos = Backbone.Collection.extend({
     pdf: function(query, options){
         var resSuccess = options.success;
         
-        options.success = function(collection, fields){            
-            var data = ["test", "test"];
-
-            var demandaPdf = pdfFactory('SanJuan', 'OcupacionIlegal', data);
+        options.success = function(collection, fields){    
             
-            if(resSuccess) resSuccess(demandaPdf); 
+            collection.each(function(model){
+               var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
+               var causal = model.get('causal').replace(/ /g, "").toLowerCase();
+               
+               model.set({
+                   pdfCausal: causal,
+                   pdfTribunal: tribunal 
+               });
+               
+               _.each(model.attributes, function(attribute, key){
+                   var attr = {};
+                   attr[key] = "";
+                   
+                   if(_.isDate(attribute) && !isNaN(attribute.getTime()) ){
+                       attr[key] = Backbone.utils.dateToString(attribute, true);
+                       model.set(attr);
+                   }  
+               })           
+            });
+                         
+            var data = collection.toJSON();
+            
+            var pdf = pdfFactory(query.type, data);
+            
+            if(resSuccess) resSuccess(pdf); 
         };
         
         options.query = 'CALL Search_Casos_PDF(?)';
-        options.args = [query.casos];
+        options.args = ["^(" + query.casos + ")$"];
 
         this.fetch(options);
     }

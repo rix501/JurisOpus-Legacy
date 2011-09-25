@@ -114,12 +114,12 @@ exports.setup = function(app, Models){
         var cases = new Models.Casos();
         
         cases.pdf(req.query, {
-           success: function(demandaPdf){
+           success: function(pdf){
+               // res.send({status: 'ok'});
                res.header('Content-type','application/pdf');
-               res.header('Content-disposition','attachment');
-               res.header('filename','demandas.pdf');
-               res.header('Content-Length', demandaPdf.length);
-               res.end(demandaPdf, 'binary');
+               res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
+               res.header('Content-Length', pdf.length);
+               res.end(pdf, 'binary');
            },
            error: function(err){
                res.send(err, 404);
