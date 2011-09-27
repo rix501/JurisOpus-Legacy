@@ -155,10 +155,10 @@ Backbone.utils.wrapError = function(onError, model, options) {
     };
 };
 
-Backbone.utils.dateToString = function(dateObj, toString){
+Backbone.utils.dateToString = function(dateObj, formatString){
     var monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     
-    if(toString){
+    if(formatString){
         return dateObj.getDate() + " de " + monthNames[dateObj.getMonth()] + " de " +dateObj.getFullYear(); 
     }
     

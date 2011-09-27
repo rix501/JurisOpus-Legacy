@@ -1,6 +1,13 @@
-exports.setup = function(app, Models){
-    app.get('/', function(req, res){
-        res.sendfile('/public/index.html');
+exports.setup = function(app, Models){    
+    app.get('/login', function(req, res){
+        res.sendfile('public/login.html');
+    });
+    
+    app.post('/login', function(req,res){
+        if(req.body.username == 't' && req.body.password == 't')
+            res.redirect('/');
+        else
+            res.send();
     });
     
     app.get('/residenciales', function(req,res){

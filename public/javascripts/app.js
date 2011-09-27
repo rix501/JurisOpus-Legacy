@@ -566,7 +566,8 @@
                 '/demandas/:listName': 'demandas',
                 '/informes': 'informes',
                 '/actualizar': 'actualizar',
-                '/resolucion': 'resolucion'
+                '/resolucion': 'resolucion',
+                '/login':'login' 
             },
 
             initialize: function() {

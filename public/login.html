@@ -1,0 +1,35 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Juris Opus</title>
+    <!-- Local Libs -->
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <!-- My Scripts -->
+    <script type="text/javascript" src="/javascripts/app.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css" media="screen" charset="utf-8" />  
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+<body>
+    <form class="login-form form-stacked" method="POST" action="/login">
+        <fieldset>
+            <legend>Login</legend>
+            <div class="clearfix form-row">
+                <div class="form-cell">
+                    <input class="medium" id="username" name="username" size="30" type="text">
+                </div>
+            </div>
+            <div class="clearfix form-row">
+                <div class="form-cell">
+                    <input class="medium" id="password" name="password" size="30" type="text">
+                </div>
+            </div>
+            <div class="clearfix form-row">
+                <div class="form-cell">
+                    <button type="submit" class="btn primary">Login</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</body>
+</html>
