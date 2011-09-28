@@ -8,8 +8,13 @@ body {
 	font-size: 15px;
 }
 
-body.plain {
+body.login {
     padding-top: 4px;
+}
+
+.login h1 {
+    text-align: center;
+    margin-right: 6px;
 }
 
 #error-msg {
