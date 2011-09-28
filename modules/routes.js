@@ -3,7 +3,7 @@ exports.setup = function(app, Models){
     var users = [
         { id: 0, username: 'jurisTester', password: 'jurisopus', email: '', role: 'tester' },
         { id: 1, username: 'rix', password: 'mine', email: 'rix501@gmail.com', role: 'admin' }
-    ];
+    ]; 
      
     var checkAuth = function(req, res, next){
         if(req.url === "/login"){
