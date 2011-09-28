@@ -4,32 +4,58 @@
     <title>Juris Opus</title>
     <!-- Local Libs -->
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
     <!-- My Scripts -->
-    <script type="text/javascript" src="/javascripts/app.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.login-form').submit(function(evt){
+                evt.preventDefault();
+                
+                $.ajax({
+                   url: '/login',
+                   type: 'POST',
+                   data: {
+                       username: $('#username').val(),
+                       password: $('#password').val()
+                   },
+                   success: function(){
+                       navigator.location = "/";
+                   },
+                   error: function(){
+                       $('#error-msg').css('display','block');
+                   }
+                });
+            });
+        });
+    </script>
     <!-- Styles -->
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css" media="screen" charset="utf-8" />  
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
 </head>
-<body>
+<body class="plain">
+    <div class="alert-message error fade in" id="error-msg" data-alert="alert">
+        <a class="close" href="#">×</a>
+        <p><strong>Error</strong> Intente de nuevo</p>
+    </div>
     <form class="login-form form-stacked" method="POST" action="/login">
         <fieldset>
-            <legend>Login</legend>
             <div class="clearfix form-row">
                 <div class="form-cell">
+                    <label for="username">Usuario:</label>
                     <input class="medium" id="username" name="username" size="30" type="text">
                 </div>
             </div>
             <div class="clearfix form-row">
                 <div class="form-cell">
+                    <label for="password">Contraseña:</label>
                     <input class="medium" id="password" name="password" size="30" type="password">
                 </div>
             </div>
-            <div class="clearfix form-row">
-                <div class="form-cell">
-                    <button type="submit" class="btn primary">Login</button>
-                </div>
+            <div class="clearfix submit-btns">
+                <button type="submit" class="btn primary">Entrar</button>
             </div>
         </fieldset>
     </form>
+
 </body>
 </html>

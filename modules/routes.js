@@ -4,7 +4,7 @@ exports.setup = function(app, Models){
         { id: 0, username: 'jurisTester', password: 'jurisopus', email: '', role: 'tester' },
         { id: 1, username: 'rix', password: 'mine', email: 'rix501@gmail.com', role: 'admin' }
     ];
-   
+     
     var checkAuth = function(req, res, next){
         if(req.url === "/login"){
             if(req.session && req.session.auth){
@@ -52,10 +52,10 @@ exports.setup = function(app, Models){
         checkUser(req.body.username, req.body.password, function(auth, user){            
             if(auth) {
                 req.session.auth = true;
-                res.redirect('/');
+                res.send({status: 'ok'});
             }
             else {
-                res.send();
+                res.send({status: 'ok'}, 400);
             }
         });
     });
