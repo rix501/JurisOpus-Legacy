@@ -1,8 +1,8 @@
 exports.setup = function(app, Models){    
     // Dummy users
     var users = [
-        { id: 0, username: 'jurisTester', password: 'jurisopus', email: '', role: 'tester' },
-        { id: 1, username: 'rix', password: 'mine', email: 'rix501@gmail.com', role: 'admin' }
+        { id: 0, username: 'tester', password: 'jurisopus', email: '', role: 'tester' },
+        { id: 1, username: 'rix', password: 'supersecret', email: 'rix501@gmail.com', role: 'admin' }
     ]; 
      
     var checkAuth = function(req, res, next){
