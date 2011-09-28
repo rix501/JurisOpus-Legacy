@@ -1,16 +1,66 @@
 exports.setup = function(app, Models){    
-    app.get('/login', function(req, res){
+    // Dummy users
+    var users = [
+        { id: 0, username: 'jurisTester', password: 'jurisopus', email: '', role: 'tester' },
+        { id: 1, username: 'rix', password: 'mine', email: 'rix501@gmail.com', role: 'admin' }
+    ];
+   
+    var checkAuth = function(req, res, next){
+        if(req.url === "/login"){
+            if(req.session && req.session.auth){
+                res.redirect('/');
+                return;
+            }
+            else {
+                next();
+                return;
+            }
+        }
+        
+        if(req.session && req.session.auth){
+            next();
+            return;
+        }
+        
+        res.redirect('/login');
+        return;
+    };
+    
+    var checkUser = function(username, password, cb){
+        var auth = false;
+        
+        users.forEach(function(user){
+            if(username === user.username && password === user.password){
+                auth = true;
+                cb(auth, user);
+                
+            }
+        });
+        
+        if(!auth) cb(auth);
+    };
+    
+    app.get('/', checkAuth, function(req,res){
+        res.sendfile('public/index.html');
+    });
+    
+    app.get('/login', checkAuth, function(req, res){
         res.sendfile('public/login.html');
     });
     
     app.post('/login', function(req,res){
-        if(req.body.username == 't' && req.body.password == 't')
-            res.redirect('/');
-        else
-            res.send();
+        checkUser(req.body.username, req.body.password, function(auth, user){            
+            if(auth) {
+                req.session.auth = true;
+                res.redirect('/');
+            }
+            else {
+                res.send();
+            }
+        });
     });
     
-    app.get('/residenciales', function(req,res){
+    app.get('/residenciales', checkAuth, function(req,res){
         var resis = new Models.Residenciales();
                 
         resis.fetch({
@@ -23,7 +73,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/causales', function(req,res){
+    app.get('/causales', checkAuth, function(req,res){
         var causales = new Models.Causales();
                 
         causales.fetch({
@@ -36,7 +86,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos-datatable', function(req, res){
+    app.get('/casos-datatable', checkAuth, function(req, res){
         var cases = new Models.Casos();
         
         cases.fetch({
@@ -49,7 +99,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos/:id?', function(req,res){
+    app.get('/casos/:id?', checkAuth, function(req,res){
         if(req.params.id){            
             var caso = new Models.Caso({id: req.params.id});
 
@@ -76,7 +126,7 @@ exports.setup = function(app, Models){
         }
     });
     
-    app.post('/casos', function(req,res){
+    app.post('/casos', checkAuth, function(req,res){
         var caso = new Models.Caso();
          
         caso.save(req.body,{
@@ -89,7 +139,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.put('/casos/:id', function(req,res){
+    app.put('/casos/:id', checkAuth, function(req,res){
         var caso = new Models.Caso({id: req.params.id});
                 
         caso.save(req.body,{
@@ -102,7 +152,7 @@ exports.setup = function(app, Models){
         });
     });
 
-    app.get('/search/:type', function(req,res){
+    app.get('/search/:type', checkAuth, function(req,res){
         if(req.params.type === 'casos'){
             var casos = new Models.Casos();
                         
@@ -117,7 +167,7 @@ exports.setup = function(app, Models){
         }
     });
     
-    app.get('/pdf', function(req, res){
+    app.get('/pdf', checkAuth, function(req, res){
         var cases = new Models.Casos();
         
         cases.pdf(req.query, {
