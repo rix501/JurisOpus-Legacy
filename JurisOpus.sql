@@ -6,8 +6,8 @@
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
-# Database: jurisopus
-# Generation Time: 2011-09-29 01:06:14 +0000
+# Database: JurisOpus
+# Generation Time: 2011-09-29 03:53:50 +0000
 # ************************************************************
 
 
@@ -131,7 +131,7 @@ UNLOCK TABLES;
 
 
 --
--- Dumping routines (PROCEDURE) for database 'jurisopus'
+-- Dumping routines (PROCEDURE) for database 'JurisOpus'
 --
 DELIMITER ;;
 

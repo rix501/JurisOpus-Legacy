@@ -18,10 +18,11 @@ var pdf = Object.makeSubclass();
 
 pdf.prototype.build = function(options){
     options || (options = {});
-    
+        
     var doc = new PDFDocument({
-        size: (options.size) ? options.size : "legal",
-        align: "justify"
+        size: (options.pdfSize) ? options.pdfSize : "legal",
+        align: (options.pdfAlign) ? options.pdfAlign : "justify",
+        layout: (options.pdflayout) ? options.pdflayout : "portrait"
     });
     
     doc.registerFont('Arial', './modules/pdf/Fonts/arial.ttf');

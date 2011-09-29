@@ -1,3 +1,5 @@
+var pdfFactory = require('./pdf/PDFFactory');
+
 exports.setup = function(app, Models){    
     // Dummy users
     var users = [
@@ -182,5 +184,12 @@ exports.setup = function(app, Models){
                res.send(err, 404);
            }
         });
+    });
+    
+    app.get('/pdfTest', function(req,res){
+        var pdf = pdfFactory('informes', {pdfTemplate: 'basic'});
+             
+        res.header('Content-type','application/pdf');
+        res.end(pdf, 'binary');
     });
 };
