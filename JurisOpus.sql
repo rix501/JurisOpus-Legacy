@@ -6,8 +6,8 @@
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
-# Database: JurisOpus
-# Generation Time: 2011-09-25 01:13:12 +0000
+# Database: jurisopus
+# Generation Time: 2011-09-29 01:06:14 +0000
 # ************************************************************
 
 
@@ -30,20 +30,20 @@ CREATE TABLE `Casos` (
   `residencial` int(11) unsigned DEFAULT NULL,
   `edificio` varchar(11) DEFAULT NULL,
   `apartamento` varchar(11) DEFAULT NULL,
-  `nombre` varchar(11) DEFAULT NULL,
+  `nombre` varchar(200) DEFAULT NULL,
   `ingresado` date DEFAULT NULL,
   `area` varchar(11) DEFAULT NULL,
   `completado` tinyint(1) DEFAULT NULL,
   `renta_mensual` decimal(11,0) DEFAULT NULL,
   `meses_adeudados` int(11) DEFAULT NULL,
-  `deuda_renta` decimal(11,0) DEFAULT NULL,
-  `deuda_recargo` decimal(11,0) DEFAULT NULL,
-  `deuda_renta_negativa` decimal(11,0) DEFAULT NULL,
-  `deuda_total` decimal(11,0) DEFAULT NULL,
+  `deuda_renta` decimal(11,2) DEFAULT NULL,
+  `deuda_recargo` decimal(11,2) DEFAULT NULL,
+  `deuda_renta_negativa` decimal(11,2) DEFAULT NULL,
+  `deuda_total` decimal(11,2) DEFAULT NULL,
   `ultimo_reexamen` date DEFAULT NULL,
-  `incumplimiento` varchar(11) DEFAULT NULL,
+  `incumplimiento` varchar(200) DEFAULT NULL,
   `causal` int(11) unsigned DEFAULT NULL,
-  `caso` varchar(11) DEFAULT NULL,
+  `caso` varchar(10) DEFAULT NULL,
   `presentacion` date DEFAULT NULL,
   `sala` varchar(11) DEFAULT NULL,
   `hora` time DEFAULT NULL,
@@ -51,11 +51,11 @@ CREATE TABLE `Casos` (
   `segunda_comparecencia` date DEFAULT NULL,
   `vista_en_su_fondo` date DEFAULT NULL,
   `lanzamiento` date DEFAULT NULL,
-  `observaciones` varchar(11) DEFAULT NULL,
+  `observaciones` varchar(255) DEFAULT NULL,
   `sentencia` date DEFAULT NULL,
   `diligenciado` tinyint(1) DEFAULT NULL,
   `seleccionado` tinyint(1) DEFAULT NULL,
-  `diligenciado_en` varchar(11) DEFAULT NULL,
+  `diligenciado_en` varchar(50) DEFAULT NULL,
   `ejecutar` tinyint(1) DEFAULT NULL,
   `rediligenciar` tinyint(1) DEFAULT NULL,
   `desistido` tinyint(1) DEFAULT NULL,
@@ -73,10 +73,8 @@ LOCK TABLES `Casos` WRITE;
 
 INSERT INTO `Casos` (`id`, `residencial`, `edificio`, `apartamento`, `nombre`, `ingresado`, `area`, `completado`, `renta_mensual`, `meses_adeudados`, `deuda_renta`, `deuda_recargo`, `deuda_renta_negativa`, `deuda_total`, `ultimo_reexamen`, `incumplimiento`, `causal`, `caso`, `presentacion`, `sala`, `hora`, `primera_comparecencia`, `segunda_comparecencia`, `vista_en_su_fondo`, `lanzamiento`, `observaciones`, `sentencia`, `diligenciado`, `seleccionado`, `diligenciado_en`, `ejecutar`, `rediligenciar`, `desistido`, `caso_recibido`, `deuda_recibida`)
 VALUES
-	(1,1,'0','123','sadf',NULL,'12',0,12,12,12,NULL,12,12,'2011-09-27','asd',1,'asd','2011-09-14','as','12:00:00','2011-09-21','2011-09-08','0000-00-00','2011-09-05','testasda','2011-09-13',0,1,'0000-00-00',0,0,NULL,'2011-09-20','0000-00-00'),
-	(2,1,'0','','x',NULL,'',0,0,0,0,NULL,0,0,'2011-09-14','',1,'tsz','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'0000-00-00',0,1,NULL,'0000-00-00','0000-00-00'),
-	(3,1,'0','123','sadf',NULL,'12',0,12,12,12,NULL,12,12,'2011-09-27','asd',2,'asd1','2011-09-14','as','12:00:00','2011-09-21','2011-09-08','0000-00-00','2011-09-05','testlkasdla','2011-09-13',0,1,'0000-00-00',0,0,NULL,'2011-09-20','0000-00-00'),
-	(4,1,'0','','',NULL,'',0,0,0,0,NULL,0,0,'0000-00-00','',2,'cris','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'0000-00-00',1,0,NULL,'0000-00-00','0000-00-00');
+	(1,1,'12','121','John Doe',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'KPE11-0001','2011-09-28','506','09:00:00','2011-09-30','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',1,0,'2011-09-29',NULL,NULL,NULL,'2011-09-28','0000-00-00'),
+	(2,1,'0','2','RICARDO VAZQUEZ',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'0000-00-00','',2,'KPE11-0002','2011-09-29','905','09:00:00','2011-10-01','0000-00-00','0000-00-00','0000-00-00','Emplazado. ','0000-00-00',1,0,'2011-09-30',0,0,NULL,'2011-09-28','0000-00-00');
 
 /*!40000 ALTER TABLE `Casos` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -89,7 +87,7 @@ DROP TABLE IF EXISTS `Causales`;
 
 CREATE TABLE `Causales` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `causal` varchar(200) DEFAULT NULL,
+  `causal` varchar(100) DEFAULT NULL,
   `siglas` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -113,7 +111,7 @@ DROP TABLE IF EXISTS `Residenciales`;
 
 CREATE TABLE `Residenciales` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `residencial` varchar(11) DEFAULT NULL,
+  `residencial` varchar(100) DEFAULT NULL,
   `num_proyecto` varchar(11) DEFAULT NULL,
   `area` varchar(11) DEFAULT NULL,
   `tribunal` varchar(11) DEFAULT NULL,
@@ -125,7 +123,7 @@ LOCK TABLES `Residenciales` WRITE;
 
 INSERT INTO `Residenciales` (`id`, `residencial`, `num_proyecto`, `area`, `tribunal`)
 VALUES
-	(1,'Test Resi','1','1','San Juan');
+	(1,'Monte Hatillo','1','1','San Juan');
 
 /*!40000 ALTER TABLE `Residenciales` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -133,7 +131,7 @@ UNLOCK TABLES;
 
 
 --
--- Dumping routines (PROCEDURE) for database 'JurisOpus'
+-- Dumping routines (PROCEDURE) for database 'jurisopus'
 --
 DELIMITER ;;
 
