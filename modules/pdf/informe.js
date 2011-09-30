@@ -101,9 +101,9 @@ var addCases = function(doc){
     .moveUp()
     .text('JOHN DOE', doc.x + 70)
     .moveUp()
-    .text('En Algun Sitio', doc.x + 100)
+    .text('Alguna Persona Va Aqui', doc.x + 100)
     .moveUp()
-    .text('Emplazado', doc.x + 110);
+    .text('Emplazado', doc.x + 120);
     
     doc.x = 72;
 };

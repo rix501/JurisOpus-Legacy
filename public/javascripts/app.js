@@ -1,5 +1,6 @@
 (function($) {
     //Models and Collections  
+    
     var Models = {};
     
     Models.Caso = Backbone.Model.extend({
@@ -38,7 +39,7 @@
         window.PageView = Backbone.View.extend({
             template: _.template($("#page-template").html()),
             el: 'body',
-
+                        
             initialize: function() {
                 _.bindAll(this, 'render');
             },
@@ -52,6 +53,9 @@
         window.ContainerView = Backbone.View.extend({
             tagName: 'div',
             className: 'container',
+            
+            spinner: new Spinner({ lines: 12, length: 2, width: 2, radius: 4, color: '#000', speed: 1, trail: 42, shadow: false}),
+            
             render: function() {
                 $(this.el).html(this.template());
                 
@@ -87,7 +91,7 @@
                         that.trigger('loaded:residenciales');
                     },
                     error:function(err){
-                        console.log(err);
+                        // console.log(err);
                     }
                 });
             },
@@ -141,21 +145,66 @@
                 this.loadCausales();   
                                        
                 return this;
+            },
+        
+            successMessage: function(msg){
+                $infoMsg = $('#info-msg');
+                
+                $('#info-msg p').html(msg);
+                
+                if($infoMsg.hasClass('error')) 
+                    $infoMsg.removeClass('error');
+                    
+                if(!$infoMsg.hasClass('success')) 
+                    $infoMsg.addClass('success'); 
+                    
+                if(!$infoMsg.hasClass('in')) 
+                    $infoMsg.addClass('in');      
+                                     
+				$infoMsg.css('display','block');
+                window.setTimeout(function(){
+                    $('.alert-message[data-alert] .close').trigger('click');
+             	}, 1500);
+            },
+            
+            errorMessage: function(msg){
+                $infoMsg = $('.alert-message');
+                                        
+                $('.alert-message p').html(msg);
+                
+                if($infoMsg.hasClass('success')) 
+                    $infoMsg.removeClass('success');
+                    
+                if(!$infoMsg.hasClass('error'))
+                    $infoMsg.addClass('error');
+                
+                if(!$infoMsg.hasClass('in')) 
+                    $infoMsg.addClass('in');
+                
+				$infoMsg.css('display','block');
+                
+				window.setTimeout(function(){
+                    $('.alert-message[data-alert] .close').trigger('click');
+				}, 3000);
             }
+        
         });
         
         window.ContainerEntrarView = ContainerMainFormView.extend({
             template: _.template($("#container-entrar-template").html()),
             initialize: function() {
-                _.bindAll(this, 'render');
+                _.bindAll(this, 'render', 'submitForm' ,'successMessage', 'errorMessage');
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
             },
                         
             submitForm: function(event){
                 event.preventDefault();
+                                
+                this.spinner.spin($('.spinner')[0]);
                 
                 var caso = new Models.Caso();
+                var viewObj = this;
             
                 caso.save({
                     residencial: $('#residencial').val(),
@@ -189,10 +238,12 @@
                     observaciones: $('#observaciones').val()
                 },{
                     success: function(model){
-                        alert('kthxbie');
+                        viewObj.successMessage('Caso guardado');
+                        viewObj.spinner.stop();
                     },
                     error: function(){
-                        alert('Oops, something didnt work');
+                        viewObj.errorMessage('<strong>Error:</strong> Hubo un error guardando');
+                        viewObj.spinner.stop();
                     }
                 });
                 
@@ -227,7 +278,7 @@
                         });
                     },
                     error:function(err){
-                        console.log(err);
+                        // console.log(err);
                     }
                 });
             },
@@ -258,7 +309,7 @@
                         App.navigate('/editar/' + collection.at(0).id ,true);
                     },
                     error: function(collection, resp){
-                        alert(resp.responseText);
+                        window.ContainerMainFormView.prototype.errorMessage('<strong>No hubo resultados</strong>');
                     }
                 });
                 
@@ -280,7 +331,7 @@
             },
             
             error: function(err){
-                console.log(err);
+                this.errorMessage('Error buscando caso')
             },
             
             fillResidenciales: function(){
@@ -356,6 +407,8 @@
             submitForm: function(event){
                 event.preventDefault();
                 
+                var viewObj = this;
+                
                 this.model.save({
                     residencial: $('#residencial').val(),
                     edificio: $('#edificio').val(),
@@ -390,11 +443,10 @@
                     ejecutar: $('#ejecutar:checked').length
                 },{
                     success: function(model){
-                        alert('kthxbie');
+                        viewObj.successMessage('Caso editado y guardado');
                     },
                     error: function(model,err){
-                        console.log(model,err);
-                        alert('Oops, something didnt work');
+                        viewObj.errorMessage('<strong>Error:</strong> Intente de guardar otra vez');
                     }
                 });
                 
@@ -458,9 +510,7 @@
                 
                 var iframe = document.createElement("iframe");
                 iframe.src = "/pdf?type=demandas&casos=" + casosString;
-                
-                console.log(iframe.src);
-                
+                                
                 iframe.style.display = "none";
                 document.body.appendChild(iframe);
             },

@@ -5,11 +5,24 @@
     <!-- Local Libs -->
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
+    <script type="text/javascript" src="/javascripts/spin.min.js"></script>
     <!-- My Scripts -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('.login-form').submit(function(evt){
                 evt.preventDefault();
+                
+                var opts = {
+                  lines: 12, // The number of lines to draw
+                  length: 2, // The length of each line
+                  width: 2, // The line thickness
+                  radius: 4, // The radius of the inner circle
+                  color: '#000', // #rgb or #rrggbb
+                  speed: 1, // Rounds per second
+                  trail: 42, // Afterglow percentage
+                  shadow: false // Whether to render a shadow
+                };
+                var spinner = new Spinner(opts).spin($('.spinner')[0]);
                 
                 $.ajax({
                    url: '/login',
@@ -22,7 +35,8 @@
                        window.location = "/";
                    },
                    error: function(){
-                       $('#error-msg').css('display','block');
+                       spinner.stop();
+                       $('#info-msg').css('display','block');
                    }
                 });
             });
@@ -34,7 +48,7 @@
 </head>
 <body class="login">
     <h1>Juris Opus</h1>
-    <div class="alert-message error fade in" id="error-msg" data-alert="alert">
+    <div class="alert-message error fade in" id="info-msg" data-alert="alert">
         <a class="close" href="#">×</a>
         <p><strong>Error</strong> Intente de nuevo</p>
     </div>
@@ -54,6 +68,7 @@
             </div>
             <div class="clearfix submit-btns">
                 <button type="submit" class="btn primary">Entrar</button>
+                <div class='spinner'></div>
             </div>
         </fieldset>
     </form>

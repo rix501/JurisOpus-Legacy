@@ -3,12 +3,14 @@
 <head>
     <title>Juris Opus</title>
     <!-- Local Libs -->
-    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
+    <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
     <script type="text/javascript" src="/javascripts/underscore.min.js"></script>
     <script type="text/javascript" src="/javascripts/backbone.min.js"></script>
+    <script type="text/javascript" src="/javascripts/spin.min.js"></script>
     <!-- <script type="text/javascript" src="/javascripts/backbone.js"></script> -->
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
@@ -37,6 +39,10 @@
         <div id="content"></div>
     </script>
 	<script type="text/template" id="container-entrar-template">
+            <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+                <a class="close" href="#">×</a>
+                <p></p>
+            </div>
             <form class="main-form form-stacked">
                 <fieldset>
                     <legend>Entrar Caso Nuevo</legend>
@@ -242,11 +248,16 @@
                     </div>
                     <div class="clearfix submit-btns">
                         <button type="submit" class="btn primary">Guardar</button>
+                        <div class="spinner"></div>
                     </div>                
                 </fieldset>
             </form>
     </script>
     <script type="text/template" id="container-buscar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
         <form class="search form-stacked">
             <fieldset>
                 <legend>Buscar Caso</legend>
@@ -306,6 +317,10 @@
         </form>
     </script>
     <script type="text/template" id="container-editar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
         <form class="main-form form-stacked">
             <fieldset>
                 <legend>Editar Caso</legend>
@@ -567,6 +582,10 @@
         </form>
     </script>
     <script type="text/template" id="demandas-tables-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
         <button class="print btn">Imprimir</button>
         <h2 class="tables">Demandas</h2>
         <table id="table_id">
