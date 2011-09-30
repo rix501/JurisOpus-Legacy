@@ -57,12 +57,6 @@ body.login {
 	margin-top: 10px;
 }
 
-.main-form .spinner {
-    position: absolute;
-    left: 515px;
-    top: 14px;
-}
-
 hr {
 	border: 1px solid #919191;
 }
@@ -76,6 +70,23 @@ hr {
 	display: inline-block;
 	margin-right: 5px;
 }
+
+.input {
+    position: relative;
+}
+
+.input .spinner { 
+    position: absolute;
+    left: -15px;
+    top: 13px;
+}
+
+.submit-btns .spinner {
+    position: absolute;
+    left: 515px;
+    top: 14px;
+}
+
 .check {
     margin-top: 3px;
 }

@@ -54,7 +54,20 @@
             tagName: 'div',
             className: 'container',
             
-            spinner: new Spinner({ lines: 12, length: 2, width: 2, radius: 4, color: '#000', speed: 1, trail: 42, shadow: false}),
+            getSpinner: function(){
+                var opts = { 
+                    lines: 12, 
+                    length: 2, 
+                    width: 2, 
+                    radius: 4, 
+                    color: '#000', 
+                    speed: 1, 
+                    trail: 42, 
+                    shadow: false
+                };
+                
+                return new Spinner(opts);
+            },
             
             render: function() {
                 $(this.el).html(this.template());
@@ -72,7 +85,10 @@
                 var that = this;
                 
                 var residenciales = new Models.Residenciales();
-                   
+                
+                var residencialSpinner = this.getSpinner();
+                residencialSpinner.spin($(this.el).find('.residenciales .spinner')[0]);
+                
                 residenciales.fetch({
                     success: function(collection){
                         collection.each(function(model){
@@ -89,9 +105,11 @@
                             } 
                         });
                         that.trigger('loaded:residenciales');
+                        residencialSpinner.stop();
                     },
                     error:function(err){
                         // console.log(err);
+                        residencialSpinner.stop();
                     }
                 });
             },
@@ -100,6 +118,9 @@
                 var that = this;
                 
                 var causales = new Models.Causales();
+                
+                var causalesSpinner = this.getSpinner();
+                causalesSpinner.spin($(this.el).find('.causales .spinner')[0]);
                 
                 causales.fetch({
                     success: function(collection){
@@ -116,8 +137,11 @@
                               elSel.add(elOptNew); // IE only
                             } 
                         });
-                        
+                        causalesSpinner.stop();
                         that.trigger('loaded:causales');
+                    },
+                    error: function(){
+                        causalesSpinner.stop();
                     }
                 });
             },
@@ -199,9 +223,10 @@
             },
                         
             submitForm: function(event){
-                event.preventDefault();
-                                
-                this.spinner.spin($('.spinner')[0]);
+                event.preventDefault(); 
+                                           
+                var submitSpinner = this.getSpinner();
+                submitSpinner.spin($('.submit-btns .spinner')[0]);
                 
                 var caso = new Models.Caso();
                 var viewObj = this;
@@ -239,11 +264,11 @@
                 },{
                     success: function(model){
                         viewObj.successMessage('Caso guardado');
-                        viewObj.spinner.stop();
+                        submitSpinner.stop();
                     },
                     error: function(){
                         viewObj.errorMessage('<strong>Error:</strong> Hubo un error guardando');
-                        viewObj.spinner.stop();
+                        submitSpinner.stop();
                     }
                 });
                 
@@ -260,7 +285,10 @@
             
             loadResidenciales: function(){
                 var residenciales = new Models.Residenciales();
-                   
+                
+                var residencialSpinner = this.getSpinner();
+                residencialSpinner.spin($(this.el).find('.residenciales .spinner')[0]);
+                
                 residenciales.fetch({
                     success: function(collection){
                         collection.each(function(model){
@@ -276,9 +304,12 @@
                               elSel.add(elOptNew); // IE only
                             } 
                         });
+                        
+                        residencialSpinner.stop();
                     },
                     error:function(err){
                         // console.log(err);
+                        residencialSpinner.stop();
                     }
                 });
             },
@@ -288,7 +319,6 @@
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');
                 
-                this.loadResidenciales();
             },
             
             submitForm: function(event){
@@ -304,16 +334,28 @@
                     caso: $('#caso').val()
                 };
                 
+                var submitSpinner = this.getSpinner();
+                submitSpinner.spin($('.submit-btns .spinner')[0]);
+                
                 resultCasos.search(query, {
                     success:function(collection, resp){
                         App.navigate('/editar/' + collection.at(0).id ,true);
                     },
                     error: function(collection, resp){
+                        submitSpinner.stop();
                         window.ContainerMainFormView.prototype.errorMessage('<strong>No hubo resultados</strong>');
                     }
                 });
                 
                 return false;
+            },
+            
+            render: function(){
+                var that = window.ContainerView.prototype.render.call(this);
+                
+                this.loadResidenciales();
+                
+                return that;
             }
         });
         
