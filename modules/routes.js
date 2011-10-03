@@ -8,6 +8,8 @@ exports.setup = function(app, Models){
     ]; 
      
     var checkAuth = function(req, res, next){
+        req.session.auth = true;
+        
         if(req.url === "/login"){
             if(req.session && req.session.auth){
                 res.redirect('/');
@@ -187,7 +189,7 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        var pdf = pdfFactory('informes', {pdfTemplate: 'basic'});
+        var pdf = pdfFactory('informes', {pdfTemplate: 'basico'});
              
         res.header('Content-type','application/pdf');
         res.end(pdf, 'binary');

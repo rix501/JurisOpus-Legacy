@@ -109,8 +109,14 @@ hr {
     margin-bottom: 2px;
 }
 
-.print {
-    margin: 10px 0;
+.dataTables_filter {
+    width: 55%;
+}
+
+#table_id_wrapper .print {
+    position: absolute;
+    top: 23px;
+    left: 865px;
 }
 
 /*h2.tables {
@@ -135,8 +141,8 @@ form.list {
     width: 430px;
 }
 
-.informes-list {
-    width: 270px;
+.modal{
+    display: none;
 }
 
 .actualizar-list {

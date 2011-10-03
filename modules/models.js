@@ -303,6 +303,31 @@ Models.Casos = Backbone.Collection.extend({
         this.fetch(options);
     },
     pdf: function(query, options){
+        if(query.type === "demandas")
+            this.pdfDemanda(query, options);
+        
+        if(query.type === "informes")
+            this.pdfInforme(query, options);
+        
+    },
+    pdfInforme: function(query, options){
+        var resSuccess = options.success;
+        
+        options.success = function(collection, fields){
+            
+            var data = {};
+            
+            data.pdfTemplate = query.pdfTemplate;
+            
+            var pdf = pdfFactory(query.type, data);
+            
+            if(resSuccess) resSuccess(pdf); 
+        };
+        
+        options.success();
+        // this.fetch(options);
+    },
+    pdfDemanda: function(query, options){
         var resSuccess = options.success;
         
         options.success = function(collection, fields){    

@@ -111,7 +111,7 @@ var addCases = function(doc){
 module.exports = (function(){
     return {
         templates:{
-            basic: new informe()
+            basico: new informe()
         }
     };
 })();

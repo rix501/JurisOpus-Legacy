@@ -5,6 +5,7 @@
     <!-- Local Libs -->
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
     <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
@@ -30,8 +31,8 @@
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
                         <li class="demandas"><a href="/#/demandas">Demandas</a></li>
                         <li class="informes"><a href="/#/informes">Informes</a></li>
-                        <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li>
-                        <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li>
+                        <!-- <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li> -->
+                        <!-- <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -287,7 +288,7 @@
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell"> 
-                        or
+                        o
                     </div>
                 </div>
                 <div class="clearfix form-row">
@@ -300,7 +301,7 @@
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell"> 
-                        or
+                        o
                     </div>
                 </div>
                 <div class="clearfix form-row">
@@ -317,7 +318,7 @@
                         <button type="submit" class="btn primary">Buscar</button>
                     </div>  
                 </div>  
-            <fieldset>
+            </fieldset>
         </form>
     </script>
     <script type="text/template" id="container-editar-template">
@@ -559,41 +560,10 @@
         </form>
     </script>
     <script type="text/template" id="container-demandas-template">
-        <form class='list demandas-list'>
-            <ul class="unstyled">
-                <li>
-                    <input id="FaltaPago" name="but" type="button" class="btn redirect">
-                    <label for="but">Escoger casos para preparar demandas</label>
-                </li>
-                <li>
-                    <input id="FaltaPago" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Cobro de Dinero - FP</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Cobro y de Re-Examen - FR</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Re-Examen - RE</label>
-                </li>
-                <li>
-                    <input id="OcupacionIlegal" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Ocupacion Ilegal - OI</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Implementacion de Contrato - IC</label>
-                </li>
-            </ul>
-        </form>
-    </script>
-    <script type="text/template" id="demandas-tables-template">
         <div class="alert-message error fade in" id="info-msg" data-alert="alert">
             <a class="close" href="#">×</a>
             <p></p>
         </div>
-        <button class="print btn">Imprimir</button>
         <h2 class="tables">Demandas</h2>
         <table id="table_id">
         	<thead>
@@ -616,6 +586,39 @@
         </table>        
     </script>
     <script type="text/template" id="container-informes-template">
+        <h2>Informes</h2>
+        <div id="my-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+            </div>
+            <div class="modal-body">
+                <h3>¿Señalado para que fecha?</h3>
+                <input class="span3 datepicker" size="30" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button class="basico btn print primary">Imprimir</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span4">
+                <h3>Basico</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><button class="basico print btn">Imprimir &raquo;</button></p>
+            </div>
+            <div class="span4">
+                <h3>Basico</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><button class="btn mod">Imprimir &raquo;</button></p>
+            </div>
+            <div class="span4">
+                <h3>Basico</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><a class="print btn" href="/pdfTest">Imprimir &raquo;</a></p>
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="container-informes-list-template">
         <form class='list informes-list'>
             <ul class="unstyled">
                 <li>

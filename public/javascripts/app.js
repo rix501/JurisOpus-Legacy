@@ -69,6 +69,47 @@
                 return new Spinner(opts);
             },
             
+            successMessage: function(msg){
+                $infoMsg = $('#info-msg');
+                
+                $('#info-msg p').html(msg);
+                
+                if($infoMsg.hasClass('error')) 
+                    $infoMsg.removeClass('error');
+                    
+                if(!$infoMsg.hasClass('success')) 
+                    $infoMsg.addClass('success'); 
+                    
+                if(!$infoMsg.hasClass('in')) 
+                    $infoMsg.addClass('in');      
+                                     
+				$infoMsg.css('display','block');
+                window.setTimeout(function(){
+                    $('.alert-message[data-alert] .close').trigger('click');
+             	}, 1500);
+            },
+            
+            errorMessage: function(msg){
+                $infoMsg = $('.alert-message');
+                                        
+                $('.alert-message p').html(msg);
+                
+                if($infoMsg.hasClass('success')) 
+                    $infoMsg.removeClass('success');
+                    
+                if(!$infoMsg.hasClass('error'))
+                    $infoMsg.addClass('error');
+                
+                if(!$infoMsg.hasClass('in')) 
+                    $infoMsg.addClass('in');
+                
+				$infoMsg.css('display','block');
+                
+				window.setTimeout(function(){
+                    $('.alert-message[data-alert] .close').trigger('click');
+				}, 3000);
+            },
+            
             render: function() {
                 $(this.el).html(this.template());
                 
@@ -169,49 +210,7 @@
                 this.loadCausales();   
                                        
                 return this;
-            },
-        
-            successMessage: function(msg){
-                $infoMsg = $('#info-msg');
-                
-                $('#info-msg p').html(msg);
-                
-                if($infoMsg.hasClass('error')) 
-                    $infoMsg.removeClass('error');
-                    
-                if(!$infoMsg.hasClass('success')) 
-                    $infoMsg.addClass('success'); 
-                    
-                if(!$infoMsg.hasClass('in')) 
-                    $infoMsg.addClass('in');      
-                                     
-				$infoMsg.css('display','block');
-                window.setTimeout(function(){
-                    $('.alert-message[data-alert] .close').trigger('click');
-             	}, 1500);
-            },
-            
-            errorMessage: function(msg){
-                $infoMsg = $('.alert-message');
-                                        
-                $('.alert-message p').html(msg);
-                
-                if($infoMsg.hasClass('success')) 
-                    $infoMsg.removeClass('success');
-                    
-                if(!$infoMsg.hasClass('error'))
-                    $infoMsg.addClass('error');
-                
-                if(!$infoMsg.hasClass('in')) 
-                    $infoMsg.addClass('in');
-                
-				$infoMsg.css('display','block');
-                
-				window.setTimeout(function(){
-                    $('.alert-message[data-alert] .close').trigger('click');
-				}, 3000);
             }
-        
         });
         
         window.ContainerEntrarView = ContainerMainFormView.extend({
@@ -326,6 +325,8 @@
                 
                 var resultCasos = new Models.Casos();
                 
+                var viewObj = this;
+                
                 var query = {
                     residencial: $('#residencial').val(),
                     edificio: $('#edificio').val(),
@@ -339,11 +340,17 @@
                 
                 resultCasos.search(query, {
                     success:function(collection, resp){
-                        App.navigate('/editar/' + collection.at(0).id ,true);
+                        if(collection.length === 1){
+                            App.navigate('/editar/' + collection.at(0).id ,true);
+                        }
+                        else{
+                            submitSpinner.stop();
+                            viewObj.successMessage('Más de un resultado, escoger uno.');
+                        }
                     },
                     error: function(collection, resp){
                         submitSpinner.stop();
-                        window.ContainerMainFormView.prototype.errorMessage('<strong>No hubo resultados</strong>');
+                        viewObj.errorMessage('<strong>No hubo resultados</strong>');
                     }
                 });
                 
@@ -497,28 +504,10 @@
         });
         
         window.ContainerDemandasView = ContainerView.extend({
-            template:  _.template($("#container-demandas-template").html()),
-
-            events: {
-                'click .redirect':'redirect'  
-            },
-
-            redirect: function(event){
-                  location.href = '/pdf/SanJuan/'+event.target.id;
-            },
-
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.demandas').addClass('active');
-            }
-        });
-        
-        window.ContainerDemandasTablesView = ContainerDemandasView.extend({
-            template: _.template($("#demandas-tables-template").html()),
+            template: _.template($("#container-demandas-template").html()),
             
             events: {
-                'click .print.btn':'print',
+                'click .print':'print',
                 'click #table_id tr': 'selectRow'
             },
             
@@ -567,6 +556,8 @@
                     "bProcessing": true,
                     "sAjaxSource": '/casos-datatable'
                 });
+                
+                $(this.el).find('#table_id_filter').after('<button class="print btn">Imprimir</button>');
 
                 return this;
             }
@@ -576,7 +567,9 @@
             template:  _.template($("#container-informes-template").html()),
 
             events: {
-                'click .redirect':'redirect'  
+                'click .print':'print',
+                'click .mod' : 'modal',
+                'click .redirect':'redirect'
             },
 
             redirect: function(event){
@@ -587,39 +580,94 @@
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
-            }
-        });
-        
-        
-        window.ContainerInformesView = ContainerView.extend({
-            template:  _.template($("#container-informes-template").html()),
-
-            events: {
-                'click .redirect':'redirect'  
             },
-
-            redirect: function(event){
-                  location.href = '/test/'+event.target.id;
+            
+            modal: function(){
+                $('#my-modal').modal('show');
             },
-
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.informes').addClass('active');
+            
+            print: function(event){
+                
+                var informesString = "";
+                
+                var isModal = false;
+                var modal = null;
+                
+                var classList = $(event.target).attr('class');
+                
+                var template = $.trim(classList.replace(/print/i,'').replace(/primary/i,'').replace(/btn/i,''));
+                
+                var url = "/pdf?type=informes&pdfTemplate=" + template;         
+                
+                //It's a modal
+                if(event.target.parentNode.className.search(/modal/i) >= 0  ){
+                    isModal = true;
+                    modal = $(event.target.parentNode.parentNode);
+                    
+                    var args = "";
+                    
+                    modal.find('input').each(function(i, elem){
+                        args += $(elem).val() + ",";
+                    });
+                    
+                    args = args.substring(0, args.length - 1);
+                    
+                    //Input values go here
+                    url += "&args=" + args; 
+                }
+                                
+                var iframe = document.createElement("iframe");
+                
+                iframe.src = url;
+                                
+                iframe.style.display = "none";
+                document.body.appendChild(iframe);
+                
+                if(isModal){
+                    modal.modal('hide');
+                }
+            },
+            
+            render: function(){
+                $(this.el).html(this.template());
+                
+                var modal = $(this.el).find('#my-modal');
+                
+                modal.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                $(modal).find('.secondary').click(function(e){
+                    $(modal).modal('hide');
+                });
+                
+                $(modal).find('.print').click(this.print);
+                
+                var datepickers = $(this.el).find(".datepicker");
+                
+                _.forEach(datepickers, function(datepicker){
+                    $(datepicker).datepicker({
+                        beforeShow: function(input) {
+                            var field = $(input);
+                            var left = field.position().left + 382;
+                            var top = field.position().top + 142;
+                            setTimeout(function(){
+                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                            },1);                    
+                        },
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+                
+                return this;                
             }
+        
         });
         
         window.ContainerActualizarView = ContainerView.extend({
             template:  _.template($("#container-actualizar-template").html()),
-
-            events: {
-                'click .redirect':'redirect'  
-            },
-
-            redirect: function(event){
-                App.navigate('/actualizar/'+event.target.id ,true);
-            },
-
             initialize: function() {
             _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
@@ -629,15 +677,6 @@
         
         window.ContainerResolucionView = ContainerView.extend({
             template:  _.template($("#container-resolucion-template").html()),
-
-            events: {
-                'click .redirect':'redirect'  
-            },
-
-            redirect: function(event){
-                App.navigate('/resolucion/'+event.target.id ,true);
-            },
-
             initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
@@ -688,9 +727,9 @@
             },
             
             demandas: function(listName){
-                this.containerTablesView = new ContainerDemandasTablesView();
+                this.containerDemandasView = new ContainerDemandasView();
                 $('#content').empty();
-                $('#content').append(this.containerTablesView.render().el);
+                $('#content').append(this.containerDemandasView.render().el);
             },
             
             informes: function(){
