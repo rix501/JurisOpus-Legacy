@@ -119,12 +119,21 @@ hr {
     left: 865px;
 }
 
+#results {
+    display: none;
+}
+
 /*h2.tables {
     display: inline-block;
     margin-left: 10px;
     line-height: 10px;
 }
 */
+
+.results.btn {
+    display:none;
+}
+
 form.list {
     margin: 10px auto;
     border: 3px solid #919191;

@@ -277,17 +277,18 @@
 
         window.ContainerBuscarView = ContainerView.extend({
             events: {
-                'submit':'submitForm'
+                'submit':'submitForm',
+                'click .results.btn':'edit'
             },
             
             template:  _.template($("#container-buscar-template").html()),
             
             loadResidenciales: function(){
                 var residenciales = new Models.Residenciales();
-                
+            
                 var residencialSpinner = this.getSpinner();
                 residencialSpinner.spin($(this.el).find('.residenciales .spinner')[0]);
-                
+            
                 residenciales.fetch({
                     success: function(collection){
                         collection.each(function(model){
@@ -303,7 +304,7 @@
                               elSel.add(elOptNew); // IE only
                             } 
                         });
-                        
+                    
                         residencialSpinner.stop();
                     },
                     error:function(err){
@@ -312,21 +313,35 @@
                     }
                 });
             },
-            
+        
             initialize: function() {
-                _.bindAll(this, 'render');
+                _.bindAll(this, 'render', 'selectRow');
                 $('li.active').removeClass('active');
-                $('li.buscar').addClass('active');
-                
+                $('li.buscar').addClass('active');  
+            },
+        
+            selectRow: function(event){                
+                $('.results.btn').removeClass('disabled');
+                $(this.oTable.fnSettings().aoData).each(function (){
+                    $(this.nTr).removeClass('row_selected');
+                });
+                $(event.target.parentNode).addClass('row_selected');
             },
             
+            edit: function(){
+                if($('.results.btn').hasClass('disabled'))
+                    return false;
+                
+                App.navigate('/editar/' + this.collection.at(0).id ,true);
+            },
+        
             submitForm: function(event){
                 event.preventDefault();
-                
+            
                 var resultCasos = new Models.Casos();
-                
+            
                 var viewObj = this;
-                
+            
                 var query = {
                     residencial: $('#residencial').val(),
                     edificio: $('#edificio').val(),
@@ -334,19 +349,54 @@
                     nombre: $('#nombre').val(),
                     caso: $('#caso').val()
                 };
-                
+            
                 var submitSpinner = this.getSpinner();
                 submitSpinner.spin($('.submit-btns .spinner')[0]);
-                
+            
                 resultCasos.search(query, {
                     success:function(collection, resp){
                         if(collection.length === 1){
                             App.navigate('/editar/' + collection.at(0).id ,true);
                         }
                         else{
+                            viewObj.collection = collection;
+                            
                             submitSpinner.stop();
                             viewObj.successMessage('Más de un resultado, escoger uno.');
-                        }
+                        
+                            $('#results').show();
+                            $('.results.btn').show();
+                        
+                            viewObj.oTable = $('#results').dataTable({
+                                "bDestroy": true,
+                                "sDom": 't',                      
+                                "aoColumns": [                         
+                                    { 
+                                        "mDataProp": "apartamento",
+                                        "sTitle":"Apartamento" 
+                                    },
+                                    { 
+                                        "mDataProp": "area",
+                                        "sTitle":"Area" 
+                                    },
+                                    {
+                                        "mDataProp": "caso",
+                                        "sTitle":"Caso" 
+                                        },
+                                    {   
+                                        "mDataProp": "causal",
+                                        "sTitle":"Causal" 
+                                    },
+                                    { 
+                                        "mDataProp": "edificio",
+                                        "sTitle":"Edificio" 
+                                    } 
+                                ],
+                                "aaData":collection.toJSON()
+                            });
+                            
+                            $(viewObj.oTable).find('tbody').click(viewObj.selectRow);
+                        }    
                     },
                     error: function(collection, resp){
                         submitSpinner.stop();
