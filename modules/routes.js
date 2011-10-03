@@ -8,7 +8,7 @@ exports.setup = function(app, Models){
     ]; 
      
     var checkAuth = function(req, res, next){
-        req.session.auth = true;
+        //req.session.auth = true;
         
         if(req.url === "/login"){
             if(req.session && req.session.auth){
