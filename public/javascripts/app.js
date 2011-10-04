@@ -277,8 +277,7 @@
 
         window.ContainerBuscarView = ContainerView.extend({
             events: {
-                'submit':'submitForm',
-                'click .results.btn':'edit'
+                'submit':'submitForm'
             },
             
             template:  _.template($("#container-buscar-template").html()),
@@ -315,13 +314,13 @@
             },
         
             initialize: function() {
-                _.bindAll(this, 'render', 'selectRow');
+                _.bindAll(this, 'render', 'selectRow', 'edit');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');  
             },
         
-            selectRow: function(event){                
-                $('.results.btn').removeClass('disabled');
+            selectRow: function(event){
+                $('.edit.btn').removeClass('disabled');
                 $(this.oTable.fnSettings().aoData).each(function (){
                     $(this.nTr).removeClass('row_selected');
                 });
@@ -331,8 +330,23 @@
             edit: function(){
                 if($('.results.btn').hasClass('disabled'))
                     return false;
+                    
+                var aTrs = this.oTable.fnGetNodes();
+                var selectedRow;
                 
-                App.navigate('/editar/' + this.collection.at(0).id ,true);
+                _.each(aTrs, function(attribute){
+                    if($(attribute).hasClass('row_selected'))
+                        selectedRow = attribute;
+                });
+            
+                if(selectedRow){
+                    this.collection.each(function(model){
+                        if(model.get('caso') === $(selectedRow).children('.caso').text()){
+                            $('#results-modal').modal('hide');
+                            App.navigate('/editar/' + model.id ,true);
+                        }
+                    });
+                }    
             },
         
             submitForm: function(event){
@@ -362,14 +376,13 @@
                             viewObj.collection = collection;
                             
                             submitSpinner.stop();
-                            viewObj.successMessage('Más de un resultado, escoger uno.');
                         
                             $('#results').show();
                             $('.results.btn').show();
                         
                             viewObj.oTable = $('#results').dataTable({
                                 "bDestroy": true,
-                                "sDom": 't',                      
+                                "sDom": 'tp',                      
                                 "aoColumns": [                         
                                     { 
                                         "mDataProp": "apartamento",
@@ -381,7 +394,8 @@
                                     },
                                     {
                                         "mDataProp": "caso",
-                                        "sTitle":"Caso" 
+                                        "sTitle":"Caso",
+                                        "sClass":"caso"
                                         },
                                     {   
                                         "mDataProp": "causal",
@@ -396,6 +410,13 @@
                             });
                             
                             $(viewObj.oTable).find('tbody').click(viewObj.selectRow);
+                            
+                            $('#results-modal').removeClass('hide');
+                            
+                            if(!$('#results-modal').hasClass('in'))
+                                $('#results-modal').addClass('in');
+                            
+                            $('#results-modal').modal('show');
                         }    
                     },
                     error: function(collection, resp){
@@ -411,6 +432,20 @@
                 var that = window.ContainerView.prototype.render.call(this);
                 
                 this.loadResidenciales();
+                
+                var modal = $(this.el).find('#results-modal');
+                
+                modal.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                $(modal).find('.secondary').click(function(e){
+                    $(modal).modal('hide');
+                });
+                
+                $(modal).find('.edit').click(this.edit);
                 
                 return that;
             }

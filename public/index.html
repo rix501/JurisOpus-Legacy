@@ -261,6 +261,20 @@
             <a class="close" href="#">×</a>
             <p></p>
         </div>
+        <div id="results-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>Resultados. Escoja uno.</h3>
+            </div>
+            <div class="modal-body">
+                <table id='results'>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary disabled edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
         <form class="search form-stacked">
             <fieldset>
                 <legend>Buscar Caso</legend>
@@ -320,10 +334,6 @@
                 </div>  
             </fieldset>
         </form>
-        
-        <table id='results'>
-        </table>
-        <button class="btn primary disabled results">Editar</button>
     </script>
     <script type="text/template" id="container-editar-template">
         <div class="alert-message error fade in" id="info-msg" data-alert="alert">

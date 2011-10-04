@@ -82,7 +82,7 @@
         escape.call(this)
         backdrop.call(this, function () {
           that.$element
-            .appendTo(document.body)
+            .appendTo('#content')
             .show()
 
           if ($.support.transition && that.$element.hasClass('fade')) {
@@ -137,7 +137,7 @@
       var doAnimate = $.support.transition && animate
 
       this.$backdrop = $('<div class="modal-backdrop ' + animate + '" />')
-        .appendTo(document.body)
+        .appendTo('#content')
 
       if ( this.settings.backdrop != 'static' ) {
         this.$backdrop.click($.proxy(this.hide, this))

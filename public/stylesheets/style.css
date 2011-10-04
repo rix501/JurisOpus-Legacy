@@ -119,8 +119,9 @@ hr {
     left: 865px;
 }
 
-#results {
-    display: none;
+#results-modal {
+    width: 700px;
+    left: 43%;
 }
 
 /*h2.tables {
@@ -129,10 +130,6 @@ hr {
     line-height: 10px;
 }
 */
-
-.results.btn {
-    display:none;
-}
 
 form.list {
     margin: 10px auto;
