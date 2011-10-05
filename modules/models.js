@@ -334,7 +334,7 @@ Models.Casos = Backbone.Collection.extend({
             
             collection.each(function(model){
                var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
-               var causal = model.get('causal').replace(/ /g, "").toLowerCase();
+               var causal = model.get('causal').replace(/ /g, "").replace(/-/g, "").toLowerCase();
                
                model.set({
                    pdfTemplate: causal,

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-09-29 03:53:50 +0000
+# Generation Time: 2011-10-05 02:10:19 +0000
 # ************************************************************
 
 
@@ -51,7 +51,7 @@ CREATE TABLE `Casos` (
   `segunda_comparecencia` date DEFAULT NULL,
   `vista_en_su_fondo` date DEFAULT NULL,
   `lanzamiento` date DEFAULT NULL,
-  `observaciones` varchar(255) DEFAULT NULL,
+  `observaciones` text,
   `sentencia` date DEFAULT NULL,
   `diligenciado` tinyint(1) DEFAULT NULL,
   `seleccionado` tinyint(1) DEFAULT NULL,
@@ -73,7 +73,7 @@ LOCK TABLES `Casos` WRITE;
 
 INSERT INTO `Casos` (`id`, `residencial`, `edificio`, `apartamento`, `nombre`, `ingresado`, `area`, `completado`, `renta_mensual`, `meses_adeudados`, `deuda_renta`, `deuda_recargo`, `deuda_renta_negativa`, `deuda_total`, `ultimo_reexamen`, `incumplimiento`, `causal`, `caso`, `presentacion`, `sala`, `hora`, `primera_comparecencia`, `segunda_comparecencia`, `vista_en_su_fondo`, `lanzamiento`, `observaciones`, `sentencia`, `diligenciado`, `seleccionado`, `diligenciado_en`, `ejecutar`, `rediligenciar`, `desistido`, `caso_recibido`, `deuda_recibida`)
 VALUES
-	(1,1,'12','121','John Doe',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'KPE11-0001','2011-09-28','506','09:00:00','2011-09-30','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',1,0,'2011-09-29',NULL,NULL,NULL,'2011-09-28','0000-00-00'),
+	(1,1,'12','121','Luis Pomales',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'KPE11-0001','2011-09-28','506','09:00:00','2011-09-30','2011-10-04','0000-00-00','0000-00-00','Se señalo v','2011-10-17',1,0,'2011-09-29',0,0,NULL,'2011-09-28','0000-00-00'),
 	(2,1,'0','2','RICARDO VAZQUEZ',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'0000-00-00','',2,'KPE11-0002','2011-09-29','905','09:00:00','2011-10-01','0000-00-00','0000-00-00','0000-00-00','Emplazado. ','0000-00-00',1,0,'2011-09-30',0,0,NULL,'2011-09-28','0000-00-00');
 
 /*!40000 ALTER TABLE `Casos` ENABLE KEYS */;
@@ -97,8 +97,11 @@ LOCK TABLES `Causales` WRITE;
 
 INSERT INTO `Causales` (`id`, `causal`, `siglas`)
 VALUES
-	(1,'Ocupacion Ilegal','OI'),
-	(2,'Falta de Pago','FP');
+	(1,'Ocupacion Ilegal','IC'),
+	(2,'Falta de Pago','FP'),
+	(3,'Implementacion de Contrato','OI'),
+	(4,'Re-Examen','RE'),
+	(5,'Cobro y de Re-Examen','FR');
 
 /*!40000 ALTER TABLE `Causales` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -123,7 +126,7 @@ LOCK TABLES `Residenciales` WRITE;
 
 INSERT INTO `Residenciales` (`id`, `residencial`, `num_proyecto`, `area`, `tribunal`)
 VALUES
-	(1,'Monte Hatillo','1','1','San Juan');
+	(1,'Jardines de Monte Hatillo','1','1','San Juan');
 
 /*!40000 ALTER TABLE `Residenciales` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -145,23 +148,23 @@ DELIMITER ;;
 	IN p_edificio INT(11), 
 	IN p_apartamento VARCHAR(11), 
 	IN p_area VARCHAR(11), 
-	IN p_nombre VARCHAR(11), 
+	IN p_nombre VARCHAR(200), 
 	IN p_casoRecibido DATE, 
 	IN p_seleccionado TINYINT(1), 
 	IN p_completado TINYINT(1), 
 	IN p_causal INT(11), 
-	IN p_rentaMensual DECIMAL(11,0), 
+	IN p_rentaMensual DECIMAL(11,2), 
 	IN p_mesesAdeudados INT(11), 
-	IN p_deudaRenta DECIMAL(11,0), 
-	IN p_deudaRentaNegativa DECIMAL(11,0), 
-	IN p_deudaRecibida DECIMAL(11,0), 
-	IN p_deudaTotal DECIMAL(11,0), 
+	IN p_deudaRenta DECIMAL(11,2), 
+	IN p_deudaRentaNegativa DECIMAL(11,2), 
+	IN p_deudaRecibida DECIMAL(11,2), 
+	IN p_deudaTotal DECIMAL(11,2), 
 	IN p_ultimoReexamen DATE, 
-	IN p_incumplimiento VARCHAR(11), 
-	IN p_caso VARCHAR(11), 
+	IN p_incumplimiento VARCHAR(200), 
+	IN p_caso VARCHAR(10), 
 	IN p_presentacion DATE, 
 	IN p_diligenciado TINYINT(1), 
-	IN p_diligenciadoEn DATE, 
+	IN p_diligenciadoEn VARCHAR(50), 
 	IN p_sala VARCHAR(11), 
 	IN p_hora TIME, 
 	IN p_primeraComparecencia DATE, 
@@ -169,7 +172,7 @@ DELIMITER ;;
 	IN p_vistaSegundo DATE, 
 	IN p_sentencia DATE, 
 	IN p_lanzamiento DATE, 
-	IN p_observaciones VARCHAR(11)
+	IN p_observaciones TEXT
 )
 BEGIN
 	INSERT INTO Casos
@@ -588,23 +591,23 @@ END */;;
 	IN p_edificio INT(11), 
 	IN p_apartamento VARCHAR(11), 
 	IN p_area VARCHAR(11), 
-	IN p_nombre VARCHAR(11), 
+	IN p_nombre VARCHAR(200), 
 	IN p_casoRecibido DATE, 
 	IN p_seleccionado TINYINT(1), 
 	IN p_completado TINYINT(1), 
 	IN p_causal INT(11), 
-	IN p_rentaMensual DECIMAL(11,0), 
+	IN p_rentaMensual DECIMAL(11,2), 
 	IN p_mesesAdeudados INT(11), 
-	IN p_deudaRenta DECIMAL(11,0), 
-	IN p_deudaRentaNegativa DECIMAL(11,0), 
-	IN p_deudaRecibida DECIMAL(11,0), 
-	IN p_deudaTotal DECIMAL(11,0), 
+	IN p_deudaRenta DECIMAL(11,2), 
+	IN p_deudaRentaNegativa DECIMAL(11,2), 
+	IN p_deudaRecibida DECIMAL(11,2), 
+	IN p_deudaTotal DECIMAL(11,2), 
 	IN p_ultimoReexamen DATE, 
-	IN p_incumplimiento VARCHAR(11), 
-	IN p_caso VARCHAR(11), 
+	IN p_incumplimiento VARCHAR(200), 
+	IN p_caso VARCHAR(10), 
 	IN p_presentacion DATE, 
 	IN p_diligenciado TINYINT(1), 
-	IN p_diligenciadoEn DATE, 
+	IN p_diligenciadoEn VARCHAR(50), 
 	IN p_sala VARCHAR(11), 
 	IN p_hora TIME, 
 	IN p_primeraComparecencia DATE, 
@@ -612,7 +615,7 @@ END */;;
 	IN p_vistaSegundo DATE, 
 	IN p_sentencia DATE, 
 	IN p_lanzamiento DATE, 
-	IN p_observaciones VARCHAR(11),
+	IN p_observaciones TEXT,
 	IN p_rediligenciar TINYINT(1), 
 	IN p_ejecutar TINYINT(1)
 )
