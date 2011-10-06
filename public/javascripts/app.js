@@ -593,7 +593,7 @@
             
             events: {
                 'click .print':'print',
-                'click #table_id tr': 'selectRow'
+                'click #demandas tr': 'selectRow'
             },
             
             initialize: function(){
@@ -617,7 +617,7 @@
 
                 _.each(aTrs, function(aTr){
                     if($(aTr).hasClass('row_selected')){
-                        tdCase = $(aTr).children('td')[8];
+                        tdCase = $(aTr).children('td.caso')[0];
                         casosString += $(tdCase).text() + "|";
                     }
                 });
@@ -633,16 +633,54 @@
             
             render: function(){
                 $(this.el).html(this.template());
-                
-                this.oTable = $(this.el).children('#table_id').dataTable( {
+
+                //better option is to get casos through backbone.fetch that way can attache the collection to the view
+
+                this.oTable = $(this.el).children('#demandas').dataTable({
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "bProcessing": true,
+                    "bProcessing": true,                      
+                    "aoColumns": [                         
+                        {
+                            "mDataProp": "caso",
+                            "sTitle":"Caso",
+                            "sClass":"caso"
+                        },
+                        {   
+                            "mDataProp": "nombre",
+                            "sTitle":"Nombre" 
+                        },
+                        {   
+                            "mDataProp": "causal",
+                            "sTitle":"Causal" 
+                        },
+                        {
+                            "mDataProp": "residencial",
+                            "sTitle":"Residencial",
+                        },
+                        { 
+                            "mDataProp": "edificio",
+                            "sTitle":"Edificio" 
+                        },
+                        { 
+                            "mDataProp": "apartamento",
+                            "sTitle":"Apartamento" 
+                        },
+                        { 
+                            "mDataProp": "casoRecibido",
+                            "sTitle":"Ingresado" 
+                        },
+                        { 
+                            "mDataProp": "presentacion",
+                            "sTitle":"Fecha Presentacion" 
+                        },
+                        
+                    ],
                     "sAjaxSource": '/casos-datatable'
                 });
                 
-                $(this.el).find('#table_id_filter').after('<button class="print btn">Imprimir</button>');
+                $(this.el).find('#demandas_filter').after('<button class="print btn">Imprimir</button>');
 
                 return this;
             }

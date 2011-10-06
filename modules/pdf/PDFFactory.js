@@ -16,7 +16,6 @@ var PDFFactory = module.exports = function(type, data){
     if(_.isArray(data)){
         //It's an array
         _.each(data, function(single){
-            console.log(single.pdfTemplate);
             doc = pdf.templates[single.pdfTemplate].draw(doc, single);
         });
     }

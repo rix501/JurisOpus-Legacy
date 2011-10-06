@@ -83,26 +83,30 @@ Backbone.Model.prototype.toDatatableColumns = function(){
 Backbone.Model.prototype.toDatatableArray = function(){
     var fields = [ 'residencial', 'edificio', 'apartamento', 'casoRecibido', 'seleccionado', 'causal', 'deudaTotal', 'incumplimiento', 'caso', 'presentacion', 'observaciones' ];
     
-    var data = _.select(this.toJSON(), function(attribute,key){
-        return fields.indexOf(key) !== -1;
-    });
+    // var data = _.select(this.toJSON(), function(attribute,key){
+    //     return fields.indexOf(key) !== -1;
+    // });
     
-    return _.map(data, function(attribute){
+    var data = this.toJSON();
+        
+    _.each(data, function(attribute, key){
        if(attribute === null){
-           return "";
+           data[key] = "";
        }
        
        if(_.isDate(attribute)){
            if(isNaN( attribute.getTime() )){
-               return "";
+               data[key] = "";
            }
            else{
-               return Backbone.utils.dateToString(attribute);
+               data[key] = Backbone.utils.dateToString(attribute);
            }
        }
              
        return  attribute;
     });
+    
+    return data;
 };
 
 Backbone.Collection.prototype.toDatatableColumns = function(){
@@ -115,7 +119,7 @@ Backbone.Collection.prototype.toDatatableArray = function(){
     dt.aaData = _.map(this.models, function(model, key){
         return model.toDatatableArray();
     });
-        
+            
     return dt;
 };
 

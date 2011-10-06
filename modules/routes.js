@@ -8,7 +8,8 @@ exports.setup = function(app, Models){
     ]; 
      
     var checkAuth = function(req, res, next){
-        // req.session.auth = true;
+        if(app.settings.env === 'development')
+            req.session.auth = true;
         
         if(req.url === "/login"){
             if(req.session && req.session.auth){
@@ -189,7 +190,7 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        var pdf = pdfFactory('demandas', {pdfTemplate: 'cobroydereexamen'});
+        var pdf = pdfFactory('demandas', {pdfTemplate: 'faltadepago'});
              
         res.header('Content-type','application/pdf');
         res.end(pdf, 'binary');
