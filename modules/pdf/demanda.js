@@ -486,16 +486,7 @@ ocupacionilegal.prototype.drawBullets = function(doc,data){
     });
 };
 
-<<<<<<< HEAD
-var ocupacionilegalTest = demanda.makeSubclass();
-ocupacionilegalTest.prototype.draw = function(doc, data){
-    data.causalDescription = 'DESAHUCIO EN PRECARIO';
-    
-    return demanda.prototype.draw.call(this, doc, data);
-};
-ocupacionilegalTest.prototype.drawBullets = function(doc,data){
-    doc.text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial "+ data.residencial +", ubicado en el Municipio de San Juan.",{
-=======
+
 var reexamen = demanda.makeSubclass();
 reexamen.prototype.draw = function(doc, data){
     data.causalDescription = 'DESAHUCIO POR INCUMPLIMIENTO DE CONTRATO';
@@ -504,32 +495,20 @@ reexamen.prototype.draw = function(doc, data){
 };
 reexamen.prototype.drawBullets = function(doc,data){
     doc.text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial " + data.residencial +", ubicado en el Municipio de " + data.municipio +"*.",{
->>>>>>> 72752bb4d162f8c29c7bf3a8208826003da5b7d9
         indent: 72,
         align: 'justify',
         lineGap: 10
     })
-<<<<<<< HEAD
-    .text("2. La parte Demandada ocupa el apartamento "+ data.apartamento +" en el edificio "+ data.edificio +" de dicho complejo en calidad de precarista, sin que medie un contrato de arrendamiento, o autorización alguna para ello.",{
-=======
     .text("2. La parte Demandada ocupa el apartamento apartamento del edificio edificio de dicho complejo, y a pesar de los requerimientos de la parte compareciente para que desaloje el mismo sin necesidad de tener que recurrir ante este Hon. Tribunal, la parte Demandada no ha desalojado el mismo.",{
->>>>>>> 72752bb4d162f8c29c7bf3a8208826003da5b7d9
         indent: 72,
         align: 'justify',
         lineGap: 10
     })
-<<<<<<< HEAD
-    .text("3. La parte demandada se ha negado a desalojar la unidad de vivienda de referencia, a pesar de las gestiones que para esos fines ha realizado la parte demandante.",{
-=======
     .text("3. La parte demandada incumplió con el contrato de arrendamiento por no haber realizado su recertificación anual.",{
->>>>>>> 72752bb4d162f8c29c7bf3a8208826003da5b7d9
         indent: 72,
         align: 'justify',
         lineGap: 10
     })
-<<<<<<< HEAD
-    .text("4. Por esta razón la parte compareciente se ha visto obligada a presentar la presente acción.*",{
-=======
     .text("4. Mediante la presente se informa que la dirección postal de la parte Demandante es la siguiente:",{
         indent: 72,
         align: 'justify',
@@ -589,7 +568,6 @@ pagoyreexamen.prototype.drawBullets = function(doc,data){
         lineGap: 10
     })
     .text("4. La parte demandada incumplió con el contrato de arrendamiento por no haber realizado su recertificación anual.",{
->>>>>>> 72752bb4d162f8c29c7bf3a8208826003da5b7d9
         indent: 72,
         align: 'justify',
         lineGap: 10
@@ -601,8 +579,6 @@ pagoyreexamen.prototype.drawBullets = function(doc,data){
     });
 };
 
-<<<<<<< HEAD
-=======
 var test = pdf.makeSubclass();
 test.prototype.draw = function(doc, data){
    var y, x, width, height;
