@@ -114,13 +114,12 @@ Backbone.Collection.prototype.toDatatableColumns = function(){
 };
 
 Backbone.Collection.prototype.toDatatableArray = function(){
-    var dt = { aaData : [] };
     
-    dt.aaData = _.map(this.models, function(model, key){
-        return model.toDatatableArray();
+    _.each(this.models, function(model, key, models){
+        models[key] = model.toDatatableArray();
     });
             
-    return dt;
+    return this.models;
 };
 
 Backbone.sync = function(method, model, options) {

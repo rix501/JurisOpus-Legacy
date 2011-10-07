@@ -4,13 +4,11 @@ var tribunalHeaders = {
     'sanjuan': 'SALA SUPERIOR DE SAN JUAN'
 };
 
-//Falta de Pago, Re-Examen, Ocupación Ilegal, Incumplimiento de Contrato, Pago y Re-Examen.
-
 //Implementacion de Contrato - OI
 //Ocupacion Ilegal - IC
 //Re-Examen - RE
-//Cobro y de Re-Examen - FR
-//Cobro de Dinero - FP
+//Pago y de Re-Examen - FR
+//Falta de Pago - FP
 
 var demanda = pdf.makeSubclass();
 demanda.prototype.draw = function(doc, data){

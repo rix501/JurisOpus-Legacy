@@ -113,7 +113,15 @@ hr {
     width: 55%;
 }
 
-#demandas_wrapper .print {
+.dataTables_wrapper {
+    display:none;
+}
+
+.dataTables_wrapper.active {
+    display:block;
+}
+
+.dataTables_wrapper .print {
     position: absolute;
     top: 23px;
     left: 865px;

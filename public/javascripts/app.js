@@ -86,7 +86,7 @@
 				$infoMsg.css('display','block');
                 window.setTimeout(function(){
                     $('.alert-message[data-alert] .close').trigger('click');
-             	}, 1500);
+                }, 1500);
             },
             
             errorMessage: function(msg){
@@ -465,7 +465,7 @@
             },
             
             error: function(err){
-                this.errorMessage('Error buscando caso')
+                this.errorMessage('Error buscando caso');
             },
             
             fillResidenciales: function(){
@@ -593,13 +593,31 @@
             
             events: {
                 'click .print':'print',
-                'click #demandas tr': 'selectRow'
+                'click .tabs li a': 'selectTab'
             },
             
             initialize: function(){
-                _.bindAll(this, 'render', 'selectRow');
+                _.bindAll(this, 'render', 'selectRow', 'loadTables');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
+            },
+            
+            selectTab: function(event){
+                event.preventDefault();
+                $('.tabs li.active').removeClass('active');
+                $('.dataTables_wrapper').removeClass('active');
+                
+                var liNode = $(event.target).parent('li');
+                
+                var demandaType = liNode.attr('class');
+                
+                $('#' + demandaType + '_wrapper').addClass('active');
+                
+                var oTable = this['oTable' + demandaType];                
+                oTable.fnAdjustColumnSizing();
+                oTable.fnDraw();
+                
+                liNode.addClass('active');
             },
             
             selectRow: function(event){
@@ -613,8 +631,17 @@
             
             print: function(){
                 var casosString = "";
-                var aTrs = this.oTable.fnGetNodes();
-
+                
+                var liNode = $('.tabs li.active');
+                
+                var demandaType = liNode.attr('class').replace(/active/i, '').trim();
+                
+                var oTable = this['oTable' + demandaType];
+                
+                console.log(this['oTable' + demandaType], 'oTable' + demandaType, this);
+                
+                var aTrs = oTable.fnGetNodes();
+                
                 _.each(aTrs, function(aTr){
                     if($(aTr).hasClass('row_selected')){
                         tdCase = $(aTr).children('td.caso')[0];
@@ -631,22 +658,38 @@
                 document.body.appendChild(iframe);
             },
             
-            render: function(){
-                $(this.el).html(this.template());
-
-                //better option is to get casos through backbone.fetch that way can attache the collection to the view
-
-                this.oTable = $(this.el).children('#demandas').dataTable({
+            loadTables: function(collection, reponse){
+                var ic = []; 
+                var oi = []; 
+                var re = []; 
+                var fr = []; 
+                var fp = [];                
+                
+                this.collection.each(function(model){
+                    switch (model.get('causalIniciales').toLowerCase()) {
+                        case 'ic':
+                            ic.push(model.toJSON());
+                            break;
+                        case 'oi':
+                            oi.push(model.toJSON());
+                            break;
+                        case 're':
+                            re.push(model.toJSON());
+                            break;
+                        case 'fr':
+                            fr.push(model.toJSON());
+                            break;
+                        case 'fp':
+                            fp.push(model.toJSON());
+                            break;
+                    }
+                });
+                
+                var opts = {
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "bProcessing": true,                      
                     "aoColumns": [                         
-                        {
-                            "mDataProp": "caso",
-                            "sTitle":"Caso",
-                            "sClass":"caso"
-                        },
                         {   
                             "mDataProp": "nombre",
                             "sTitle":"Nombre" 
@@ -657,7 +700,7 @@
                         },
                         {
                             "mDataProp": "residencial",
-                            "sTitle":"Residencial",
+                            "sTitle":"Residencial"
                         },
                         { 
                             "mDataProp": "edificio",
@@ -674,13 +717,73 @@
                         { 
                             "mDataProp": "presentacion",
                             "sTitle":"Fecha Presentacion" 
-                        },
-                        
-                    ],
-                    "sAjaxSource": '/casos-datatable'
-                });
+                        }
+                    ]
+                };
                 
-                $(this.el).find('#demandas_filter').after('<button class="print btn">Imprimir</button>');
+                var fpOpts = {
+                    aaData: fp
+                };
+                var oiOpts = {
+                    aaData: oi
+                };
+                var reOpts = {
+                    aaData: re
+                };
+                var frOpts = {
+                    aaData: fr
+                };
+                var icOpts = {
+                    aaData: ic
+                };
+                
+                 _.defaults(fpOpts, opts);
+                 _.defaults(oiOpts, opts);
+                 _.defaults(reOpts, opts);
+                 _.defaults(frOpts, opts);
+                 _.defaults(icOpts, opts);
+                
+                this.oTablefp = $('#fp').dataTable(fpOpts);
+                this.oTablefp.fnAdjustColumnSizing();                
+                
+                this.oTableoi = $('#oi').dataTable(oiOpts);
+                this.oTableoi.fnAdjustColumnSizing();
+                
+                this.oTablere = $('#re').dataTable(reOpts);
+                this.oTablere.fnAdjustColumnSizing();
+                
+                this.oTablefr = $('#fr').dataTable(frOpts);
+                this.oTablefr.fnAdjustColumnSizing();
+                
+                this.oTableic = $('#ic').dataTable(icOpts);
+                this.oTableic.fnAdjustColumnSizing();
+                
+                $('#fp_filter').after('<button class="print btn">Imprimir</button>');
+                $('#oi_filter').after('<button class="print btn">Imprimir</button>');
+                $('#re_filter').after('<button class="print btn">Imprimir</button>');
+                $('#fr_filter').after('<button class="print btn">Imprimir</button>');
+                $('#ic_filter').after('<button class="print btn">Imprimir</button>');
+                
+                $('#ic_wrapper').addClass('active');
+                this.oTableic.fnAdjustColumnSizing();
+                this.oTableic.fnDraw();
+                
+                $('table.demanda tr').click(this.selectRow);
+            },
+            
+            render: function(){
+                $(this.el).html(this.template());
+      
+                this.collection = new Models.Casos();
+                
+                this.collection.url = '/casos-datatable';
+                
+                this.collection.fetch({
+                    success: this.loadTables,
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
 
                 return this;
             }
