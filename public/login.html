@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Juris Opus</title>
+    <!-- Local Libs -->
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
+    <script type="text/javascript" src="/javascripts/spin.min.js"></script>
+    <!-- My Scripts -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.login-form').submit(function(evt){
+                evt.preventDefault();
+                
+                var opts = {
+                  lines: 12, // The number of lines to draw
+                  length: 2, // The length of each line
+                  width: 2, // The line thickness
+                  radius: 4, // The radius of the inner circle
+                  color: '#000', // #rgb or #rrggbb
+                  speed: 1, // Rounds per second
+                  trail: 42, // Afterglow percentage
+                  shadow: false // Whether to render a shadow
+                };
+                var spinner = new Spinner(opts).spin($('.spinner')[0]);
+                
+                $.ajax({
+                   url: '/login',
+                   type: 'POST',
+                   data: {
+                       username: $('#username').val(),
+                       password: $('#password').val()
+                   },
+                   success: function(){
+                       window.location = "/";
+                   },
+                   error: function(){
+                       spinner.stop();
+                       $('#info-msg').css('display','block');
+                   }
+                });
+            });
+        });
+    </script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css" media="screen" charset="utf-8" />  
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
+</head>
+<body class="login">
+    <h1>Juris Opus</h1>
+    <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+        <a class="close" href="#">×</a>
+        <p><strong>Error</strong> Intente de nuevo</p>
+    </div>
+    <form class="login-form form-stacked" method="POST" action="/login">
+        <fieldset>
+            <div class="clearfix form-row">
+                <div class="form-cell">
+                    <label for="username">Usuario:</label>
+                    <input class="medium" id="username" name="username" size="30" type="text">
+                </div>
+            </div>
+            <div class="clearfix form-row">
+                <div class="form-cell">
+                    <label for="password">Contraseña:</label>
+                    <input class="medium" id="password" name="password" size="30" type="password">
+                </div>
+            </div>
+            <div class="clearfix submit-btns">
+                <button type="submit" class="btn primary">Entrar</button>
+                <div class='spinner'></div>
+            </div>
+        </fieldset>
+    </form>
+
+</body>
+</html>

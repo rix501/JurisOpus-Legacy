@@ -83,26 +83,30 @@ Backbone.Model.prototype.toDatatableColumns = function(){
 Backbone.Model.prototype.toDatatableArray = function(){
     var fields = [ 'residencial', 'edificio', 'apartamento', 'casoRecibido', 'seleccionado', 'causal', 'deudaTotal', 'incumplimiento', 'caso', 'presentacion', 'observaciones' ];
     
-    var data = _.select(this.toJSON(), function(attribute,key){
-        return fields.indexOf(key) !== -1;
-    });
+    // var data = _.select(this.toJSON(), function(attribute,key){
+    //     return fields.indexOf(key) !== -1;
+    // });
     
-    return _.map(data, function(attribute){
+    var data = this.toJSON();
+        
+    _.each(data, function(attribute, key){
        if(attribute === null){
-           return "";
+           data[key] = "";
        }
        
        if(_.isDate(attribute)){
            if(isNaN( attribute.getTime() )){
-               return "";
+               data[key] = "";
            }
            else{
-               return Backbone.utils.dateToString(attribute);
+               data[key] = Backbone.utils.dateToString(attribute);
            }
        }
              
        return  attribute;
     });
+    
+    return data;
 };
 
 Backbone.Collection.prototype.toDatatableColumns = function(){
@@ -110,13 +114,12 @@ Backbone.Collection.prototype.toDatatableColumns = function(){
 };
 
 Backbone.Collection.prototype.toDatatableArray = function(){
-    var dt = { aaData : [] };
     
-    dt.aaData = _.map(this.models, function(model, key){
-        return model.toDatatableArray();
+    _.each(this.models, function(model, key, models){
+        models[key] = model.toDatatableArray();
     });
-        
-    return dt;
+            
+    return this.models;
 };
 
 Backbone.sync = function(method, model, options) {
@@ -155,10 +158,10 @@ Backbone.utils.wrapError = function(onError, model, options) {
     };
 };
 
-Backbone.utils.dateToString = function(dateObj, toString){
+Backbone.utils.dateToString = function(dateObj, formatString){
     var monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     
-    if(toString){
+    if(formatString){
         return dateObj.getDate() + " de " + monthNames[dateObj.getMonth()] + " de " +dateObj.getFullYear(); 
     }
     
@@ -303,16 +306,41 @@ Models.Casos = Backbone.Collection.extend({
         this.fetch(options);
     },
     pdf: function(query, options){
+        if(query.type === "demandas")
+            this.pdfDemanda(query, options);
+        
+        if(query.type === "informes")
+            this.pdfInforme(query, options);
+        
+    },
+    pdfInforme: function(query, options){
+        var resSuccess = options.success;
+        
+        options.success = function(collection, fields){
+            
+            var data = {};
+            
+            data.pdfTemplate = query.pdfTemplate;
+            
+            var pdf = pdfFactory(query.type, data);
+            
+            if(resSuccess) resSuccess(pdf); 
+        };
+        
+        options.success();
+        // this.fetch(options);
+    },
+    pdfDemanda: function(query, options){
         var resSuccess = options.success;
         
         options.success = function(collection, fields){    
             
             collection.each(function(model){
                var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
-               var causal = model.get('causal').replace(/ /g, "").toLowerCase();
+               var causal = model.get('causal').replace(/ /g, "").replace(/-/g, "").toLowerCase();
                
                model.set({
-                   pdfCausal: causal,
+                   pdfTemplate: causal,
                    pdfTribunal: tribunal 
                });
                

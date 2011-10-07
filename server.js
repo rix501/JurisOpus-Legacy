@@ -8,6 +8,8 @@ process.env.NODE_ENV = app.settings.env;
 
 app.configure(function(){
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "JurisSecret"}));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -24,7 +26,7 @@ app.configure('production', function(){
 //My Libs
 var routes = require('./modules/routes');
 var Models = require('./modules/models');
-
+ 
 // Routes
 routes.setup(app, Models);
 

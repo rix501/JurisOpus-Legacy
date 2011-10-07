@@ -8,6 +8,51 @@ body {
 	font-size: 15px;
 }
 
+body.login {
+    padding-top: 4px;
+}
+
+.login h1 {
+    text-align: center;
+    margin-right: 6px;
+}
+
+.login #info-msg {
+    display: none;
+    margin: 0 0 10px 42.3%;
+    width: 162px;
+}
+
+.login-form {
+    margin: 0 auto;
+    width: 160px;
+    border: 3px solid #000;
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 5px 5px 5px #ccc;
+    -webkit-box-shadow: 5px 5px 5px #ccc;
+    box-shadow: 5px 5px 5px #ccc;
+}
+
+.login-form fieldset{
+    margin-bottom: 0px;
+}
+
+.login .spinner {
+    position: absolute;
+    left: 135px;
+    top: 14px;
+}
+
+#info-msg {
+    text-align: center;
+    display: none;
+    margin: 5px auto;
+    width: 250px;
+}
+
 .main-form {
 	margin-top: 10px;
 }
@@ -25,6 +70,23 @@ hr {
 	display: inline-block;
 	margin-right: 5px;
 }
+
+.input {
+    position: relative;
+}
+
+.input .spinner { 
+    position: absolute;
+    left: -15px;
+    top: 13px;
+}
+
+.submit-btns .spinner {
+    position: absolute;
+    left: 515px;
+    top: 14px;
+}
+
 .check {
     margin-top: 3px;
 }
@@ -42,19 +104,47 @@ hr {
 }
 
 .submit-btns {
+    position: relative;
     text-align: center;
+    margin-bottom: 2px;
 }
 
-.print {
-    margin: 10px 0;
+.dataTables_filter {
+    width: 55%;
 }
 
-/*h2.tables {
-    display: inline-block;
-    margin-left: 10px;
-    line-height: 10px;
+.dataTables_wrapper {
+    display:none;
 }
-*/
+
+.dataTables_wrapper td.hidden,
+.dataTables_wrapper th.hidden{
+    display:none;
+}
+
+.dataTables_wrapper.active {
+    display:block;
+}
+
+.modal-body .dataTables_wrapper {
+    display:block;
+}
+
+.dataTables_wrapper .print {
+    position: absolute;
+    top: 23px;
+    left: 865px;
+}
+
+#results-modal {
+    width: 700px;
+    left: 43%;
+}
+
+.informes.row {
+    
+}
+
 form.list {
     margin: 10px auto;
     border: 3px solid #919191;
@@ -71,8 +161,8 @@ form.list {
     width: 430px;
 }
 
-.informes-list {
-    width: 270px;
+.modal{
+    display: none;
 }
 
 .actualizar-list {

@@ -1,25 +1,27 @@
 var _ = require('underscore');
 
 var demandas = require('./demanda');
+var informes = require('./informe');
 
-var PDFFactory = function(type, data){
+var PDFFactory = module.exports = function(type, data){
     var doc, pdf;
         
     if(type === "demandas"){
         pdf = demandas;
     }
-    
+    else if(type === "informes"){
+        pdf = informes;
+    }
+        
     if(_.isArray(data)){
         //It's an array
         _.each(data, function(single){
-            doc = pdf.templates[single.pdfCausal].draw(doc, single);
+            doc = pdf.templates[single.pdfTemplate].draw(doc, single);
         });
     }
     else {
-        doc = pdf.templates[single.pdfCausal].draw(doc, data);
+        doc = pdf.templates[data.pdfTemplate].draw(doc, data);
     }    
     
     return doc.output();
 };
-
-module.exports = PDFFactory;

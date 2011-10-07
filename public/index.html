@@ -3,12 +3,16 @@
 <head>
     <title>Juris Opus</title>
     <!-- Local Libs -->
-    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
+    <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-dropdown.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
     <script type="text/javascript" src="/javascripts/underscore.min.js"></script>
     <script type="text/javascript" src="/javascripts/backbone.min.js"></script>
+    <script type="text/javascript" src="/javascripts/spin.min.js"></script>
     <!-- <script type="text/javascript" src="/javascripts/backbone.js"></script> -->
     <!-- My Scripts -->
     <script type="text/javascript" src="/javascripts/app.js"></script>
@@ -19,31 +23,43 @@
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
     <!-- Templates -->
     <script type="text/template" id="page-template">
-        <div class="topbar">
-            <div class="fill">
+        <div class="topbar" data-dropdown="dropdown">
+            <div class="topbar-inner">
                 <div class="container">
                     <h3><a href="/">Juris Opus</a></h3>
-                    <ul>
+                    <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
-                        <li class="demandas"><a href="/#/demandas">Demandas</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Demandas</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/demandas">Seleccionar</a></li>
+                                <li><a href="#">Actualizar</a></li>
+                            </ul>
+                        </li>                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
-                        <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li>
-                        <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li>
+                        <!-- <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li> -->
+                        <!-- <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li> -->
                     </ul>
+
                 </div>
             </div>
         </div>
         <div id="content"></div>
     </script>
-    <script type="text/template" id="container-entrar-template">
+	<script type="text/template" id="container-entrar-template">
+            <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+                <a class="close" href="#">×</a>
+                <p></p>
+            </div>
             <form class="main-form form-stacked">
                 <fieldset>
                     <legend>Entrar Caso Nuevo</legend>
                     <div class="clearfix form-row">
-                        <div class="form-cell">                        
+                        <div class="form-cell">
                             <label for="residencial">Residencial</label>
-                            <div class="input">
+                            <div class="input residenciales">
+                                <div class="spinner"></div>
                                 <select name="residencial" id="residencial">
                                 </select>
                             </div>
@@ -51,19 +67,19 @@
                         <div class="form-cell">
                             <label for="edificio">Edificio:</label>
                             <div class="input">
-                                <input class="medium" id="edificio" name="edificio" size="30" type="text">
+                                <input class="span3" id="edificio" name="edificio" size="30" type="text">
                             </div>
                         </div>
                         <div class="form-cell">
                             <label for="apartamento">Apartamento:</label>
                             <div class="input">
-                                <input class="medium" id="apartamento" name="apartamento" size="30" type="text">
+                                <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="area">Area:</label>
                             <div class="input">
-                                <input class="medium" id="area" name="area" size="30" type="text">
+                                <input class="span3" id="area" name="area" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -71,7 +87,7 @@
                         <div class="form-cell">                        
                             <label for="nombre">Nombre:</label>
                             <div class="input">
-                                <input class="medium" id="nombre" name="nombre" size="30" type="text">
+                                <input class="span3" id="nombre" name="nombre" size="30" type="text">
                             </div>
                         </div>
                         <div class="form-cell">
@@ -101,7 +117,8 @@
                     <div class="clearfix form-row">
                         <div class="form-cell">                        
                             <label for="causal">Causal</label>
-                            <div class="input">
+                            <div class="input causales">
+                                <div class="spinner"></div>
                                 <select name="causal" id="causal">
                                 </select>
                             </div>
@@ -111,25 +128,25 @@
                         <div class="form-cell">                        
                             <label for="rentaMensual">Renta Mensual</label>
                             <div class="input">
-                                <input class="medium" id="rentaMensual" name="rentaMensual" size="30" type="text">
+                                <input class="span3" id="rentaMensual" name="rentaMensual" size="30" type="text">
                             </div>
                         </div>
                         <div class="form-cell">
                             <label for="mesesAdeudados">Meses Adeudados:</label>
                             <div class="input">
-                                <input class="medium" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
+                                <input class="span3" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="deudaRenta">Deuda Renta:</label>
                             <div class="input">
-                                <input class="medium" id="deudaRenta" name="deudaRenta" size="30" type="text">
+                                <input class="span3" id="deudaRenta" name="deudaRenta" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
                             <div class="input">
-                                <input class="medium" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
+                                <input class="span3" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -143,7 +160,7 @@
                         <div class="form-cell">
                             <label for="deudaTotal">Deuda Total:</label>
                             <div class="input">
-                                <input class="medium" id="deudaTotal" name="deudaTotal" size="30" type="text">
+                                <input class="span3" id="deudaTotal" name="deudaTotal" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -155,7 +172,7 @@
                         <div class="form-cell">
                             <label for="incumplimiento">Incumplimiento:</label>
                             <div class="input">
-                                <input class="medium" id="incumplimiento" name="incumplimiento" size="30" type="text">
+                                <input class="span3" id="incumplimiento" name="incumplimiento" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -164,7 +181,7 @@
                         <div class="form-cell">
                             <label for="caso">Caso:</label>
                             <div class="input">
-                                <input class="medium" id="caso" name="caso" size="30" type="text">
+                                <input class="span3" id="caso" name="caso" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -190,13 +207,13 @@
                         <div class="form-cell">
                             <label for="sala">Sala:</label>
                             <div class="input">
-                                <input class="small" id="sala" name="sala" size="30" type="text">
+                                <input class="span2" id="sala" name="sala" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="hora">Hora:</label>
                             <div class="input">
-                                <input class="small" id="hora" name="hora" size="30" type="text">
+                                <input class="span2" id="hora" name="hora" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -242,18 +259,37 @@
                     </div>
                     <div class="clearfix submit-btns">
                         <button type="submit" class="btn primary">Guardar</button>
+                        <div class="spinner"></div>
                     </div>                
                 </fieldset>
             </form>
     </script>
     <script type="text/template" id="container-buscar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
+        <div id="results-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>Resultados. Escoja uno.</h3>
+            </div>
+            <div class="modal-body">
+                <table id='results'></table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary disabled edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
         <form class="search form-stacked">
             <fieldset>
                 <legend>Buscar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="residencial">Residencial</label>
-                        <div class="input">
+                        <div class="residenciales input">
+                            <div class="spinner"></div>
 	                        <select name="residencial" id="residencial">
 	                        </select>
                         </div>
@@ -261,58 +297,64 @@
                     <div class="form-cell">                        
                         <label for="edificio">Edificio</label>
                         <div class="input">
-                            <input class="medium" id="edificio" name="edificio" size="30" type="text">
+                            <input class="span3" id="edificio" name="edificio" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">                        
                         <label for="apartamento">Apartamento</label>
                         <div class="input">
-                            <input class="medium" id="apartamento" name="apartamento" size="30" type="text">
+                            <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
                         </div>
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell"> 
-                        or
+                        o
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="nombre">Nombre</label>
                         <div class="input">
-                            <input class="medium" id="nombre" name="nombre" size="30" type="text">
+                            <input class="span3" id="nombre" name="nombre" size="30" type="text">
                         </div>
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell"> 
-                        or
+                        o
                     </div>
                 </div>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="caso">Caso</label>
                         <div class="input">
-                            <input class="medium" id="caso" name="caso" size="30" type="text">
+                            <input class="span3" id="caso" name="caso" size="30" type="text">
                         </div>
                     </div>
                 </div>
                 <div class="clearfix">
                     <div class="submit-btns">
+                        <div class="spinner"></div>
                         <button type="submit" class="btn primary">Buscar</button>
                     </div>  
                 </div>  
-            <fieldset>
+            </fieldset>
         </form>
     </script>
     <script type="text/template" id="container-editar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
         <form class="main-form form-stacked">
             <fieldset>
                 <legend>Editar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="residencial">Residencial</label>
-                        <div class="input">
+                        <div class="input residenciales">
+                            <div class="spinner"></div>
                             <select name="residencial" id="residencial">
                             </select>
                         </div>
@@ -320,19 +362,19 @@
                     <div class="form-cell">
                         <label for="edificio">Edificio:</label>
                         <div class="input">
-                            <input class="medium" id="edificio" name="edificio" size="30" type="text">
+                            <input class="span3" id="edificio" name="edificio" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
                         <label for="apartamento">Apartamento:</label>
                         <div class="input">
-                            <input class="medium" id="apartamento" name="apartamento" size="30" type="text">
+                            <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="area">Area:</label>
                         <div class="input">
-                            <input class="medium" id="area" name="area" size="30" type="text">
+                            <input class="span3" id="area" name="area" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
@@ -340,7 +382,7 @@
                     <div class="form-cell">                        
                         <label for="nombre">Nombre:</label>
                         <div class="input">
-                            <input class="medium" id="nombre" name="nombre" size="30" type="text">
+                            <input class="span3" id="nombre" name="nombre" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
@@ -370,7 +412,8 @@
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="causal">Causal</label>
-                        <div class="input">
+                        <div class="causales input">
+                            <div class="spinner"></div>
                             <select name="causal" id="causal">
                             </select>
                         </div>
@@ -380,25 +423,25 @@
                     <div class="form-cell">                        
                         <label for="rentaMensual">Renta Mensual</label>
                         <div class="input">
-                            <input class="medium" id="rentaMensual" name="rentaMensual" size="30" type="text">
+                            <input class="span3" id="rentaMensual" name="rentaMensual" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
                         <label for="mesesAdeudados">Meses Adeudados:</label>
                         <div class="input">
-                            <input class="medium" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
+                            <input class="span3" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="deudaRenta">Deuda Renta:</label>
                         <div class="input">
-                            <input class="medium" id="deudaRenta" name="deudaRenta" size="30" type="text">
+                            <input class="span3" id="deudaRenta" name="deudaRenta" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
                         <div class="input">
-                            <input class="medium" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
+                            <input class="span3" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -412,7 +455,7 @@
                     <div class="form-cell">
                         <label for="deudaTotal">Deuda Total:</label>
                         <div class="input">
-                            <input class="medium" id="deudaTotal" name="deudaTotal" size="30" type="text">
+                            <input class="span3" id="deudaTotal" name="deudaTotal" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -424,7 +467,7 @@
                     <div class="form-cell">
                         <label for="incumplimiento">Incumplimiento:</label>
                         <div class="input">
-                            <input class="medium" id="incumplimiento" name="incumplimiento" size="30" type="text">
+                            <input class="span3" id="incumplimiento" name="incumplimiento" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
@@ -433,7 +476,7 @@
                     <div class="form-cell">
                         <label for="caso">Caso:</label>
                         <div class="input">
-                            <input class="medium" id="caso" name="caso" size="30" type="text">
+                            <input class="span3" id="caso" name="caso" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -459,13 +502,13 @@
                     <div class="form-cell">
                         <label for="sala">Sala:</label>
                         <div class="input">
-                            <input class="small" id="sala" name="sala" size="30" type="text">
+                            <input class="span2" id="sala" name="sala" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="hora">Hora:</label>
                         <div class="input">
-                            <input class="small" id="hora" name="hora" size="30" type="text">
+                            <input class="span2" id="hora" name="hora" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
@@ -530,6 +573,7 @@
                 </div>
                 <div class="clearfix">
                     <div class="submit-btns">
+                        <div class="spinner"></div>
                         <button type="submit" class="btn primary">Guardar</button>
                     </div>  
                 </div>            
@@ -537,59 +581,71 @@
         </form>
     </script>
     <script type="text/template" id="container-demandas-template">
-        <form class='list demandas-list'>
-            <ul class="unstyled">
-                <li>
-                    <input id="FaltaPago" name="but" type="button" class="btn redirect">
-                    <label for="but">Escoger casos para preparar demandas</label>
-                </li>
-                <li>
-                    <input id="FaltaPago" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Cobro de Dinero - FP</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Cobro y de Re-Examen - FR</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Re-Examen - RE</label>
-                </li>
-                <li>
-                    <input id="OcupacionIlegal" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Ocupacion Ilegal - OI</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de casos para Demandas de Implementacion de Contrato - IC</label>
-                </li>
-            </ul>
-        </form>
-    </script>
-    <script type="text/template" id="demandas-tables-template">
-        <button class="print btn">Imprimir</button>
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
         <h2 class="tables">Demandas</h2>
-        <table id="table_id">
-        	<thead>
-        		<tr>
-	    			<th>Residencial</th>
-	                <th>Edificio</th>
-	        		<th>Apartamento</th>
-        			<th>Ingresado</th>
-        			<th>Seleccionado</th>
-					<th>Causal</th>        	
-					<th>Deuda Total</th>
-					<th>Incumplimiento</th>
-			        <th>Caso</th>
-					<th>Fecha Presentacion</th>
-            		<th>Observaciones</th>
-        		</tr>
-        	</thead>
-        	<tbody>
-        	</tbody>
-        </table>        
+        <ul class="tabs">
+            <li class="active ic"><a href="#">Implementacion de Contrato</a></li>
+            <li class="oi"><a href="#">Ocupacion Ilegal</a></li>
+            <li class="re"><a href="#">Re-Examen</a></li>
+            <li class="fr"><a href="#">Pago y de Re-Examen</a></li>
+            <li class="fp"><a href="#">Falta de Pago</a></li>
+        </ul>
+        <table id="ic" class="demanda"></table>
+        <table id="oi" class="demanda"></table>
+        <table id="re" class="demanda"></table>
+        <table id="fr" class="demanda"></table>
+        <table id="fp" class="demanda"></table>
     </script>
     <script type="text/template" id="container-informes-template">
+        <h2>Informes</h2>
+        <div id="my-modal" class="modal hide fade in" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+            </div>
+            <div class="modal-body">
+                <h3>¿Señalado para que fecha?</h3>
+                <input class="span3 datepicker" size="30" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button class="basico btn print primary">Imprimir</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <div class="row informes">
+            <div class="span5">
+                <h3>Vista de Primera Comparecencia</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><button class="basico print btn">Imprimir &raquo;</button></p>
+            </div>
+            <div class="span5">
+                <h3>Casos para Diligenciar</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><button class="btn mod">Imprimir &raquo;</button></p>
+            </div>
+            <div class="span5">
+                <h3>Facturación Nuevo</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><a class="print btn" href="/pdfTest">Imprimir &raquo;</a></p>
+            </div>
+
+        </div>
+        <div class="row informes">
+            <div class="span5">
+                <h3>Casos Presentados</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><a class="print btn" href="/pdfTest">Imprimir &raquo;</a></p>
+            </div>
+            <div class="span6">
+                <h3>Sentencias Pendientes de Ejecución</h3>
+                <p>Esto es una descripcion básica del informe</p>
+                <p><button class="basico print btn">Imprimir &raquo;</button></p>
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="container-informes-list-template">
         <form class='list informes-list'>
             <ul class="unstyled">
                 <li>

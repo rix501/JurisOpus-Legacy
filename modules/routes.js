@@ -1,9 +1,71 @@
-exports.setup = function(app, Models){
-    app.get('/', function(req, res){
-        res.sendfile('/public/index.html');
+var pdfFactory = require('./pdf/PDFFactory');
+
+exports.setup = function(app, Models){    
+    // Dummy users
+    var users = [
+        { id: 0, username: 'tester', password: 'jurisopus', email: '', role: 'tester' },
+        { id: 1, username: 'rix', password: 'supersecret', email: 'rix501@gmail.com', role: 'admin' }
+    ]; 
+     
+    var checkAuth = function(req, res, next){
+        if(app.settings.env === 'development')
+            req.session.auth = true;
+        
+        if(req.url === "/login"){
+            if(req.session && req.session.auth){
+                res.redirect('/');
+                return;
+            }
+            else {
+                next();
+                return;
+            }
+        }
+        
+        if(req.session && req.session.auth){
+            next();
+            return;
+        }
+        
+        res.redirect('/login');
+        return;
+    };
+    
+    var checkUser = function(username, password, cb){
+        var auth = false;
+        
+        users.forEach(function(user){
+            if(username === user.username && password === user.password){
+                auth = true;
+                cb(auth, user);
+                
+            }
+        });
+        
+        if(!auth) cb(auth);
+    };
+    
+    app.get('/', checkAuth, function(req,res){
+        res.sendfile('public/index.html');
     });
     
-    app.get('/residenciales', function(req,res){
+    app.get('/login', checkAuth, function(req, res){
+        res.sendfile('public/login.html');
+    });
+    
+    app.post('/login', function(req,res){
+        checkUser(req.body.username, req.body.password, function(auth, user){            
+            if(auth) {
+                req.session.auth = true;
+                res.send({status: 'ok'});
+            }
+            else {
+                res.send({status: 'ok'}, 400);
+            }
+        });
+    });
+    
+    app.get('/residenciales', checkAuth, function(req,res){
         var resis = new Models.Residenciales();
                 
         resis.fetch({
@@ -16,7 +78,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/causales', function(req,res){
+    app.get('/causales', checkAuth, function(req,res){
         var causales = new Models.Causales();
                 
         causales.fetch({
@@ -29,7 +91,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos-datatable', function(req, res){
+    app.get('/casos-datatable', checkAuth, function(req, res){
         var cases = new Models.Casos();
         
         cases.fetch({
@@ -42,7 +104,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos/:id?', function(req,res){
+    app.get('/casos/:id?', checkAuth, function(req,res){
         if(req.params.id){            
             var caso = new Models.Caso({id: req.params.id});
 
@@ -69,7 +131,7 @@ exports.setup = function(app, Models){
         }
     });
     
-    app.post('/casos', function(req,res){
+    app.post('/casos', checkAuth, function(req,res){
         var caso = new Models.Caso();
          
         caso.save(req.body,{
@@ -82,7 +144,7 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.put('/casos/:id', function(req,res){
+    app.put('/casos/:id', checkAuth, function(req,res){
         var caso = new Models.Caso({id: req.params.id});
                 
         caso.save(req.body,{
@@ -95,13 +157,18 @@ exports.setup = function(app, Models){
         });
     });
 
-    app.get('/search/:type', function(req,res){
+    app.get('/search/:type', checkAuth, function(req,res){
         if(req.params.type === 'casos'){
             var casos = new Models.Casos();
                         
             casos.search(req.query, {
                 success: function(collection, fields){
-                    res.send(collection);
+                    if(collection.length === 0){
+                        res.send('No cases', 404);
+                    }
+                    else {
+                        res.send(collection);
+                    }
                 },
                 error: function(err){
                     res.send(err, 404);
@@ -110,27 +177,11 @@ exports.setup = function(app, Models){
         }
     });
     
-    var PDFDocument = require('pdfkit');
-    
-    app.get('/pdf-test', function(req,res){
-        var doc = new PDFDocument({
-            size: "legal",
-            align: "justify"
-        });
-
-        doc.registerFont('Arial', './modules/pdf/Fonts/arial.ttf');
-        
-        doc.text("Tel (787) 760-3000");
-        res.header('Content-type','application/pdf');
-        res.end(doc.output(), 'binary');
-    });
-    
-    app.get('/pdf', function(req, res){
+    app.get('/pdf', checkAuth, function(req, res){
         var cases = new Models.Casos();
         
         cases.pdf(req.query, {
            success: function(pdf){
-               // res.send({status: 'ok'});
                res.header('Content-type','application/pdf');
                res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
                res.header('Content-Length', pdf.length);
@@ -140,5 +191,12 @@ exports.setup = function(app, Models){
                res.send(err, 404);
            }
         });
+    });
+    
+    app.get('/pdfTest', function(req,res){
+        var pdf = pdfFactory('demandas', {pdfTemplate: 'faltadepago'});
+             
+        res.header('Content-type','application/pdf');
+        res.end(pdf, 'binary');
     });
 };
