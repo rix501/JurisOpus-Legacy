@@ -31,6 +31,8 @@ demanda.prototype.draw = function(doc, data){
    this.drawThirdPage(doc, data);
    this.drawSecondPage(doc, data, false);
    this.drawThirdPage(doc, data);
+   this.drawSecondPage(doc, data, false);
+   this.drawThirdPage(doc, data);
    
    //Copy
    this.drawSecondPage(doc, data, true);

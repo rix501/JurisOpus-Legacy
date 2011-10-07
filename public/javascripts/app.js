@@ -641,14 +641,14 @@
                 var aTrs = oTable.fnGetNodes();
                 
                 _.each(aTrs, function(aTr){
-                    if($(aTr).hasClass('row_selected')){
-                        tdCase = $(aTr).children('td.caso')[0];
-                        casosString += $(tdCase).text() + "|";
+                    if($(aTr).hasClass('row_selected')){             
+                        var casoId = $(aTr).attr('class').replace(/row_selected/i, '').replace(/odd/i, '').replace(/even/i, '').trim();                                     
+                        casosString += casoId + "|";
                     }
                 });
                 
                 casosString = casosString.substring(0, casosString.length - 1);
-                
+                                
                 var iframe = document.createElement("iframe");
                 iframe.src = "/pdf?type=demandas&casos=" + casosString;
                                 
@@ -688,6 +688,11 @@
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
                     "aoColumns": [                         
+                        // {   
+                        //     "mDataProp": "id",
+                        //     "sTitle":"ID",
+                        //     "sClass":"hidden"
+                        // },
                         {   
                             "mDataProp": "nombre",
                             "sTitle":"Nombre" 
@@ -761,6 +766,33 @@
                 $('#re_filter').after('<button class="print btn">Imprimir</button>');
                 $('#fr_filter').after('<button class="print btn">Imprimir</button>');
                 $('#ic_filter').after('<button class="print btn">Imprimir</button>');
+                
+                var viewObj = this;
+                
+                $("#ic tbody tr").each(function(i, elem){
+                    if(ic[i])
+                        $(this).addClass(ic[i].id.toString()); 
+                });
+                
+                $("#fp tbody tr").each(function(i, elem){
+                    if(fp[i])
+                        $(this).addClass(fp[i].id.toString()); 
+                });
+                
+                $("#oi tbody tr").each(function(i, elem){
+                    if(oi[i])
+                        $(this).addClass(oi[i].id.toString()); 
+                });
+                
+                $("#re tbody tr").each(function(i, elem){
+                    if(re[i])
+                        $(this).addClass(re[i].id.toString()); 
+                });
+                
+                $("#fr tbody tr").each(function(i, elem){
+                    if(fr[i])
+                    $(this).addClass(fr[i].id.toString()); 
+                });
                 
                 $('#ic_wrapper').addClass('active');
                 this.oTableic.fnAdjustColumnSizing();

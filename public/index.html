@@ -6,6 +6,7 @@
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
     <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-dropdown.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
@@ -22,18 +23,25 @@
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
     <!-- Templates -->
     <script type="text/template" id="page-template">
-        <div class="topbar">
-            <div class="fill">
+        <div class="topbar" data-dropdown="dropdown">
+            <div class="topbar-inner">
                 <div class="container">
                     <h3><a href="/">Juris Opus</a></h3>
-                    <ul>
+                    <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
-                        <li class="demandas"><a href="/#/demandas">Demandas</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Demandas</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/demandas">Seleccionar</a></li>
+                                <li><a href="#">Actualizar</a></li>
+                            </ul>
+                        </li>                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
                         <!-- <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li> -->
                         <!-- <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li> -->
                     </ul>
+
                 </div>
             </div>
         </div>
