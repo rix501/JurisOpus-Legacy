@@ -374,7 +374,7 @@
                         }
                         else{
                             viewObj.collection = collection;
-                            
+                                                        
                             submitSpinner.stop();
                         
                             $('#results').show();
@@ -637,9 +637,7 @@
                 var demandaType = liNode.attr('class').replace(/active/i, '').trim();
                 
                 var oTable = this['oTable' + demandaType];
-                
-                console.log(this['oTable' + demandaType], 'oTable' + demandaType, this);
-                
+                                
                 var aTrs = oTable.fnGetNodes();
                 
                 _.each(aTrs, function(aTr){

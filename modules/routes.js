@@ -163,7 +163,12 @@ exports.setup = function(app, Models){
                         
             casos.search(req.query, {
                 success: function(collection, fields){
-                    res.send(collection);
+                    if(collection.length === 0){
+                        res.send('No cases', 404);
+                    }
+                    else {
+                        res.send(collection);
+                    }
                 },
                 error: function(err){
                     res.send(err, 404);

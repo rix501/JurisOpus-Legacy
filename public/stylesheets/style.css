@@ -121,6 +121,10 @@ hr {
     display:block;
 }
 
+.modal-body .dataTables_wrapper {
+    display:block;
+}
+
 .dataTables_wrapper .print {
     position: absolute;
     top: 23px;
