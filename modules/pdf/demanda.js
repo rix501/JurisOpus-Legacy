@@ -486,6 +486,7 @@ ocupacionilegal.prototype.drawBullets = function(doc,data){
     });
 };
 
+
 var reexamen = demanda.makeSubclass();
 reexamen.prototype.draw = function(doc, data){
     data.causalDescription = 'DESAHUCIO POR INCUMPLIMIENTO DE CONTRATO';
