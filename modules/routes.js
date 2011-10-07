@@ -110,6 +110,21 @@ exports.setup = function(app, Models){
         }
     });
     
+    var PDFDocument = require('pdfkit');
+    
+    app.get('/pdf-test', function(req,res){
+        var doc = new PDFDocument({
+            size: "legal",
+            align: "justify"
+        });
+
+        doc.registerFont('Arial', './modules/pdf/Fonts/arial.ttf');
+        
+        doc.text("Tel (787) 760-3000");
+        res.header('Content-type','application/pdf');
+        res.end(doc.output(), 'binary');
+    });
+    
     app.get('/pdf', function(req, res){
         var cases = new Models.Casos();
         
