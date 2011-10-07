@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
 # Database: JurisOpus
-# Generation Time: 2011-10-07 03:50:49 +0000
+# Generation Time: 2011-10-07 22:10:13 +0000
 # ************************************************************
 
 
@@ -305,7 +305,8 @@ END */;;
 /*!50003 SET SESSION SQL_MODE=""*/;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Casos`()
 BEGIN
-	SELECT 
+	SELECT
+		id,
 		( SELECT 
 				`residencial`
 			FROM Residenciales re
@@ -585,7 +586,7 @@ BEGIN
 		lanzamiento AS 'lanzamiento', 
 		observaciones AS 'observaciones'
 	FROM Casos ca
-	WHERE ca.caso REGEXP p_casos;
+	WHERE ca.id REGEXP p_casos;
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
