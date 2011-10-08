@@ -30,18 +30,17 @@
                     <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
-                        <li class="dropdown">
+                        <li class="dropdown demandas">
                             <a href="#" class="dropdown-toggle">Demandas</a>
                             <ul class="dropdown-menu">
-                                <li><a href="/#/demandas">Seleccionar</a></li>
-                                <li><a href="#">Actualizar</a></li>
+                                <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
+                                <li><a href="/#/demandas/actualizar">Actualizar</a></li>
+								<li class="divider"></li>
+								<li><a href="/#/">Ver Todos</a></li>
                             </ul>
                         </li>                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
-                        <!-- <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li> -->
-                        <!-- <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li> -->
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -580,12 +579,25 @@
             </fieldset>
         </form>
     </script>
-    <script type="text/template" id="container-demandas-template">
+    <script type="text/template" id="container-demandas-seleccionar-template">
         <div class="alert-message error fade in" id="info-msg" data-alert="alert">
             <a class="close" href="#">×</a>
             <p></p>
         </div>
-        <h2 class="tables">Demandas</h2>
+		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>¿Marcar demanadas completadas?</h3>
+            </div>
+            <div class="modal-body">
+                <table id='results'></table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary disabled edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <h2>Seleccionar Demandas</h2>
         <ul class="tabs">
             <li class="active ic"><a href="#">Implementacion de Contrato</a></li>
             <li class="oi"><a href="#">Ocupacion Ilegal</a></li>
@@ -599,6 +611,33 @@
         <table id="fr" class="demanda"></table>
         <table id="fp" class="demanda"></table>
     </script>
+	<script type="text/template" id="container-demandas-actualizar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
+		<div id="actualizar-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>¿Marcar demanadas completadas?</h3>
+            </div>
+            <div class="modal-body">
+                <table id='results'></table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary disabled edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <h2>Actualizar Demandas</h2>
+        <ul class="pills">
+            <li class="active"><a href="#">Fecha de Presentación</a></li>
+            <li class=""><a href="#">Sala, Hora, y dia para 1ra Comparecencia</a></li>
+            <li class=""><a href="#">Información de 1ra Vista</a></li>
+            <li class=""><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
+        </ul>
+        <table></table>
+	</script>
     <script type="text/template" id="container-informes-template">
         <h2>Informes</h2>
         <div id="my-modal" class="modal hide fade in" style="display: none; ">

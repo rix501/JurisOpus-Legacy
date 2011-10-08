@@ -91,8 +91,11 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos-datatable', checkAuth, function(req, res){
+    app.get('/casos-datatable/:type?', checkAuth, function(req, res){
         var cases = new Models.Casos();
+        
+        if(req.params.type === "seleccionar")
+            cases.seleccionado = true;
         
         cases.fetch({
             success: function(collection, fields){

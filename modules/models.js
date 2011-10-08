@@ -283,7 +283,10 @@ Models.Caso = Backbone.Model.extend({
 Models.Casos = Backbone.Collection.extend({
     model: Models.Caso,
     read: function(resp){
-        resp.query = 'CALL Get_Casos()';
+        if(this.seleccionado)
+            resp.query = 'CALL Get_Casos_Seleccion()';
+        else
+            resp.query = 'CALL Get_Casos()';
     },
     search: function(query, options){
         //caso > residencial+apt+edificio > nombre

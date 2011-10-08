@@ -187,6 +187,7 @@ form.list li label {
 
 textarea.xxlarge {
     width:900px;
+    height: 200px;
     resize:none;
 }
 

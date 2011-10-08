@@ -15,6 +15,12 @@
             
             options.url = '/search/casos';
             this.fetch(options);
+        },
+        markComplete: function(query, options){
+            options.data = query;
+            
+            options.url = '/search/casos';
+            this.fetch(options);
         }
     });
     
@@ -588,13 +594,15 @@
             }
         });
         
-        window.ContainerDemandasView = ContainerView.extend({
-            template: _.template($("#container-demandas-template").html()),
+        window.ContainerDemandasSeleccionarView = ContainerView.extend({
+            template: _.template($("#container-demandas-seleccionar-template").html()),
             
             events: {
                 'click .print':'print',
                 'click .tabs li a': 'selectTab'
             },
+            
+            //add event to collection for when a model is removed
             
             initialize: function(){
                 _.bindAll(this, 'render', 'selectRow', 'loadTables');
@@ -628,7 +636,7 @@
                     $(event.currentTarget).addClass('row_selected');
                 }
             },
-            
+              
             print: function(){
                 var casosString = "";
                 
@@ -696,10 +704,6 @@
                         {   
                             "mDataProp": "nombre",
                             "sTitle":"Nombre" 
-                        },
-                        {   
-                            "mDataProp": "causal",
-                            "sTitle":"Causal" 
                         },
                         {
                             "mDataProp": "residencial",
@@ -806,7 +810,7 @@
       
                 this.collection = new Models.Casos();
                 
-                this.collection.url = '/casos-datatable';
+                this.collection.url = '/casos-datatable/seleccionar';
                 
                 this.collection.fetch({
                     success: this.loadTables,
@@ -816,6 +820,26 @@
                 });
 
                 return this;
+            }
+        });
+        
+        window.ContainerDemandasActualizarView = ContainerView.extend({
+            template:  _.template($("#container-demandas-actualizar-template").html()),
+            events: {
+                'click .pills li a': 'selectPill'
+            },
+            initialize: function() {
+                _.bindAll(this, 'render');
+                $('li.active').removeClass('active');
+                $('li.demandas').addClass('active');
+            },
+            selectPill: function(event){
+                event.preventDefault();
+                $('.pills li.active').removeClass('active');
+                
+                var liNode = $(event.target).parent('li');
+                
+                liNode.addClass('active');
             }
         });
         
@@ -922,24 +946,6 @@
         
         });
         
-        window.ContainerActualizarView = ContainerView.extend({
-            template:  _.template($("#container-actualizar-template").html()),
-            initialize: function() {
-            _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.actualizar').addClass('active');
-            }
-        });
-        
-        window.ContainerResolucionView = ContainerView.extend({
-            template:  _.template($("#container-resolucion-template").html()),
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.resolucion').addClass('active');
-            }
-        });
-        
         //Super => Backbone.Model.prototype.set.call(this, attributes, options);
         
         window.JurisOpus = Backbone.Router.extend({
@@ -983,9 +989,17 @@
             },
             
             demandas: function(listName){
-                this.containerDemandasView = new ContainerDemandasView();
-                $('#content').empty();
-                $('#content').append(this.containerDemandasView.render().el);
+                if(listName === 'seleccionar'){
+                    this.containerDemandasSeleccionarView = new ContainerDemandasSeleccionarView();
+                    $('#content').empty();
+                    $('#content').append(this.containerDemandasSeleccionarView.render().el);
+                }
+                else if(listName === 'actualizar'){
+                    this.containerDemandasActualizarView = new ContainerDemandasActualizarView();
+                    $('#content').empty();
+                    $('#content').append(this.containerDemandasActualizarView.render().el);
+                }
+                
             },
             
             informes: function(){
