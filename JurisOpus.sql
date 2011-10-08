@@ -6,8 +6,8 @@
 # http://code.google.com/p/sequel-pro/
 #
 # Host: 127.0.0.1 (MySQL 5.5.14)
-# Database: JurisOpus
-# Generation Time: 2011-10-07 22:10:13 +0000
+# Database: jurisopus
+# Generation Time: 2011-10-08 00:08:04 +0000
 # ************************************************************
 
 
@@ -73,12 +73,12 @@ LOCK TABLES `Casos` WRITE;
 
 INSERT INTO `Casos` (`id`, `residencial`, `edificio`, `apartamento`, `nombre`, `ingresado`, `area`, `completado`, `renta_mensual`, `meses_adeudados`, `deuda_renta`, `deuda_recargo`, `deuda_renta_negativa`, `deuda_total`, `ultimo_reexamen`, `incumplimiento`, `causal`, `caso`, `presentacion`, `sala`, `hora`, `primera_comparecencia`, `segunda_comparecencia`, `vista_en_su_fondo`, `lanzamiento`, `observaciones`, `sentencia`, `diligenciado`, `seleccionado`, `diligenciado_en`, `ejecutar`, `rediligenciar`, `desistido`, `caso_recibido`, `deuda_recibida`)
 VALUES
-	(1,1,'12','121','Luis Pomales',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'KPE11-0001','2011-09-28','506','09:00:00','2011-09-30','2011-10-04','0000-00-00','0000-00-00','Se señalo v','2011-10-17',1,0,'2011-09-29',0,0,NULL,'2011-09-28','0000-00-00'),
-	(2,1,'0','2','RICARDO VAZQUEZ',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'0000-00-00','',2,'KPE11-0002','2011-09-29','905','09:00:00','2011-10-01','0000-00-00','0000-00-00','0000-00-00','Emplazado. ','0000-00-00',1,0,'2011-09-30',0,0,NULL,'2011-09-28','0000-00-00'),
+	(1,1,'12','121','Luis Pomales',NULL,'II',1,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'KPE11-0001','2011-09-28','506','09:00:00','2011-09-30','2011-10-04','0000-00-00','0000-00-00','Se señalo v','2011-10-17',1,0,'2011-09-29',0,0,NULL,'2011-09-28','0000-00-00'),
 	(3,1,'1','01','JOHN DOE',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'0000-00-00','',1,'','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'',0,0,NULL,'2011-10-05','0000-00-00'),
 	(4,1,'1','02','EDWIN SILVA',NULL,'II',0,10,3,30.00,NULL,0.00,30.00,'0000-00-00','',2,'','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'',NULL,NULL,NULL,'2011-10-05','0000-00-00'),
 	(5,1,'1','03','LOUNETTE MARTELL',NULL,'II',0,0,0,0.00,NULL,0.00,0.00,'2010-01-10','',4,'','0000-00-00','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,0,'',NULL,NULL,NULL,'2011-10-05','0000-00-00'),
-	(6,1,'1','04','HECTOR SANTIAGO',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'2010-01-10','',5,'','2011-10-06','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,1,'',0,0,NULL,'2011-10-05','0000-00-00');
+	(6,1,'1','04','HECTOR SANTIAGO',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'2010-01-10','',5,'','2011-10-06','','00:00:00','0000-00-00','0000-00-00','0000-00-00','0000-00-00','','0000-00-00',0,1,'',0,0,NULL,'2011-10-05','0000-00-00'),
+	(12,1,'0','2','RICARDO VAZQUEZ',NULL,'II',0,7,5,35.00,NULL,0.00,35.00,'0000-00-00','',2,'KPE11-0002','2011-09-29','905','09:00:00','2011-10-01','0000-00-00','0000-00-00','0000-00-00','Emplazado. ','0000-00-00',1,0,'2011-09-30',0,0,NULL,'2011-09-28','0000-00-00');
 
 /*!40000 ALTER TABLE `Casos` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -138,7 +138,7 @@ UNLOCK TABLES;
 
 
 --
--- Dumping routines (PROCEDURE) for database 'JurisOpus'
+-- Dumping routines (PROCEDURE) for database 'jurisopus'
 --
 DELIMITER ;;
 
@@ -353,6 +353,62 @@ BEGIN
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Get_Casos_Seleccion
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Get_Casos_Seleccion` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Get_Casos_Seleccion`()
+BEGIN
+	SELECT
+		id,
+		( SELECT 
+				`residencial`
+			FROM Residenciales re
+			WHERE re.id = ca.residencial
+		) AS 'residencial',
+		edificio AS 'edificio', 
+		apartamento AS 'apartamento', 
+		area AS 'area', 
+		nombre AS 'nombre', 
+		caso_recibido AS 'casoRecibido', 
+		seleccionado AS 'seleccionado', 
+		completado AS 'completado', 
+		( SELECT 
+				`causal`
+			FROM Causales cau
+			WHERE cau.id = ca.causal
+		)  AS 'causal', 
+		( SELECT 
+				`siglas`
+			FROM Causales cau
+			WHERE cau.id = ca.causal
+		)  AS 'causalIniciales', 
+		renta_mensual AS 'rentaMensual', 
+		meses_adeudados AS 'mesesAdeudados', 
+		deuda_renta AS 'deudaRenta', 
+		deuda_renta_negativa AS 'deudaRentaNegativa', 
+		deuda_recibida AS 'deudaRecibida', 
+		deuda_total AS 'deudaTotal', 
+		ultimo_reexamen AS 'ultimoReexamen', 
+		incumplimiento AS 'incumplimiento', 
+		caso AS 'caso', 
+		presentacion AS 'presentacion', 
+		diligenciado AS 'diligenciado', 
+		diligenciado_en AS 'diligenciadoEn', 
+		sala AS 'sala', 
+		hora AS 'hora', 
+		primera_comparecencia AS 'primeraComparecencia', 
+		segunda_comparecencia AS 'segundaComparecencia', 
+		vista_en_su_fondo AS 'vistaEnSuFondo', 
+		sentencia AS 'sentencia', 
+		lanzamiento AS 'lanzamiento', 
+		observaciones AS 'observaciones'
+	FROM Casos ca
+	WHERE presentacion = '0000-00-00';
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
 # Dump of PROCEDURE Get_Causales
 # ------------------------------------------------------------
 
@@ -376,6 +432,19 @@ BEGIN
 	SELECT 
 		*
 	FROM Residenciales;
+END */;;
+
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
+# Dump of PROCEDURE Marcar_Casos_Completo
+# ------------------------------------------------------------
+
+/*!50003 DROP PROCEDURE IF EXISTS `Marcar_Casos_Completo` */;;
+/*!50003 SET SESSION SQL_MODE=""*/;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Marcar_Casos_Completo`(IN p_casos VARCHAR(255))
+BEGIN
+	UPDATE Casos ca
+		SET completado = 1
+	WHERE ca.id REGEXP CONCAT('^(',p_casos,')$');
 END */;;
 
 /*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;;
