@@ -21,6 +21,38 @@
             
             options.url = '/search/casos';
             this.fetch(options);
+        },
+        filterFechaPresentacion: function(){
+            return this.chain()
+            .select(function(model){
+                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();                        
+        },
+        filterSalaHoraDia: function(){
+            return this.chain()
+            .select(function(model){
+                return (_.isEmpty(model.get('sala')) && !_.isEmpty(model.get('presentacion')));
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterInfoPrimeraVista: function(){
+            //TODO
+            return this.select(function(model){
+                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
+            });
+        },
+        filterRediligenciar: function(){
+            //TODO
+            return this.select(function(model){
+                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
+            });
         }
     });
     
@@ -829,7 +861,7 @@
                 'click .pills li a': 'selectPill'
             },
             initialize: function() {
-                _.bindAll(this, 'render');
+                _.bindAll(this, 'render', 'selectPill' ,'loadTable');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
             },
@@ -839,7 +871,89 @@
                 
                 var liNode = $(event.target).parent('li');
                 
+                var filterType = liNode.attr('class');
+                
                 liNode.addClass('active');
+                
+                switch(filterType){
+                    case 'presentacion':
+                        this.filterTable(this.collection.filterFechaPresentacion());
+                        break;
+                    case 'salahora':
+                        this.filterTable(this.collection.filterSalaHoraDia());
+                        break;
+                    case 'primeravista':
+                        this.filterTable(this.collection.filterInfoPrimeraVista());
+                        break;
+                    case 'rediligenciar':
+                        this.filterTable(this.collection.filterRediligenciar());
+                        break;
+                };
+            },
+            filterTable:function(data){
+                this.oTable.fnClearTable();
+                this.oTable.fnAddData(data);
+                this.oTable.fnAdjustColumnSizing();
+                this.oTable.fnDraw();
+            },
+            loadTable: function(collection, resp){                
+                var data = this.collection.filterFechaPresentacion();
+                                                
+                var opts = {
+                    "sScrollX": "100%",
+                    "sScrollXInner": "1300px",
+                    "bScrollCollapse": true,
+                    "aoColumns": [                         
+                        {   
+                            "mDataProp": "nombre",
+                            "sTitle":"Nombre" 
+                        },
+                        {
+                            "mDataProp": "residencial",
+                            "sTitle":"Residencial"
+                        },
+                        { 
+                            "mDataProp": "edificio",
+                            "sTitle":"Edificio" 
+                        },
+                        { 
+                            "mDataProp": "apartamento",
+                            "sTitle":"Apartamento" 
+                        },
+                        { 
+                            "mDataProp": "casoRecibido",
+                            "sTitle":"Ingresado" 
+                        },
+                        { 
+                            "mDataProp": "presentacion",
+                            "sTitle":"Fecha Presentacion" 
+                        }
+                    ],
+                    "aaData": data
+                };
+                
+                
+                this.oTable = $('#actualizar-table').dataTable(opts);
+                $('#actualizar-table_wrapper').addClass('active');
+                this.oTable.fnAdjustColumnSizing();
+                this.oTable.fnDraw();
+            },
+            
+            render: function(){
+                $(this.el).html(this.template());
+      
+                this.collection = new Models.Casos();
+                
+                this.collection.url = '/casos-datatable/actualizar';
+                
+                this.collection.fetch({
+                    success: this.loadTable,
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+
+                return this;
             }
         });
         
