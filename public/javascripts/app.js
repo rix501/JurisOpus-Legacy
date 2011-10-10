@@ -1,6 +1,5 @@
 (function($) {
     //Models and Collections  
-    
     var Models = {};
     
     Models.Caso = Backbone.Model.extend({
@@ -77,11 +76,9 @@
         window.PageView = Backbone.View.extend({
             template: _.template($("#page-template").html()),
             el: 'body',
-                        
             initialize: function() {
                 _.bindAll(this, 'render');
             },
-
             render: function() {
                 $(this.el).html(this.template());
                 return this;
@@ -91,7 +88,6 @@
         window.ContainerView = Backbone.View.extend({
             tagName: 'div',
             className: 'container',
-            
             getSpinner: function(){
                 var opts = { 
                     lines: 12, 
@@ -106,7 +102,6 @@
                 
                 return new Spinner(opts);
             },
-            
             successMessage: function(msg){
                 $infoMsg = $('#info-msg');
                 
@@ -126,7 +121,6 @@
                     $('.alert-message[data-alert] .close').trigger('click');
                 }, 1500);
             },
-            
             errorMessage: function(msg){
                 $infoMsg = $('.alert-message');
                                         
@@ -147,7 +141,6 @@
                     $('.alert-message[data-alert] .close').trigger('click');
 				}, 3000);
             },
-            
             render: function() {
                 $(this.el).html(this.template());
                 
@@ -159,7 +152,6 @@
             events: {
                 'submit':'submitForm'
             },
-            
             loadResidenciales: function(){
                 var that = this;
                 
@@ -192,7 +184,6 @@
                     }
                 });
             },
-            
             loadCausales: function(){
                 var that = this;
                 
@@ -224,7 +215,6 @@
                     }
                 });
             },
-            
             render: function(){
                 $(this.el).html(this.template());
                 
@@ -258,7 +248,6 @@
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
             },
-                        
             submitForm: function(event){
                 event.preventDefault(); 
                                            
@@ -317,9 +306,7 @@
             events: {
                 'submit':'submitForm'
             },
-            
             template:  _.template($("#container-buscar-template").html()),
-            
             loadResidenciales: function(){
                 var residenciales = new Models.Residenciales();
             
@@ -350,13 +337,11 @@
                     }
                 });
             },
-        
             initialize: function() {
                 _.bindAll(this, 'render', 'selectRow', 'edit');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');  
             },
-        
             selectRow: function(event){
                 $('.edit.btn').removeClass('disabled');
                 $(this.oTable.fnSettings().aoData).each(function (){
@@ -364,7 +349,6 @@
                 });
                 $(event.target.parentNode).addClass('row_selected');
             },
-            
             edit: function(){
                 if($('.results.btn').hasClass('disabled'))
                     return false;
@@ -386,7 +370,6 @@
                     });
                 }    
             },
-        
             submitForm: function(event){
                 event.preventDefault();
             
@@ -465,7 +448,6 @@
                 
                 return false;
             },
-            
             render: function(){
                 var that = window.ContainerView.prototype.render.call(this);
                 
@@ -501,11 +483,9 @@
                 this.model.bind('error', this.error);
                 this.model.fetch();                         
             },
-            
             error: function(err){
                 this.errorMessage('Error buscando caso');
             },
-            
             fillResidenciales: function(){
                 var model = this.model;
                 
@@ -517,7 +497,6 @@
                     });
                 }
             },
-            
             fillCausales: function(){
                 var model = this.model;
                 
@@ -529,7 +508,6 @@
                     });
                 }
             },
-            
             fillForm: function(){
                 if($('#residencial option').length === 0){
                     this.bind('loaded:residenciales', this.fillResidenciales);
@@ -575,7 +553,6 @@
                 if(this.model.get('rediligenciar')) $('#rediligenciar').prop("checked", true);
                 if(this.model.get('ejecutar')) $('#ejecutar').prop("checked", true);
             },
-            
             submitForm: function(event){
                 event.preventDefault();
                 
@@ -628,20 +605,16 @@
         
         window.ContainerDemandasSeleccionarView = ContainerView.extend({
             template: _.template($("#container-demandas-seleccionar-template").html()),
-            
             events: {
                 'click .print':'print',
                 'click .tabs li a': 'selectTab'
             },
-            
-            //add event to collection for when a model is removed
-            
+            //add event to collection for when a model is removed       
             initialize: function(){
                 _.bindAll(this, 'render', 'selectRow', 'loadTables');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
             },
-            
             selectTab: function(event){
                 event.preventDefault();
                 $('.tabs li.active').removeClass('active');
@@ -659,7 +632,6 @@
                 
                 liNode.addClass('active');
             },
-            
             selectRow: function(event){
                 if ( $(event.currentTarget).hasClass('row_selected') ){
                     $(event.currentTarget).removeClass('row_selected');   
@@ -668,7 +640,6 @@
                     $(event.currentTarget).addClass('row_selected');
                 }
             },
-              
             print: function(){
                 var casosString = "";
                 
@@ -694,8 +665,7 @@
                                 
                 iframe.style.display = "none";
                 document.body.appendChild(iframe);
-            },
-            
+            },            
             loadTables: function(collection, reponse){
                 var ic = []; 
                 var oi = []; 
@@ -836,7 +806,6 @@
                 
                 $('table.demanda tr').click(this.selectRow);
             },
-            
             render: function(){
                 $(this.el).html(this.template());
       
@@ -896,7 +865,7 @@
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
             },
-            loadTable: function(collection, resp){                
+            loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();
                                                 
                 var opts = {
@@ -938,7 +907,6 @@
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
             },
-            
             render: function(){
                 $(this.el).html(this.template());
       
@@ -959,27 +927,22 @@
         
         window.ContainerInformesView = ContainerView.extend({
             template:  _.template($("#container-informes-template").html()),
-
             events: {
                 'click .print':'print',
                 'click .mod' : 'modal',
                 'click .redirect':'redirect'
             },
-
             redirect: function(event){
                   App.navigate('/informes/'+event.target.id ,true);
             },
-
             initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
             },
-            
             modal: function(){
                 $('#my-modal').modal('show');
             },
-            
             print: function(event){
                 
                 var informesString = "";
@@ -1021,7 +984,6 @@
                     modal.modal('hide');
                 }
             },
-            
             render: function(){
                 $(this.el).html(this.template());
                 
@@ -1057,7 +1019,6 @@
                 
                 return this;                
             }
-        
         });
         
         //Super => Backbone.Model.prototype.set.call(this, attributes, options);
@@ -1076,24 +1037,20 @@
                 '/resolucion': 'resolucion',
                 '/login':'login' 
             },
-
             initialize: function() {
                 this.pageView = new PageView();
                 this.pageView.render();
             },
-
             entrar: function() {
                 this.containerEntrarView = new ContainerEntrarView();
                 $('#content').empty();
                 $('#content').append(this.containerEntrarView.render().el);    
             },
-            
             buscar: function() {
                 this.containerBuscarView = new ContainerBuscarView();
                 $('#content').empty();
                 $('#content').append(this.containerBuscarView.render().el);
             },
-            
             editar: function(casoId){
                 this.containerEditarView = new ContainerEditarView({
                     casoId: casoId
@@ -1101,7 +1058,6 @@
                 $('#content').empty();
                 $('#content').append(this.containerEditarView.render().el);
             },
-            
             demandas: function(listName){
                 if(listName === 'seleccionar'){
                     this.containerDemandasSeleccionarView = new ContainerDemandasSeleccionarView();
@@ -1115,19 +1071,16 @@
                 }
                 
             },
-            
             informes: function(){
                 this.containerInformesView = new ContainerInformesView();
                 $('#content').empty();
                 $('#content').append(this.containerInformesView.render().el); 
             },
-            
             actualizar: function(){
                 this.containerActualizarView = new ContainerActualizarView();
                 $('#content').empty();
                 $('#content').append(this.containerActualizarView.render().el);                 
             },
-            
             resolucion: function(){
                 this.containerResolucionView = new ContainerResolucionView();
                 $('#content').empty();
