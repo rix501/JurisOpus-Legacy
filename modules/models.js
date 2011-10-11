@@ -3,6 +3,7 @@ var Backbone = require('backbone');
 
 var pdfFactory = require('./pdf/PDFFactory');
 var client = require('./db');
+var queries = require('./queries');
 
 //Backbone Modification
 Backbone.Model.prototype.fetch = function(options){
@@ -43,7 +44,7 @@ Backbone.Model.prototype.procedure = Backbone.Collection.prototype.procedure = f
             if(this.del) this.del(resp);
             break;
     }
-
+        
     return resp;
 };
 
@@ -134,7 +135,7 @@ Backbone.sync = function(method, model, options) {
             args: options.args
         };
     }
-        
+            
     client.query(procedure.query, procedure.args, function(err, results, fields){        
         if(err) {
             console.log(err);
@@ -283,10 +284,12 @@ Models.Caso = Backbone.Model.extend({
 Models.Casos = Backbone.Collection.extend({
     model: Models.Caso,
     read: function(resp){
-        if(this.seleccionado)
-            resp.query = 'CALL Get_Casos_Seleccion()';
-        else
-            resp.query = 'CALL Get_Casos()';
+        if(this.seleccionado){
+            _.extend(resp,queries.getCasosSeleccion());
+        }
+        else{
+             _.extend(resp,queries.getCasos());
+        }            
     },
     search: function(query, options){
         //caso > residencial+apt+edificio > nombre
