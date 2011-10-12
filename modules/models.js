@@ -166,17 +166,15 @@ Backbone.utils.dateToString = function(dateObj, formatString){
         return dateObj.getDate() + " de " + monthNames[dateObj.getMonth()] + " de " +dateObj.getFullYear(); 
     }
     
-    return dateObj.getFullYear() + "-" + (dateObj.getMonth() + 1)  + "-" +  dateObj.getDate(); 
+    return dateObj.getFullYear() + "-" + ( (dateObj.getMonth() + 1).toString().length === 1 ? '0' + (dateObj.getMonth() + 1).toString() : dateObj.getMonth() + 1)    + "-" +  dateObj.getDate(); 
 };
 
 //My models
-
 var Models = {};
 
 Models.Caso = Backbone.Model.extend({
     create: function(resp){
-        resp.query = 'CALL Create_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        resp.args = [
+        _.extend(resp,queries.createCaso(
             this.get('residencial'),
             this.get('edificio'),
             this.get('apartamento'),
@@ -205,49 +203,48 @@ Models.Caso = Backbone.Model.extend({
             this.get('vistaSegundo'),
             this.get('sentencia'),
             this.get('lanzamiento'),
-            this.get('observaciones')
-        ];
+            this.get('observaciones'))
+        );
     },
     upd: function(resp){
-        resp.query = 'CALL Update_Caso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        resp.args = [
-            this.id,
-            this.get('residencial'),
-            this.get('edificio'),
-            this.get('apartamento'),
-            this.get('area'),
-            this.get('nombre'),
-            this.get('casoRecibido'),
-            this.get('seleccionado'),
-            this.get('completado'),
-            this.get('causal'),
-            this.get('rentaMensual'),
-            this.get('mesesAdeudados'),
-            this.get('deudaRenta'),
-            this.get('deudaRentaNegativa'),
-            this.get('deudaRecibida'),
-            this.get('deudaTotal'),
-            this.get('ultimoReexamen'),
-            this.get('incumplimiento'),
-            this.get('caso'),
-            this.get('presentacion'),
-            this.get('diligenciado'),
-            this.get('diligenciadoEn'),
-            this.get('sala'),
-            this.get('hora'),
-            this.get('primeraComparecencia'),
-            this.get('segundaComparecencia'),
-            this.get('vistaSegundo'),
-            this.get('sentencia'),
-            this.get('lanzamiento'),
-            this.get('observaciones'),
-            this.get('rediligenciar'),
-            this.get('ejecutar')
-        ];
+        _.extend(resp,queries.updateCaso(
+                this.id,
+                this.get('residencial'),
+                this.get('edificio'),
+                this.get('apartamento'),
+                this.get('area'),
+                this.get('nombre'),
+                this.get('casoRecibido'),
+                this.get('seleccionado'),
+                this.get('completado'),
+                this.get('causal'),
+                this.get('rentaMensual'),
+                this.get('mesesAdeudados'),
+                this.get('deudaRenta'),
+                this.get('deudaRentaNegativa'),
+                this.get('deudaRecibida'),
+                this.get('deudaTotal'),
+                this.get('ultimoReexamen'),
+                this.get('incumplimiento'),
+                this.get('caso'),
+                this.get('presentacion'),
+                this.get('diligenciado'),
+                this.get('diligenciadoEn'),
+                this.get('sala'),
+                this.get('hora'),
+                this.get('primeraComparecencia'),
+                this.get('segundaComparecencia'),
+                this.get('vistaSegundo'),
+                this.get('sentencia'),
+                this.get('lanzamiento'),
+                this.get('observaciones'),
+                this.get('rediligenciar'),
+                this.get('ejecutar')
+            )
+        );
     },
     read: function(resp){
-        resp.query = 'CALL Get_Caso(?)';
-        resp.args = [this.id];
+        _.extend(resp,queries.getCaso(this.id));
     },
     parse: function(results){
         _.each(results, function(attribute, key){
@@ -294,16 +291,19 @@ Models.Casos = Backbone.Collection.extend({
     search: function(query, options){
         //caso > residencial+apt+edificio > nombre
         if(!_.isEmpty(query.caso)){
-            options.query = 'CALL Search_Casos_Caso(?)';
-            options.args = [query.caso];
+            var q = queries.getSearchCasosCaso(query.caso);
+            options.query = q.query;
+            options.args = q.args;
         }
         else if(!_.isEmpty(query.residencial) && !_.isEmpty(query.edificio) && !_.isEmpty(query.apartamento)){
-            options.query = 'CALL Search_Casos_Apt_Edif_Resi(?,?,?)';
-            options.args = [query.apartamento, query.edificio, query.residencial];
+            var q = queries.getSearchCasosAptEdifResi(query.apartamento, query.edificio, query.residencial);
+            options.query = q.query;
+            options.args = q.args;
         }
         else if(!_.isEmpty(query.nombre)){
-            options.query = 'CALL Search_Casos_Nombre(?)';
-            options.args = [query.nombre];
+            var q = queries.getSearchCasosNombre(query.nombre);
+            options.query = q.query;
+            options.args = q.args;
         }
         else{
             options.error('Need info to look');
@@ -368,10 +368,10 @@ Models.Casos = Backbone.Collection.extend({
             if(resSuccess) resSuccess(pdf); 
         };
         
-        options.query = 'CALL Search_Casos_PDF(?)';
-        options.args = ["^(" + query.casos + ")$"];
+        // options.query = 'CALL Search_Casos_PDF(?)';
+        // options.args = ["^(" + query.casos + ")$"];
 
-        this.fetch(options);
+        this.fetch(queries.getCasosPdf(query.casos));
     }
 });
 
@@ -381,7 +381,7 @@ Models.Residencial = Backbone.Model.extend({
 Models.Residenciales = Backbone.Collection.extend({
     model: Models.Residencial,
     read: function(resp){
-        resp.query = 'CALL Get_Residenciales()';
+        _.extend(resp,queries.getResidenciales());
     }
 });
 
@@ -391,7 +391,7 @@ Models.Causal = Backbone.Model.extend({
 Models.Causales = Backbone.Collection.extend({
     model: Models.Causal,
     read: function(resp){
-        resp.query = 'CALL Get_Causales()';
+        _.extend(resp,queries.getCausales());
     }
 });
 

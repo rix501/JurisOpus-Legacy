@@ -41,17 +41,25 @@
             })
             .value();
         },
-        filterInfoPrimeraVista: function(){
-            //TODO
-            return this.select(function(model){
-                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
-            });
+        filterInfoPrimeraVista: function(date){
+            return this.chain()
+            .select(function(model){
+                return (model.get('primeraComparecencia') === date);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
         },
         filterRediligenciar: function(){
-            //TODO
-            return this.select(function(model){
-                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
-            });
+            return this.chain()
+            .select(function(model){
+                return (model.get('rediligenciar') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
         }
     });
     
@@ -697,12 +705,7 @@
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "aoColumns": [                         
-                        // {   
-                        //     "mDataProp": "id",
-                        //     "sTitle":"ID",
-                        //     "sClass":"hidden"
-                        // },
+                    "aoColumns": [
                         {   
                             "mDataProp": "nombre",
                             "sTitle":"Nombre" 
@@ -830,9 +833,26 @@
                 'click .pills li a': 'selectPill'
             },
             initialize: function() {
-                _.bindAll(this, 'render', 'selectPill' ,'loadTable');
+                _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
+            },
+            selectRow: function(event){
+                if ( $(event.currentTarget).hasClass('row_selected') ){
+                    $(event.currentTarget).removeClass('row_selected');   
+                }
+                else{
+                    $(event.currentTarget).addClass('row_selected');
+                }
+            },
+            editRow: function(event){
+                var id = $(event.target)
+                        .attr('class')
+                        .replace(/row_selected/i, '')
+                        .replace(/odd/i, '')
+                        .replace(/even/i, '')
+                        .trim(); 
+                App.navigate('/editar/' + id ,true);
             },
             selectPill: function(event){
                 event.preventDefault();
@@ -852,18 +872,52 @@
                         this.filterTable(this.collection.filterSalaHoraDia());
                         break;
                     case 'primeravista':
-                        this.filterTable(this.collection.filterInfoPrimeraVista());
+                        $('#actualizar-modal').removeClass('hide');
+                                            
+                        if(!$('#actualizar-modal').hasClass('in'))
+                            $('#actualizar-modal').addClass('in');
+                    
+                        $('#actualizar-modal').modal('show');
                         break;
                     case 'rediligenciar':
                         this.filterTable(this.collection.filterRediligenciar());
                         break;
-                };
+                }
+            },
+            modalFilter: function(event){
+                var liNode = $('.pills li.active');
+                
+                var filterType = liNode.attr('class').replace(/active/i, "").trim();
+                
+                var modal = $(event.target.parentNode.parentNode);
+                
+                var args = "";
+                
+                modal.find('input').each(function(i, elem){
+                    args += $(elem).val() + ",";
+                });
+                
+                args = args.substring(0, args.length - 1);
+                
+                switch(filterType){
+                    case 'primeravista':
+                        this.filterTable(this.collection.filterInfoPrimeraVista(args));
+                        $(modal).modal('hide');
+                        break;
+                    default:
+                        $(modal).modal('hide');
+                        break;
+                }
             },
             filterTable:function(data){
                 this.oTable.fnClearTable();
                 this.oTable.fnAddData(data);
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
+                $("tbody tr").each(function(i, elem){
+                    if(data[i])
+                        $(this).addClass(data[i].id.toString()); 
+                });
             },
             loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();
@@ -872,7 +926,7 @@
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "aoColumns": [                         
+                    "aoColumns": [                 
                         {   
                             "mDataProp": "nombre",
                             "sTitle":"Nombre" 
@@ -906,6 +960,14 @@
                 $('#actualizar-table_wrapper').addClass('active');
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
+                
+                $("tbody tr").each(function(i, elem){
+                    if(data[i])
+                        $(this).addClass(data[i].id.toString()); 
+                });
+                
+                $('table tr').click(this.selectRow);
+                $('table tr').dblclick(this.editRow);
             },
             render: function(){
                 $(this.el).html(this.template());
@@ -920,7 +982,37 @@
                         console.log(error);
                     }
                 });
-
+                
+                var modal = $(this.el).find('#actualizar-modal');
+                
+                modal.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                $(modal).find('.filter').click(this.modalFilter);
+                
+                $(modal).find('.secondary').click(function(e){
+                    $(modal).modal('hide');
+                });
+                
+                var datepickers = $(this.el).find(".datepicker");
+                
+                _.forEach(datepickers, function(datepicker){
+                    $(datepicker).datepicker({
+                        beforeShow: function(input) {
+                            var field = $(input);
+                            var left = field.position().left + 382;
+                            var top = field.position().top + 142;
+                            setTimeout(function(){
+                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                            },1);                    
+                        },
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+                                
                 return this;
             }
         });
