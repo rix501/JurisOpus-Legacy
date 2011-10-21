@@ -918,6 +918,8 @@
                     if(data[i])
                         $(this).addClass(data[i].id.toString()); 
                 });
+                $('table tr').click(this.selectRow);
+                $('table tr').dblclick(this.editRow);
             },
             loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();

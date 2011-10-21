@@ -166,7 +166,11 @@ Backbone.utils.dateToString = function(dateObj, formatString){
         return dateObj.getDate() + " de " + monthNames[dateObj.getMonth()] + " de " +dateObj.getFullYear(); 
     }
     
-    return dateObj.getFullYear() + "-" + ( (dateObj.getMonth() + 1).toString().length === 1 ? '0' + (dateObj.getMonth() + 1).toString() : dateObj.getMonth() + 1)    + "-" +  dateObj.getDate(); 
+    return (
+        dateObj.getFullYear() + "-" 
+        + ( (dateObj.getMonth() + 1).toString().length === 1 ? '0' + (dateObj.getMonth() + 1).toString() : dateObj.getMonth() + 1) + "-"
+        + ( (dateObj.getDate() + 1).toString().length === 1 ? '0' + (dateObj.getDate() + 1).toString() : dateObj.getDate() + 1)
+    ); 
 };
 
 //My models
