@@ -681,6 +681,8 @@
                 var fr = []; 
                 var fp = [];                
                 
+                console.log(collection);
+                
                 this.collection.each(function(model){
                     switch (model.get('causalIniciales').toLowerCase()) {
                         case 'ic':
@@ -833,26 +835,41 @@
                 'click .pills li a': 'selectPill'
             },
             initialize: function() {
-                _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter');
+                _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
             },
             selectRow: function(event){
                 if ( $(event.currentTarget).hasClass('row_selected') ){
-                    $(event.currentTarget).removeClass('row_selected');   
+                    $(event.currentTarget).removeClass('row_selected');
+                    if($('#actualizar-table .row_selected').length === 0)
+                        $('.dataTables_wrapper .edit').addClass('disabled');
                 }
                 else{
                     $(event.currentTarget).addClass('row_selected');
+                    $('.dataTables_wrapper .edit').removeClass('disabled');
                 }
             },
             editRow: function(event){
-                var id = $(event.target)
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                var $selectRow = $('#actualizar-table .row_selected');
+                
+                if($selectRow.length === 1){
+                    var id = $($selectRow[0])
+                            .attr('class')
+                            .replace(/row_selected/i, '')
+                            .replace(/odd/i, '')
+                            .replace(/even/i, '')
+                            .trim(); 
+                    App.navigate('/editar/' + id ,true);
+                }
+                else{
+                    $('#actualizar-bulk-modal').removeClass('hide');
+                                        
+                    if(!$('#actualizar-bulk-modal').hasClass('in'))
+                        $('#actualizar-bulk-modal').addClass('in');
+                
+                    $('#actualizar-bulk-modal').modal('show');
+                }
             },
             selectPill: function(event){
                 event.preventDefault();
@@ -909,6 +926,58 @@
                         break;
                 }
             },
+            modalEdit: function(event){
+                var modal = $(event.target.parentNode.parentNode);
+                
+                var args;
+                
+                args = {
+                    hora: $('#hora').val(),
+                    sala: $('#sala').val(),
+                    fecha: $('#fecha').val()
+                };
+                
+                var url = "/casos/";
+                
+                $("#actualizar-table .row_selected").each(function(){
+                    var id = $(this)
+                    .attr('class')
+                    .replace(/row_selected/i, '')
+                    .replace(/odd/i, '')
+                    .replace(/even/i, '')
+                    .trim();
+                    url += id + ",";
+                });
+                
+                url = url.substring(0, url.length - 1);
+                
+                var submitSpinner = this.getSpinner();
+                submitSpinner.spin($('.modal-footer .spinner')[0]);
+                
+                $.ajax({
+                    type: "put",
+                    url: url,
+                    data: args,
+                    success: function(data){
+                        submitSpinner.stop(); 
+                        $(modal).find('.modal-footer .label')
+                         .attr('class','label success')
+                         .html('Guardado')
+                         .show();
+                        window.setTimeout(function(){
+                            $(modal).modal('hide');
+                        }.bind(this), 2000);
+                    },
+                    error: function(err){
+                        console.log(err);
+                        $(modal).find('.modal-footer .label')
+                        .attr('class','label important')
+                        .html('Hubo error guardando')
+                        .show();
+                        submitSpinner.stop();
+                    }
+                });
+            },
             filterTable:function(data){
                 this.oTable.fnClearTable();
                 this.oTable.fnAddData(data);
@@ -956,9 +1025,11 @@
                     ],
                     "aaData": data
                 };
-                
-                
+
                 this.oTable = $('#actualizar-table').dataTable(opts);
+                
+                $('#actualizar-table_filter').after('<button class="edit primary btn disabled">Editar</button>');
+                
                 $('#actualizar-table_wrapper').addClass('active');
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
@@ -969,7 +1040,7 @@
                 });
                 
                 $('table tr').click(this.selectRow);
-                $('table tr').dblclick(this.editRow);
+                $('.dataTables_wrapper .edit').click(this.editRow);
             },
             render: function(){
                 $(this.el).html(this.template());
@@ -985,18 +1056,35 @@
                     }
                 });
                 
-                var modal = $(this.el).find('#actualizar-modal');
+                var modalFilter = $(this.el).find('#actualizar-modal');
+                var modalBulk = $(this.el).find('#actualizar-bulk-modal');
                 
-                modal.modal({
+                modalFilter.modal({
                     backdrop: true,
                     keyboard: true,
                     show: false
                 });
                 
-                $(modal).find('.filter').click(this.modalFilter);
+                modalBulk.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
                 
-                $(modal).find('.secondary').click(function(e){
-                    $(modal).modal('hide');
+                $(modalFilter).find('.filter').click(this.modalFilter);
+                
+                $(modalFilter).find('.secondary').click(function(e){
+                    $(modalFilter).modal('hide');
+                });
+                
+                $(modalBulk).find('.edit').click(this.modalEdit);
+                
+                $(modalBulk).find('.secondary').click(function(e){
+                    $(modalBulk).modal('hide');
+                });
+                
+                $(modalBulk).bind('hidden', function () {
+                    $(modalBulk).find('.modal-footer .label').hide();
                 });
                 
                 var datepickers = $(this.el).find(".datepicker");

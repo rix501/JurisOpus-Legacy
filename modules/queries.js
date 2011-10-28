@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 module.exports = {
     getCasos: function(){
        return { 
@@ -161,7 +163,7 @@ module.exports = {
             	observaciones AS 'observaciones'\
             FROM Casos ca\
             WHERE ca.id REGEXP ?;",
-            args: [casosString]
+            args: ["^(" + query.casos + ")$"]
         }
     },
     getSearchCasosNombre: function(nombre){
@@ -520,6 +522,33 @@ module.exports = {
             	rediligenciar,
             	ejecutar,
             	id
+            ]
+        }
+    },
+    updateBulk: function(ids, sala, dia, hora){
+        var idsRegex = '^(';
+        
+        _.each(ids, function(id){
+            idsRegex += id + "|";
+        });
+        
+        idsRegex = idsRegex.substring(0, idsRegex.length - 1);
+        
+        idsRegex += ')$';
+        
+        return {
+            query: "UPDATE Casos\
+            SET\
+            	presentacion = ? , \
+            	sala = ? , \
+            	hora = ? \
+            WHERE\
+            Casos.id REGEXP ?;",
+            args: [
+            	dia, 
+            	sala, 
+            	hora, 
+            	idsRegex
             ]
         }
     }

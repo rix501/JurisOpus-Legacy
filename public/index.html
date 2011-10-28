@@ -629,6 +629,42 @@
                 <button class="btn secondary">Cancel</button>
             </div>
         </div>
+        <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>Hacer cambios en grupo:</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                    <div class="clearfix">
+                        <label for="sala">Sala:</label>
+                        <div class="input">
+                            <input class="medium" id="sala" name="sala" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="fecha">Fecha:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="fecha" name="fecha" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="hora">Hora:</label>
+                        <div class="input">
+                            <input class="medium" id="hora" name="hora" size="30" type="text">
+                        </div>
+                    </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="label" style="display: none;"></span>
+                <div class="spinner"></div>
+                <button class="btn primary edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
         <h2>Actualizar Demandas</h2>
         <ul class="pills">
             <li class="active presentacion"><a href="#">Fecha de Presentación</a></li>

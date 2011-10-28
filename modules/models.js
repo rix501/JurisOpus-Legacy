@@ -315,6 +315,13 @@ Models.Casos = Backbone.Collection.extend({
         }  
         this.fetch(options);
     },
+    bulkEdit: function(query, options){        
+        var q = queries.updateBulk(query.ids, query.data.sala, query.data.fecha, query.data.hora);
+        options.query = q.query;
+        options.args = q.args;
+                
+        (this.sync || Backbone.sync).call(this, 'update', null, options);
+    },
     pdf: function(query, options){
         if(query.type === "demandas")
             this.pdfDemanda(query, options);

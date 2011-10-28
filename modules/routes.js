@@ -146,18 +146,38 @@ exports.setup = function(app, Models){
             }
         });
     });
-    
+        
     app.put('/casos/:id', checkAuth, function(req,res){
-        var caso = new Models.Caso({id: req.params.id});
+        var ids = req.params.id.split(',');
                 
-        caso.save(req.body,{
-            success: function(model, fields){
-                res.send(model);
+        if(ids.length === 1){
+            var caso = new Models.Caso({id: req.params.id});
+
+            caso.save(req.body,{
+                success: function(model, fields){
+                    res.send(model);
+                },
+                error: function(err){
+                    res.send('error saving case: ' + JSON.stringify(err), 404);
+                }
+            });
+        }
+        else if(ids.length > 1){
+            var casos = new Models.Casos();
+            
+            casos.bulkEdit({
+                ids: ids,
+                data: req.body
             },
-            error: function(err){
-                res.send('error saving case: ' + JSON.stringify(err), 404);
-            }
-        });
+            {
+                success: function(model, fields){
+                    res.send(model);
+                },
+                error: function(err){
+                    res.send('error saving cases: ' + JSON.stringify(err), 404);
+                }
+            });
+        }
     });
 
     app.get('/search/:type', checkAuth, function(req,res){

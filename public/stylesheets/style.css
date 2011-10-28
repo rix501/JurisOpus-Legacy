@@ -130,7 +130,8 @@ hr {
     display:block;
 }
 
-.dataTables_wrapper .print {
+.dataTables_wrapper .print ,
+.dataTables_wrapper .edit {
     position: absolute;
     top: 23px;
     left: 865px;
