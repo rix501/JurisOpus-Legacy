@@ -1,6 +1,5 @@
 (function($) {
     //Models and Collections  
-    
     var Models = {};
     
     Models.Caso = Backbone.Model.extend({
@@ -15,6 +14,52 @@
             
             options.url = '/search/casos';
             this.fetch(options);
+        },
+        markComplete: function(query, options){
+            options.data = query;
+            
+            options.url = '/search/casos';
+            this.fetch(options);
+        },
+        filterFechaPresentacion: function(){
+            return this.chain()
+            .select(function(model){
+                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();                        
+        },
+        filterSalaHoraDia: function(){
+            return this.chain()
+            .select(function(model){
+                return (_.isEmpty(model.get('sala')) && !_.isEmpty(model.get('presentacion')));
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterInfoPrimeraVista: function(date){
+            return this.chain()
+            .select(function(model){
+                return (model.get('primeraComparecencia') === date);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterRediligenciar: function(){
+            return this.chain()
+            .select(function(model){
+                return (model.get('rediligenciar') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
         }
     });
     
@@ -39,11 +84,9 @@
         window.PageView = Backbone.View.extend({
             template: _.template($("#page-template").html()),
             el: 'body',
-                        
             initialize: function() {
                 _.bindAll(this, 'render');
             },
-
             render: function() {
                 $(this.el).html(this.template());
                 return this;
@@ -53,7 +96,6 @@
         window.ContainerView = Backbone.View.extend({
             tagName: 'div',
             className: 'container',
-            
             getSpinner: function(){
                 var opts = { 
                     lines: 12, 
@@ -68,7 +110,6 @@
                 
                 return new Spinner(opts);
             },
-            
             successMessage: function(msg){
                 $infoMsg = $('#info-msg');
                 
@@ -86,9 +127,8 @@
 				$infoMsg.css('display','block');
                 window.setTimeout(function(){
                     $('.alert-message[data-alert] .close').trigger('click');
-             	}, 1500);
+                }, 1500);
             },
-            
             errorMessage: function(msg){
                 $infoMsg = $('.alert-message');
                                         
@@ -109,7 +149,6 @@
                     $('.alert-message[data-alert] .close').trigger('click');
 				}, 3000);
             },
-            
             render: function() {
                 $(this.el).html(this.template());
                 
@@ -121,7 +160,6 @@
             events: {
                 'submit':'submitForm'
             },
-            
             loadResidenciales: function(){
                 var that = this;
                 
@@ -154,7 +192,6 @@
                     }
                 });
             },
-            
             loadCausales: function(){
                 var that = this;
                 
@@ -186,7 +223,6 @@
                     }
                 });
             },
-            
             render: function(){
                 $(this.el).html(this.template());
                 
@@ -220,7 +256,6 @@
                 $('li.active').removeClass('active');
                 $('li.entrar').addClass('active');
             },
-                        
             submitForm: function(event){
                 event.preventDefault(); 
                                            
@@ -279,9 +314,7 @@
             events: {
                 'submit':'submitForm'
             },
-            
             template:  _.template($("#container-buscar-template").html()),
-            
             loadResidenciales: function(){
                 var residenciales = new Models.Residenciales();
             
@@ -312,13 +345,11 @@
                     }
                 });
             },
-        
             initialize: function() {
                 _.bindAll(this, 'render', 'selectRow', 'edit');
                 $('li.active').removeClass('active');
                 $('li.buscar').addClass('active');  
             },
-        
             selectRow: function(event){
                 $('.edit.btn').removeClass('disabled');
                 $(this.oTable.fnSettings().aoData).each(function (){
@@ -326,7 +357,6 @@
                 });
                 $(event.target.parentNode).addClass('row_selected');
             },
-            
             edit: function(){
                 if($('.results.btn').hasClass('disabled'))
                     return false;
@@ -348,7 +378,6 @@
                     });
                 }    
             },
-        
             submitForm: function(event){
                 event.preventDefault();
             
@@ -374,7 +403,7 @@
                         }
                         else{
                             viewObj.collection = collection;
-                            
+                                                        
                             submitSpinner.stop();
                         
                             $('#results').show();
@@ -427,7 +456,6 @@
                 
                 return false;
             },
-            
             render: function(){
                 var that = window.ContainerView.prototype.render.call(this);
                 
@@ -463,11 +491,9 @@
                 this.model.bind('error', this.error);
                 this.model.fetch();                         
             },
-            
             error: function(err){
-                this.errorMessage('Error buscando caso')
+                this.errorMessage('Error buscando caso');
             },
-            
             fillResidenciales: function(){
                 var model = this.model;
                 
@@ -479,7 +505,6 @@
                     });
                 }
             },
-            
             fillCausales: function(){
                 var model = this.model;
                 
@@ -491,7 +516,6 @@
                     });
                 }
             },
-            
             fillForm: function(){
                 if($('#residencial option').length === 0){
                     this.bind('loaded:residenciales', this.fillResidenciales);
@@ -537,7 +561,6 @@
                 if(this.model.get('rediligenciar')) $('#rediligenciar').prop("checked", true);
                 if(this.model.get('ejecutar')) $('#ejecutar').prop("checked", true);
             },
-            
             submitForm: function(event){
                 event.preventDefault();
                 
@@ -588,20 +611,35 @@
             }
         });
         
-        window.ContainerDemandasView = ContainerView.extend({
-            template: _.template($("#container-demandas-template").html()),
-            
+        window.ContainerDemandasSeleccionarView = ContainerView.extend({
+            template: _.template($("#container-demandas-seleccionar-template").html()),
             events: {
                 'click .print':'print',
-                'click #table_id tr': 'selectRow'
+                'click .tabs li a': 'selectTab'
             },
-            
+            //add event to collection for when a model is removed       
             initialize: function(){
-                _.bindAll(this, 'render', 'selectRow');
+                _.bindAll(this, 'render', 'selectRow', 'loadTables');
                 $('li.active').removeClass('active');
                 $('li.demandas').addClass('active');
             },
-            
+            selectTab: function(event){
+                event.preventDefault();
+                $('.tabs li.active').removeClass('active');
+                $('.dataTables_wrapper').removeClass('active');
+                
+                var liNode = $(event.target).parent('li');
+                
+                var demandaType = liNode.attr('class');
+                
+                $('#' + demandaType + '_wrapper').addClass('active');
+                
+                var oTable = this['oTable' + demandaType];                
+                oTable.fnAdjustColumnSizing();
+                oTable.fnDraw();
+                
+                liNode.addClass('active');
+            },
             selectRow: function(event){
                 if ( $(event.currentTarget).hasClass('row_selected') ){
                     $(event.currentTarget).removeClass('row_selected');   
@@ -610,67 +648,485 @@
                     $(event.currentTarget).addClass('row_selected');
                 }
             },
-            
             print: function(){
                 var casosString = "";
-                var aTrs = this.oTable.fnGetNodes();
-
+                
+                var liNode = $('.tabs li.active');
+                
+                var demandaType = liNode.attr('class').replace(/active/i, '').trim();
+                
+                var oTable = this['oTable' + demandaType];
+                                
+                var aTrs = oTable.fnGetNodes();
+                
                 _.each(aTrs, function(aTr){
-                    if($(aTr).hasClass('row_selected')){
-                        tdCase = $(aTr).children('td')[8];
-                        casosString += $(tdCase).text() + "|";
+                    if($(aTr).hasClass('row_selected')){             
+                        var casoId = $(aTr).attr('class').replace(/row_selected/i, '').replace(/odd/i, '').replace(/even/i, '').trim();                                     
+                        casosString += casoId + "|";
                     }
                 });
                 
                 casosString = casosString.substring(0, casosString.length - 1);
-                
+                                
                 var iframe = document.createElement("iframe");
                 iframe.src = "/pdf?type=demandas&casos=" + casosString;
                                 
                 iframe.style.display = "none";
                 document.body.appendChild(iframe);
-            },
-            
-            render: function(){
-                $(this.el).html(this.template());
+            },            
+            loadTables: function(collection, reponse){
+                var ic = []; 
+                var oi = []; 
+                var re = []; 
+                var fr = []; 
+                var fp = [];                
                 
-                this.oTable = $(this.el).children('#table_id').dataTable( {
+                console.log(collection);
+                
+                this.collection.each(function(model){
+                    switch (model.get('causalIniciales').toLowerCase()) {
+                        case 'ic':
+                            ic.push(model.toJSON());
+                            break;
+                        case 'oi':
+                            oi.push(model.toJSON());
+                            break;
+                        case 're':
+                            re.push(model.toJSON());
+                            break;
+                        case 'fr':
+                            fr.push(model.toJSON());
+                            break;
+                        case 'fp':
+                            fp.push(model.toJSON());
+                            break;
+                    }
+                });
+                
+                var opts = {
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "bProcessing": true,
-                    "sAjaxSource": '/casos-datatable'
+                    "aoColumns": [
+                        {   
+                            "mDataProp": "nombre",
+                            "sTitle":"Nombre" 
+                        },
+                        {
+                            "mDataProp": "residencial",
+                            "sTitle":"Residencial"
+                        },
+                        { 
+                            "mDataProp": "edificio",
+                            "sTitle":"Edificio" 
+                        },
+                        { 
+                            "mDataProp": "apartamento",
+                            "sTitle":"Apartamento" 
+                        },
+                        { 
+                            "mDataProp": "casoRecibido",
+                            "sTitle":"Ingresado" 
+                        },
+                        { 
+                            "mDataProp": "presentacion",
+                            "sTitle":"Fecha Presentacion" 
+                        }
+                    ]
+                };
+                
+                var fpOpts = {
+                    aaData: fp
+                };
+                var oiOpts = {
+                    aaData: oi
+                };
+                var reOpts = {
+                    aaData: re
+                };
+                var frOpts = {
+                    aaData: fr
+                };
+                var icOpts = {
+                    aaData: ic
+                };
+                
+                 _.defaults(fpOpts, opts);
+                 _.defaults(oiOpts, opts);
+                 _.defaults(reOpts, opts);
+                 _.defaults(frOpts, opts);
+                 _.defaults(icOpts, opts);
+                
+                this.oTablefp = $('#fp').dataTable(fpOpts);
+                this.oTablefp.fnAdjustColumnSizing();                
+                
+                this.oTableoi = $('#oi').dataTable(oiOpts);
+                this.oTableoi.fnAdjustColumnSizing();
+                
+                this.oTablere = $('#re').dataTable(reOpts);
+                this.oTablere.fnAdjustColumnSizing();
+                
+                this.oTablefr = $('#fr').dataTable(frOpts);
+                this.oTablefr.fnAdjustColumnSizing();
+                
+                this.oTableic = $('#ic').dataTable(icOpts);
+                this.oTableic.fnAdjustColumnSizing();
+                
+                $('#fp_filter').after('<button class="print btn">Imprimir</button>');
+                $('#oi_filter').after('<button class="print btn">Imprimir</button>');
+                $('#re_filter').after('<button class="print btn">Imprimir</button>');
+                $('#fr_filter').after('<button class="print btn">Imprimir</button>');
+                $('#ic_filter').after('<button class="print btn">Imprimir</button>');
+                
+                var viewObj = this;
+                
+                $("#ic tbody tr").each(function(i, elem){
+                    if(ic[i])
+                        $(this).addClass(ic[i].id.toString()); 
                 });
                 
-                $(this.el).find('#table_id_filter').after('<button class="print btn">Imprimir</button>');
+                $("#fp tbody tr").each(function(i, elem){
+                    if(fp[i])
+                        $(this).addClass(fp[i].id.toString()); 
+                });
+                
+                $("#oi tbody tr").each(function(i, elem){
+                    if(oi[i])
+                        $(this).addClass(oi[i].id.toString()); 
+                });
+                
+                $("#re tbody tr").each(function(i, elem){
+                    if(re[i])
+                        $(this).addClass(re[i].id.toString()); 
+                });
+                
+                $("#fr tbody tr").each(function(i, elem){
+                    if(fr[i])
+                    $(this).addClass(fr[i].id.toString()); 
+                });
+                
+                $('#ic_wrapper').addClass('active');
+                this.oTableic.fnAdjustColumnSizing();
+                this.oTableic.fnDraw();
+                
+                $('table.demanda tr').click(this.selectRow);
+            },
+            render: function(){
+                $(this.el).html(this.template());
+      
+                this.collection = new Models.Casos();
+                
+                this.collection.url = '/casos-datatable/seleccionar';
+                
+                this.collection.fetch({
+                    success: this.loadTables,
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
 
+                return this;
+            }
+        });
+        
+        window.ContainerDemandasActualizarView = ContainerView.extend({
+            template:  _.template($("#container-demandas-actualizar-template").html()),
+            events: {
+                'click .pills li a': 'selectPill'
+            },
+            initialize: function() {
+                _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
+                $('li.active').removeClass('active');
+                $('li.demandas').addClass('active');
+            },
+            selectRow: function(event){
+                if ( $(event.currentTarget).hasClass('row_selected') ){
+                    $(event.currentTarget).removeClass('row_selected');
+                    if($('#actualizar-table .row_selected').length === 0)
+                        $('.dataTables_wrapper .edit').addClass('disabled');
+                }
+                else{
+                    $(event.currentTarget).addClass('row_selected');
+                    $('.dataTables_wrapper .edit').removeClass('disabled');
+                }
+            },
+            editRow: function(event){
+                if($('.dataTables_wrapper .edit').hasClass('disabled'))
+                    return;
+                
+                var $selectRow = $('#actualizar-table .row_selected');
+                
+                if($selectRow.length === 1){
+                    var id = $($selectRow[0])
+                            .attr('class')
+                            .replace(/row_selected/i, '')
+                            .replace(/odd/i, '')
+                            .replace(/even/i, '')
+                            .trim(); 
+                    App.navigate('/editar/' + id ,true);
+                }
+                else{
+                    $('#actualizar-bulk-modal').removeClass('hide');
+                                        
+                    if(!$('#actualizar-bulk-modal').hasClass('in'))
+                        $('#actualizar-bulk-modal').addClass('in');
+                
+                    $('#actualizar-bulk-modal').modal('show');
+                }
+            },
+            selectPill: function(event){
+                event.preventDefault();
+                $('.pills li.active').removeClass('active');
+                
+                var liNode = $(event.target).parent('li');
+                
+                var filterType = liNode.attr('class');
+                
+                liNode.addClass('active');
+                
+                switch(filterType){
+                    case 'presentacion':
+                        this.filterTable(this.collection.filterFechaPresentacion());
+                        break;
+                    case 'salahora':
+                        this.filterTable(this.collection.filterSalaHoraDia());
+                        break;
+                    case 'primeravista':
+                        $('#actualizar-modal').removeClass('hide');
+                                            
+                        if(!$('#actualizar-modal').hasClass('in'))
+                            $('#actualizar-modal').addClass('in');
+                    
+                        $('#actualizar-modal').modal('show');
+                        break;
+                    case 'rediligenciar':
+                        this.filterTable(this.collection.filterRediligenciar());
+                        break;
+                }
+            },
+            modalFilter: function(event){
+                var liNode = $('.pills li.active');
+                
+                var filterType = liNode.attr('class').replace(/active/i, "").trim();
+                
+                var modal = $(event.target.parentNode.parentNode);
+                
+                var args = "";
+                
+                modal.find('input').each(function(i, elem){
+                    args += $(elem).val() + ",";
+                });
+                
+                args = args.substring(0, args.length - 1);
+                
+                switch(filterType){
+                    case 'primeravista':
+                        this.filterTable(this.collection.filterInfoPrimeraVista(args));
+                        $(modal).modal('hide');
+                        break;
+                    default:
+                        $(modal).modal('hide');
+                        break;
+                }
+            },
+            modalEdit: function(event){
+                var modal = $(event.target.parentNode.parentNode);
+                
+                var args;
+                
+                args = {
+                    hora: $('#hora').val(),
+                    sala: $('#sala').val(),
+                    fecha: $('#fecha').val()
+                };
+                
+                var url = "/casos/";
+                
+                $("#actualizar-table .row_selected").each(function(){
+                    var id = $(this)
+                    .attr('class')
+                    .replace(/row_selected/i, '')
+                    .replace(/odd/i, '')
+                    .replace(/even/i, '')
+                    .trim();
+                    url += id + ",";
+                });
+                
+                url = url.substring(0, url.length - 1);
+                
+                var submitSpinner = this.getSpinner();
+                submitSpinner.spin($('.modal-footer .spinner')[0]);
+                
+                $.ajax({
+                    type: "put",
+                    url: url,
+                    data: args,
+                    success: function(data){
+                        submitSpinner.stop(); 
+                        $(modal).find('.modal-footer .label')
+                         .attr('class','label success')
+                         .html('Guardado')
+                         .show();
+                        window.setTimeout(function(){
+                            $(modal).modal('hide');
+                        }.bind(this), 2000);
+                    },
+                    error: function(err){
+                        console.log(err);
+                        $(modal).find('.modal-footer .label')
+                        .attr('class','label important')
+                        .html('Hubo error guardando')
+                        .show();
+                        submitSpinner.stop();
+                    }
+                });
+            },
+            filterTable:function(data){
+                this.oTable.fnClearTable();
+                this.oTable.fnAddData(data);
+                this.oTable.fnAdjustColumnSizing();
+                this.oTable.fnDraw();
+                $("tbody tr").each(function(i, elem){
+                    if(data[i])
+                        $(this).addClass(data[i].id.toString()); 
+                });
+                $('table tr').click(this.selectRow);
+            },
+            loadTable: function(collection, resp){
+                var data = this.collection.filterFechaPresentacion();
+                                
+                var opts = {
+                    "sScrollX": "100%",
+                    "sScrollXInner": "1300px",
+                    "bScrollCollapse": true,
+                    "aoColumns": [                 
+                        {   
+                            "mDataProp": "nombre",
+                            "sTitle":"Nombre" 
+                        },
+                        {
+                            "mDataProp": "residencial",
+                            "sTitle":"Residencial"
+                        },
+                        { 
+                            "mDataProp": "edificio",
+                            "sTitle":"Edificio" 
+                        },
+                        { 
+                            "mDataProp": "apartamento",
+                            "sTitle":"Apartamento" 
+                        },
+                        { 
+                            "mDataProp": "casoRecibido",
+                            "sTitle":"Ingresado" 
+                        },
+                        { 
+                            "mDataProp": "presentacion",
+                            "sTitle":"Fecha Presentacion" 
+                        }
+                    ],
+                    "aaData": data
+                };
+
+                this.oTable = $('#actualizar-table').dataTable(opts);
+                
+                $('#actualizar-table_filter').after('<button class="edit primary btn disabled">Editar</button>');
+                
+                $('#actualizar-table_wrapper').addClass('active');
+                this.oTable.fnAdjustColumnSizing();
+                this.oTable.fnDraw();
+                
+                $("tbody tr").each(function(i, elem){
+                    if(data[i])
+                        $(this).addClass(data[i].id.toString()); 
+                });
+                
+                $('table tr').click(this.selectRow);
+                $('.dataTables_wrapper .edit').click(this.editRow);
+            },
+            render: function(){
+                $(this.el).html(this.template());
+      
+                this.collection = new Models.Casos();
+                
+                this.collection.url = '/casos-datatable/actualizar';
+                
+                this.collection.fetch({
+                    success: this.loadTable,
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+                
+                var modalFilter = $(this.el).find('#actualizar-modal');
+                var modalBulk = $(this.el).find('#actualizar-bulk-modal');
+                
+                modalFilter.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                modalBulk.modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                $(modalFilter).find('.filter').click(this.modalFilter);
+                
+                $(modalFilter).find('.secondary').click(function(e){
+                    $(modalFilter).modal('hide');
+                });
+                
+                $(modalBulk).find('.edit').click(this.modalEdit);
+                
+                $(modalBulk).find('.secondary').click(function(e){
+                    $(modalBulk).modal('hide');
+                });
+                
+                $(modalBulk).bind('hidden', function () {
+                    $(modalBulk).find('.modal-footer .label').hide();
+                });
+                
+                var datepickers = $(this.el).find(".datepicker");
+                
+                _.forEach(datepickers, function(datepicker){
+                    $(datepicker).datepicker({
+                        beforeShow: function(input) {
+                            var field = $(input);
+                            var left = field.position().left + 382;
+                            var top = field.position().top + 142;
+                            setTimeout(function(){
+                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                            },1);                    
+                        },
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
+                                
                 return this;
             }
         });
         
         window.ContainerInformesView = ContainerView.extend({
             template:  _.template($("#container-informes-template").html()),
-
             events: {
                 'click .print':'print',
                 'click .mod' : 'modal',
                 'click .redirect':'redirect'
             },
-
             redirect: function(event){
                   App.navigate('/informes/'+event.target.id ,true);
             },
-
             initialize: function() {
                 _.bindAll(this, 'render');
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
             },
-            
             modal: function(){
                 $('#my-modal').modal('show');
             },
-            
             print: function(event){
                 
                 var informesString = "";
@@ -712,7 +1168,6 @@
                     modal.modal('hide');
                 }
             },
-            
             render: function(){
                 $(this.el).html(this.template());
                 
@@ -748,25 +1203,6 @@
                 
                 return this;                
             }
-        
-        });
-        
-        window.ContainerActualizarView = ContainerView.extend({
-            template:  _.template($("#container-actualizar-template").html()),
-            initialize: function() {
-            _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.actualizar').addClass('active');
-            }
-        });
-        
-        window.ContainerResolucionView = ContainerView.extend({
-            template:  _.template($("#container-resolucion-template").html()),
-            initialize: function() {
-                _.bindAll(this, 'render');
-                $('li.active').removeClass('active');
-                $('li.resolucion').addClass('active');
-            }
         });
         
         //Super => Backbone.Model.prototype.set.call(this, attributes, options);
@@ -785,24 +1221,20 @@
                 '/resolucion': 'resolucion',
                 '/login':'login' 
             },
-
             initialize: function() {
                 this.pageView = new PageView();
                 this.pageView.render();
             },
-
             entrar: function() {
                 this.containerEntrarView = new ContainerEntrarView();
                 $('#content').empty();
                 $('#content').append(this.containerEntrarView.render().el);    
             },
-            
             buscar: function() {
                 this.containerBuscarView = new ContainerBuscarView();
                 $('#content').empty();
                 $('#content').append(this.containerBuscarView.render().el);
             },
-            
             editar: function(casoId){
                 this.containerEditarView = new ContainerEditarView({
                     casoId: casoId
@@ -810,25 +1242,29 @@
                 $('#content').empty();
                 $('#content').append(this.containerEditarView.render().el);
             },
-            
             demandas: function(listName){
-                this.containerDemandasView = new ContainerDemandasView();
-                $('#content').empty();
-                $('#content').append(this.containerDemandasView.render().el);
+                if(listName === 'seleccionar'){
+                    this.containerDemandasSeleccionarView = new ContainerDemandasSeleccionarView();
+                    $('#content').empty();
+                    $('#content').append(this.containerDemandasSeleccionarView.render().el);
+                }
+                else if(listName === 'actualizar'){
+                    this.containerDemandasActualizarView = new ContainerDemandasActualizarView();
+                    $('#content').empty();
+                    $('#content').append(this.containerDemandasActualizarView.render().el);
+                }
+                
             },
-            
             informes: function(){
                 this.containerInformesView = new ContainerInformesView();
                 $('#content').empty();
                 $('#content').append(this.containerInformesView.render().el); 
             },
-            
             actualizar: function(){
                 this.containerActualizarView = new ContainerActualizarView();
                 $('#content').empty();
                 $('#content').append(this.containerActualizarView.render().el);                 
             },
-            
             resolucion: function(){
                 this.containerResolucionView = new ContainerResolucionView();
                 $('#content').empty();

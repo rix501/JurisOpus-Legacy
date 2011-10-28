@@ -7,8 +7,8 @@ var tribunalHeaders = {
 //Implementacion de Contrato - OI
 //Ocupacion Ilegal - IC
 //Re-Examen - RE
-//Cobro y de Re-Examen - FR
-//Cobro de Dinero - FP
+//Pago y de Re-Examen - FR
+//Falta de Pago - FP
 
 var demanda = pdf.makeSubclass();
 demanda.prototype.draw = function(doc, data){
@@ -21,13 +21,21 @@ demanda.prototype.draw = function(doc, data){
    if(doc.pages.length > 1){
        doc.addPage();
    }
-
+   
+   data.year = new Date().getFullYear();
+   
+   this.drawFirstPage(doc, data);
    this.drawFirstPage(doc, data);
    
-   /**** NEW PAGE ****/
-   this.drawSecondPage(doc, data);
-
-   /**** NEW PAGE ****/
+   this.drawSecondPage(doc, data, false);
+   this.drawThirdPage(doc, data);
+   this.drawSecondPage(doc, data, false);
+   this.drawThirdPage(doc, data);
+   this.drawSecondPage(doc, data, false);
+   this.drawThirdPage(doc, data);
+   
+   //Copy
+   this.drawSecondPage(doc, data, true);
    this.drawThirdPage(doc, data);
    
    return doc;
@@ -102,7 +110,8 @@ demanda.prototype.drawFirstPage = function(doc, data){
     doc.moveDown();
 
     doc.x = 0;
-
+    doc.y = 261.75;
+        
     doc.text('DEMANDA',doc.x,doc.y,{
       width: 612,
       align: 'center',
@@ -166,6 +175,8 @@ demanda.prototype.drawFirstPage = function(doc, data){
        align: 'justify'
     });
 
+    doc.moveDown();
+
     //Changes if more than one user
     doc.text("HECTOR A. SANTIAGO ROMERO (RUA 10101)",doc.x - 15, doc.y)
     .text("Abogados parte Demandante")
@@ -174,8 +185,6 @@ demanda.prototype.drawFirstPage = function(doc, data){
     .text("Trujillo Alto, PR  00977-2500.")
     .text("Tel. (787) 294-6397, 6398 / Fax (787) 294-6399")
     .text("hasantiago.law@gmail.com");
-
-    doc.moveDown();
     
     doc.x = 72;
     
@@ -193,10 +202,8 @@ demanda.prototype.drawFirstPage = function(doc, data){
        size: "legal"
     });
 };
-demanda.prototype.drawSecondPage = function(doc, data){
+demanda.prototype.drawSecondPage = function(doc, data, isCopy){
     var y, x, width, height;
-
-    //
 
     doc.addPage({
       size: "legal"
@@ -318,7 +325,7 @@ demanda.prototype.drawSecondPage = function(doc, data){
          lineGap: 10
     });
 
-    doc.text('POR CUANTO: De conformidad al Artículo 624 del Código de Enjuiciamiento Civil, 32 L.P.R.A. 2825, quedan citadas las partes para que comparezcan a vista el día _______ de ______________ de ____, a las _______ de la A.M. en el Tribunal de Primera Instancia de Puerto Rico, Sala de San Juan, Puerto Rico. SE LE APERCIBE que de no comparecer se dictará Sentencia sin más citarle ni oírle, declarando CON LUGAR la demanda y ordenando su lanzamiento y de cuantas personas se encuentren en la ocupación del inmueble bajo o en virtud de la autoridad de la parte demandada.',{
+    doc.text('POR CUANTO: De conformidad al Artículo 624 del Código de Enjuiciamiento Civil, 32 L.P.R.A. 2825, quedan citadas las partes para que comparezcan a vista el día _______ de ______________ de ' + data.year + ', a las _______ de la ___ en el Tribunal de Primera Instancia de Puerto Rico, Sala de San Juan, Puerto Rico. SE LE APERCIBE que de no comparecer se dictará Sentencia sin más citarle ni oírle, declarando CON LUGAR la demanda y ordenando su lanzamiento y de cuantas personas se encuentren en la ocupación del inmueble bajo o en virtud de la autoridad de la parte demandada.',{
          indent: 36,
          lineGap: 10
     });
@@ -328,9 +335,40 @@ demanda.prototype.drawSecondPage = function(doc, data){
          lineGap: 10
     });         
 
-    doc.text('Expedida bajo mi firma, y el sello del Tribunal, hoy día _______ de',{
+    doc.text('Expedida bajo mi firma, y el sello del Tribunal, hoy día _______ de ______ de ' + data.year,{
          indent: 36,
          lineGap: 10
+    });
+    
+    doc.moveDown(3);
+    
+    doc.text('SECRETARIA(O)',{
+        width:468,
+        align:'center'
+    });
+    
+    doc.moveDown();
+    
+    if(isCopy){
+        //Only thing different
+        doc.text('(COPIA)',{
+             indent: 36
+        });
+    }
+    else{
+        doc.moveDown();
+    }
+    
+    doc.moveDown();
+    
+    doc.text('Por:',{
+        width:348,
+        align:'center'
+    });
+    doc.font('Arial-Bold');
+    doc.text('SECRETARIA(O) AUXILIAR',{
+        width:468,
+        align:'center'
     });
 };
 demanda.prototype.drawThirdPage = function(doc, data){
@@ -339,7 +377,9 @@ demanda.prototype.drawThirdPage = function(doc, data){
     doc.addPage({
        size: "legal"
     });
-
+    
+    doc.font('Arial');
+    
     doc.text('DILIGENCIAMIENTO POR PERSONA PARTICULAR',{
        align: 'center',
        lineGap: 15
@@ -357,7 +397,7 @@ demanda.prototype.drawThirdPage = function(doc, data){
        lineGap: 15
     });
 
-    doc.text('Que recibí esta Citación-Emplazamiento el día_______de ______________ de ____, notificándola personalmente a __________________________________, a su dirección_________________________________________________, o sea, el(la) Demandado(a) en dicha citación, el día______de ____________________ de ____, a las_________de la_______en_________________,  P.R., al dorso de cuya Citación-Emplazamiento hice constar mi firma, la fecha y sitio de su entrega y notificación.',{
+    doc.text('Que recibí esta Citación-Emplazamiento el día_______de ______________ de  ' + data.year + ', notificándola personalmente a __________________________________, a su dirección_________________________________________________, o sea, el(la) Demandado(a) en dicha citación, el día______de ____________________ de  ' + data.year + ', a las_________de la_______en_________________,  P.R., al dorso de cuya Citación-Emplazamiento hice constar mi firma, la fecha y sitio de su entrega y notificación.',{
        indent: 36,
        lineGap: 15
     });
@@ -371,8 +411,11 @@ demanda.prototype.drawThirdPage = function(doc, data){
        lineGap: 15
     });
 
-    doc.text('JURADO Y SUSCRITO ante mi por ___________________________ de las circunstancias personales anteriormente expresadas, y a quien conozco personalmente. En , P.R., a_____ de ___________________ de ____.',{
+    doc.text('JURADO Y SUSCRITO ante mi por ___________________________ de las circunstancias personales anteriormente expresadas, y a quien conozco personalmente. En ,',{
         indent: 36,
+        lineGap: 15
+    })
+    .text('P.R., a_____ de ___________________ de  ' + data.year + '.',{
         lineGap: 15
     });
 };
@@ -396,7 +439,7 @@ faltadepago.prototype.drawBullets = function(doc,data){
     });
 
     //This part changes
-    doc.text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de "+ data.deudaTotal +", por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
+    doc.text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de $"+ data.deudaTotal +", por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
         indent: 72,
         align: 'justify',
         lineGap: 10
@@ -442,6 +485,7 @@ ocupacionilegal.prototype.drawBullets = function(doc,data){
         lineGap: 10
     });
 };
+
 
 var reexamen = demanda.makeSubclass();
 reexamen.prototype.draw = function(doc, data){
@@ -501,13 +545,13 @@ incumplimientodecontrato.prototype.drawBullets = function(doc,data){
     });
 };
 
-var cobroydereexamen = demanda.makeSubclass();
-cobroydereexamen.prototype.draw = function(doc, data){
+var pagoyreexamen = demanda.makeSubclass();
+pagoyreexamen.prototype.draw = function(doc, data){
     data.causalDescription = 'DESAHUCIO POR INCUMPLIMIENTO DE CONTRATO, FALTA DE PAGO';
     
     return demanda.prototype.draw.call(this, doc, data);
 };
-cobroydereexamen.prototype.drawBullets = function(doc,data){
+pagoyreexamen.prototype.drawBullets = function(doc,data){
     doc.text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial " + data.residencial +", ubicado en el Municipio de San Juan.",{
         indent: 72,
         align: 'justify',
@@ -518,7 +562,7 @@ cobroydereexamen.prototype.drawBullets = function(doc,data){
         align: 'justify',
         lineGap: 10
     })
-    .text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de  "+ data.deudaTotal +", por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
+    .text("3. La parte demandada ha incumplido con su contrato al no pagar el canon mensual pactado, por lo que adeuda al presente la suma de  $"+ data.deudaTotal +", por lo que la parte compareciente se ha visto obligada a presentar la presente acción.*",{
         indent: 72,
         align: 'justify',
         lineGap: 10
@@ -558,7 +602,7 @@ module.exports = (function(){
             faltadepago: new faltadepago(),
             reexamen: new reexamen(),
             incumplimientodecontrato: new incumplimientodecontrato(),
-            cobroydereexamen: new cobroydereexamen(),
+            cobroydereexamen: new pagoyreexamen(),
             test: new test()
         }
     };

@@ -6,6 +6,7 @@
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
     <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-dropdown.js"></script>
     <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
     <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
@@ -22,17 +23,23 @@
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
     <!-- Templates -->
     <script type="text/template" id="page-template">
-        <div class="topbar">
-            <div class="fill">
+        <div class="topbar" data-dropdown="dropdown">
+            <div class="topbar-inner">
                 <div class="container">
                     <h3><a href="/">Juris Opus</a></h3>
-                    <ul>
+                    <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
-                        <li class="demandas"><a href="/#/demandas">Demandas</a></li>
+                        <li class="dropdown demandas">
+                            <a href="#" class="dropdown-toggle">Demandas</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
+                                <li><a href="/#/demandas/actualizar">Actualizar</a></li>
+								<li class="divider"></li>
+								<li><a href="/#/">Ver Todos</a></li>
+                            </ul>
+                        </li>                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
-                        <!-- <li class="actualizar"><a href="/#/actualizar">Actualizar</a></li> -->
-                        <!-- <li class="resolucion"><a href="/#/resolucion">Resolucion</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -267,8 +274,7 @@
                 <h3>Resultados. Escoja uno.</h3>
             </div>
             <div class="modal-body">
-                <table id='results'>
-                </table>
+                <table id='results'></table>
             </div>
             <div class="modal-footer">
                 <button class="btn primary disabled edit">Editar</button>
@@ -573,32 +579,101 @@
             </fieldset>
         </form>
     </script>
-    <script type="text/template" id="container-demandas-template">
+    <script type="text/template" id="container-demandas-seleccionar-template">
         <div class="alert-message error fade in" id="info-msg" data-alert="alert">
             <a class="close" href="#">×</a>
             <p></p>
         </div>
-        <h2 class="tables">Demandas</h2>
-        <table id="table_id">
-        	<thead>
-        		<tr>
-	    			<th>Residencial</th>
-	                <th>Edificio</th>
-	        		<th>Apartamento</th>
-        			<th>Ingresado</th>
-        			<th>Seleccionado</th>
-					<th>Causal</th>        	
-					<th>Deuda Total</th>
-					<th>Incumplimiento</th>
-			        <th>Caso</th>
-					<th>Fecha Presentacion</th>
-            		<th>Observaciones</th>
-        		</tr>
-        	</thead>
-        	<tbody>
-        	</tbody>
-        </table>        
+		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>¿Marcar demanadas completadas?</h3>
+            </div>
+            <div class="modal-body">
+                <table id='results'></table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary disabled edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <h2>Seleccionar Demandas</h2>
+        <ul class="tabs">
+            <li class="active ic"><a href="#">Implementacion de Contrato</a></li>
+            <li class="oi"><a href="#">Ocupacion Ilegal</a></li>
+            <li class="re"><a href="#">Re-Examen</a></li>
+            <li class="fr"><a href="#">Pago y de Re-Examen</a></li>
+            <li class="fp"><a href="#">Falta de Pago</a></li>
+        </ul>
+        <table id="ic" class="demanda"></table>
+        <table id="oi" class="demanda"></table>
+        <table id="re" class="demanda"></table>
+        <table id="fr" class="demanda"></table>
+        <table id="fp" class="demanda"></table>
     </script>
+	<script type="text/template" id="container-demandas-actualizar-template">
+        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
+            <a class="close" href="#">×</a>
+            <p></p>
+        </div>
+		<div id="actualizar-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>¿Que día de 1ra comparecencia?</h3>
+            </div>
+            <div class="modal-body">
+                <input class="medium datepicker" id="casoRecibido" name="fecha" size="30" type="text">
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary filter">Filtrar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a href="#" class="close">×</a>
+                <h3>Hacer cambios en grupo:</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                    <div class="clearfix">
+                        <label for="sala">Sala:</label>
+                        <div class="input">
+                            <input class="medium" id="sala" name="sala" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="fecha">Fecha:</label>
+                        <div class="input">
+                            <input class="medium datepicker" id="fecha" name="fecha" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="hora">Hora:</label>
+                        <div class="input">
+                            <input class="medium" id="hora" name="hora" size="30" type="text">
+                        </div>
+                    </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="label" style="display: none;"></span>
+                <div class="spinner"></div>
+                <button class="btn primary edit">Editar</button>
+                <button class="btn secondary">Cancel</button>
+            </div>
+        </div>
+        <h2>Actualizar Demandas</h2>
+        <ul class="pills">
+            <li class="active presentacion"><a href="#">Fecha de Presentación</a></li>
+            <li class="salahora"><a href="#">Sala, Hora, y dia para 1ra Comparecencia</a></li>
+            <li class="primeravista"><a href="#">Información de 1ra Vista</a></li>
+            <li class="rediligenciar"><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
+        </ul>
+        <table id="actualizar-table" class="active"></table>
+	</script>
     <script type="text/template" id="container-informes-template">
         <h2>Informes</h2>
         <div id="my-modal" class="modal hide fade in" style="display: none; ">

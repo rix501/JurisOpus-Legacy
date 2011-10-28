@@ -113,7 +113,25 @@ hr {
     width: 55%;
 }
 
-#table_id_wrapper .print {
+.dataTables_wrapper {
+    display:none;
+}
+
+.dataTables_wrapper td.hidden,
+.dataTables_wrapper th.hidden{
+    display:none;
+}
+
+.dataTables_wrapper.active {
+    display:block;
+}
+
+.modal-body .dataTables_wrapper {
+    display:block;
+}
+
+.dataTables_wrapper .print ,
+.dataTables_wrapper .edit {
     position: absolute;
     top: 23px;
     left: 865px;
@@ -123,13 +141,6 @@ hr {
     width: 700px;
     left: 43%;
 }
-
-/*h2.tables {
-    display: inline-block;
-    margin-left: 10px;
-    line-height: 10px;
-}
-*/
 
 .informes.row {
     
@@ -177,6 +188,7 @@ form.list li label {
 
 textarea.xxlarge {
     width:900px;
+    height: 200px;
     resize:none;
 }
 

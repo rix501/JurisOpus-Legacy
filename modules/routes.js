@@ -8,7 +8,8 @@ exports.setup = function(app, Models){
     ]; 
      
     var checkAuth = function(req, res, next){
-        // req.session.auth = true;
+        if(app.settings.env === 'development')
+            req.session.auth = true;
         
         if(req.url === "/login"){
             if(req.session && req.session.auth){
@@ -90,8 +91,11 @@ exports.setup = function(app, Models){
         });
     });
     
-    app.get('/casos-datatable', checkAuth, function(req, res){
+    app.get('/casos-datatable/:type?', checkAuth, function(req, res){
         var cases = new Models.Casos();
+        
+        if(req.params.type === "seleccionar")
+            cases.seleccionado = true;
         
         cases.fetch({
             success: function(collection, fields){
@@ -142,18 +146,38 @@ exports.setup = function(app, Models){
             }
         });
     });
-    
+        
     app.put('/casos/:id', checkAuth, function(req,res){
-        var caso = new Models.Caso({id: req.params.id});
+        var ids = req.params.id.split(',');
                 
-        caso.save(req.body,{
-            success: function(model, fields){
-                res.send(model);
+        if(ids.length === 1){
+            var caso = new Models.Caso({id: req.params.id});
+
+            caso.save(req.body,{
+                success: function(model, fields){
+                    res.send(model);
+                },
+                error: function(err){
+                    res.send('error saving case: ' + JSON.stringify(err), 404);
+                }
+            });
+        }
+        else if(ids.length > 1){
+            var casos = new Models.Casos();
+            
+            casos.bulkEdit({
+                ids: ids,
+                data: req.body
             },
-            error: function(err){
-                res.send('error saving case: ' + JSON.stringify(err), 404);
-            }
-        });
+            {
+                success: function(model, fields){
+                    res.send(model);
+                },
+                error: function(err){
+                    res.send('error saving cases: ' + JSON.stringify(err), 404);
+                }
+            });
+        }
     });
 
     app.get('/search/:type', checkAuth, function(req,res){
@@ -162,7 +186,12 @@ exports.setup = function(app, Models){
                         
             casos.search(req.query, {
                 success: function(collection, fields){
-                    res.send(collection);
+                    if(collection.length === 0){
+                        res.send('No cases', 404);
+                    }
+                    else {
+                        res.send(collection);
+                    }
                 },
                 error: function(err){
                     res.send(err, 404);
@@ -176,7 +205,6 @@ exports.setup = function(app, Models){
         
         cases.pdf(req.query, {
            success: function(pdf){
-               // res.send({status: 'ok'});
                res.header('Content-type','application/pdf');
                res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
                res.header('Content-Length', pdf.length);
@@ -189,7 +217,7 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        var pdf = pdfFactory('demandas', {pdfTemplate: 'cobroydereexamen'});
+        var pdf = pdfFactory('demandas', {pdfTemplate: 'faltadepago'});
              
         res.header('Content-type','application/pdf');
         res.end(pdf, 'binary');
