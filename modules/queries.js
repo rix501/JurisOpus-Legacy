@@ -536,14 +536,18 @@ module.exports = {
         
         idsRegex += ')$';
         
+        var query = "UPDATE Casos\
+        SET ";
+        
+        (_.isEmpty(fecha)) ? " " : query += " presentacion = ? , ";
+        (_.isEmpty(sala)) ? " " : query += " sala = ? , "; 
+        (_.isEmpty(hora)) ? " " : query += " hora = ? , "; 
+        
+        query += "WHERE\
+        Casos.id REGEXP ?;";
+        
         return {
-            query: "UPDATE Casos\
-            SET\
-            	presentacion = ? , \
-            	sala = ? , \
-            	hora = ? \
-            WHERE\
-            Casos.id REGEXP ?;",
+            query: query,
             args: [
             	dia, 
             	sala, 
@@ -552,5 +556,4 @@ module.exports = {
             ]
         }
     }
-
 };

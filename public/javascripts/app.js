@@ -851,6 +851,9 @@
                 }
             },
             editRow: function(event){
+                if($('.dataTables_wrapper .edit').hasClass('disabled'))
+                    return;
+                
                 var $selectRow = $('#actualizar-table .row_selected');
                 
                 if($selectRow.length === 1){
@@ -988,11 +991,10 @@
                         $(this).addClass(data[i].id.toString()); 
                 });
                 $('table tr').click(this.selectRow);
-                $('table tr').dblclick(this.editRow);
             },
             loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();
-                                                
+                                
                 var opts = {
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
