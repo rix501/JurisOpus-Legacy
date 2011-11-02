@@ -44,7 +44,7 @@ module.exports = {
                observaciones AS 'observaciones',\
                rediligenciar AS 'rediligenciar', \
                ejecutar AS 'ejecutar'\
-           FROM Casos ca;".replace(/\\/g,""),
+           FROM Casos ca;",
            args: []
        }
     },
@@ -539,9 +539,9 @@ module.exports = {
         var query = "UPDATE Casos\
         SET ";
         
-        (_.isEmpty(fecha)) ? " " : query += " presentacion = ? , ";
+        (_.isEmpty(dia)) ? " " : query += " presentacion = ? , ";
         (_.isEmpty(sala)) ? " " : query += " sala = ? , "; 
-        (_.isEmpty(hora)) ? " " : query += " hora = ? , "; 
+        (_.isEmpty(hora)) ? " " : query += " hora = ?  "; 
         
         query += "WHERE\
         Casos.id REGEXP ?;";

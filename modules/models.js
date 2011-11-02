@@ -169,7 +169,7 @@ Backbone.utils.dateToString = function(dateObj, formatString){
     return (
         dateObj.getFullYear() + "-" 
         + ( (dateObj.getMonth() + 1).toString().length === 1 ? '0' + (dateObj.getMonth() + 1).toString() : dateObj.getMonth() + 1) + "-"
-        + ( (dateObj.getDate() + 1).toString().length === 1 ? '0' + (dateObj.getDate() + 1).toString() : dateObj.getDate() + 1)
+        + ( (dateObj.getDate() ).toString().length === 1 ? '0' + (dateObj.getDate()).toString() : dateObj.getDate() )
     ); 
 };
 
@@ -315,7 +315,7 @@ Models.Casos = Backbone.Collection.extend({
         }  
         this.fetch(options);
     },
-    bulkEdit: function(query, options){        
+    bulkEdit: function(query, options){
         var q = queries.updateBulk(query.ids, query.data.sala, query.data.fecha, query.data.hora);
         options.query = q.query;
         options.args = q.args;
