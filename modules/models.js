@@ -378,11 +378,13 @@ Models.Casos = Backbone.Collection.extend({
             
             if(resSuccess) resSuccess(pdf); 
         };
-        
-        // options.query = 'CALL Search_Casos_PDF(?)';
-        // options.args = ["^(" + query.casos + ")$"];
+       
+	var q = queries.getCasosPdf(query.casos); 
+        options.query = q.query; 
+        options.args = q.args;
 
-        this.fetch(queries.getCasosPdf(query.casos));
+        this.fetch(options);
+
     }
 });
 

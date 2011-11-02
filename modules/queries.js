@@ -163,7 +163,7 @@ module.exports = {
             	observaciones AS 'observaciones'\
             FROM Casos ca\
             WHERE ca.id REGEXP ?;",
-            args: ["^(" + query.casos + ")$"]
+            args: ["^(" + casosString + ")$"]
         }
     },
     getSearchCasosNombre: function(nombre){
