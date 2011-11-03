@@ -1127,8 +1127,7 @@
             modal: function(){
                 $('#my-modal').modal('show');
             },
-            print: function(event){
-                
+            print: function(event){ 
                 var informesString = "";
                 
                 var isModal = false;

@@ -217,7 +217,7 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        var pdf = pdfFactory('demandas', {pdfTemplate: 'faltadepago'});
+        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
         res.header('Content-type','application/pdf');
         res.end(pdf, 'binary');
