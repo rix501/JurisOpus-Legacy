@@ -8,7 +8,7 @@ informe.prototype.draw = function(doc, data){
    
    if(doc === undefined || doc === null){
        options.pdflayout = 'landscape';
-       options.pdfSize = 'letter';
+       options.pdfSize = 'legal';
        options.pdfAlign = 'left';
 
        doc = pdf.prototype.build.call(this, options);       
@@ -27,7 +27,8 @@ informe.prototype.drawFirstPage = function(doc, data){
     var y, x, width, height;
 
     doc.font('Helvetica-Bold', 14)
-    .text('SALA:       HORA CITADA:       ',{
+    .text('INFORME DE VISTAS - 8/25/2011')
+    .text('Sala:       Hora Citada:       ',{
     });
       
     doc.moveDown();
