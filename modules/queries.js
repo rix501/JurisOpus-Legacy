@@ -44,7 +44,7 @@ module.exports = {
                observaciones AS 'observaciones',\
                rediligenciar AS 'rediligenciar', \
                ejecutar AS 'ejecutar'\
-           FROM Casos ca;".replace(/\\/g,""),
+           FROM Casos ca;",
            args: []
        }
     },
@@ -164,6 +164,62 @@ module.exports = {
             FROM Casos ca\
             WHERE ca.id REGEXP ?;",
             args: ["^(" + casosString + ")$"]
+        }
+    },
+    getCasosInformeDeVistas: function(fecha){
+        return {
+            query: "SELECT\
+            	id,\
+            	( SELECT \
+            			`residencial`\
+            		FROM Residenciales re\
+            		WHERE re.id = ca.residencial\
+            	) AS 'residencial',\
+            	( SELECT \
+            			`tribunal`\
+            		FROM Residenciales re\
+            		WHERE re.id = ca.residencial\
+            	) AS 'tribunal',\
+            	edificio AS 'edificio', \
+            	apartamento AS 'apartamento', \
+            	area AS 'area', \
+            	nombre AS 'nombre', \
+            	caso_recibido AS 'casoRecibido', \
+            	seleccionado AS 'seleccionado', \
+            	completado AS 'completado', \
+            	( SELECT \
+            			`causal`\
+            		FROM Causales cau\
+            		WHERE cau.id = ca.causal\
+            	)  AS 'causal', \
+            	( SELECT \
+                        `siglas`\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causalIniciales', \
+            	renta_mensual AS 'rentaMensual', \
+            	meses_adeudados AS 'mesesAdeudados', \
+            	deuda_renta AS 'deudaRenta', \
+            	deuda_renta_negativa AS 'deudaRentaNegativa', \
+            	deuda_recibida AS 'deudaRecibida', \
+            	deuda_total AS 'deudaTotal', \
+            	ultimo_reexamen AS 'ultimoReexamen', \
+            	incumplimiento AS 'incumplimiento', \
+            	caso AS 'caso', \
+            	presentacion AS 'presentacion', \
+            	diligenciado AS 'diligenciado', \
+            	diligenciado_en AS 'diligenciadoEn', \
+            	sala AS 'sala', \
+            	hora AS 'hora', \
+            	primera_comparecencia AS 'primeraComparecencia', \
+            	segunda_comparecencia AS 'segundaComparecencia', \
+            	vista_en_su_fondo AS 'vistaEnSuFondo', \
+            	sentencia AS 'sentencia', \
+            	lanzamiento AS 'lanzamiento', \
+            	observaciones AS 'observaciones'\
+            FROM Casos ca\
+            WHERE primera_comparecencia = ?;",
+            args: [fecha]
         }
     },
     getSearchCasosNombre: function(nombre){
@@ -539,9 +595,9 @@ module.exports = {
         var query = "UPDATE Casos\
         SET ";
         
-        (_.isEmpty(fecha)) ? " " : query += " presentacion = ? , ";
+        (_.isEmpty(dia)) ? " " : query += " presentacion = ? , ";
         (_.isEmpty(sala)) ? " " : query += " sala = ? , "; 
-        (_.isEmpty(hora)) ? " " : query += " hora = ? , "; 
+        (_.isEmpty(hora)) ? " " : query += " hora = ?  "; 
         
         query += "WHERE\
         Casos.id REGEXP ?;";

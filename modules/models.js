@@ -169,7 +169,7 @@ Backbone.utils.dateToString = function(dateObj, formatString){
     return (
         dateObj.getFullYear() + "-" 
         + ( (dateObj.getMonth() + 1).toString().length === 1 ? '0' + (dateObj.getMonth() + 1).toString() : dateObj.getMonth() + 1) + "-"
-        + ( (dateObj.getDate() + 1).toString().length === 1 ? '0' + (dateObj.getDate() + 1).toString() : dateObj.getDate() + 1)
+        + ( (dateObj.getDate() ).toString().length === 1 ? '0' + (dateObj.getDate()).toString() : dateObj.getDate() )
     ); 
 };
 
@@ -294,18 +294,20 @@ Models.Casos = Backbone.Collection.extend({
     },
     search: function(query, options){
         //caso > residencial+apt+edificio > nombre
+        var q = null;
+        
         if(!_.isEmpty(query.caso)){
-            var q = queries.getSearchCasosCaso(query.caso);
+            q = queries.getSearchCasosCaso(query.caso);
             options.query = q.query;
             options.args = q.args;
         }
         else if(!_.isEmpty(query.residencial) && !_.isEmpty(query.edificio) && !_.isEmpty(query.apartamento)){
-            var q = queries.getSearchCasosAptEdifResi(query.apartamento, query.edificio, query.residencial);
+            q = queries.getSearchCasosAptEdifResi(query.apartamento, query.edificio, query.residencial);
             options.query = q.query;
             options.args = q.args;
         }
         else if(!_.isEmpty(query.nombre)){
-            var q = queries.getSearchCasosNombre(query.nombre);
+            q = queries.getSearchCasosNombre(query.nombre);
             options.query = q.query;
             options.args = q.args;
         }
@@ -315,7 +317,7 @@ Models.Casos = Backbone.Collection.extend({
         }  
         this.fetch(options);
     },
-    bulkEdit: function(query, options){        
+    bulkEdit: function(query, options){
         var q = queries.updateBulk(query.ids, query.data.sala, query.data.fecha, query.data.hora);
         options.query = q.query;
         options.args = q.args;
@@ -332,26 +334,52 @@ Models.Casos = Backbone.Collection.extend({
     },
     pdfInforme: function(query, options){
         var resSuccess = options.success;
+        var resError = options.error;
         
-        options.success = function(collection, fields){
+        options.success = function(collection, fields){            
+            collection.each(function(model){
+               _.each(model.attributes, function(attribute, key){
+                   var attr = {};
+                   attr[key] = "";
+                   
+                   if(_.isDate(attribute) && !isNaN(attribute.getTime()) ){
+                       attr[key] = Backbone.utils.dateToString(attribute, false);
+                       model.set(attr);
+                   }  
+               });           
+            });
             
-            var data = {};
+            var data = collection.toJSON();
             
-            data.pdfTemplate = query.pdfTemplate;
-            
-            var pdf = pdfFactory(query.type, data);
+            if(data.length === 0){
+                if(resError) resError('no cases found'); 
+            }
+                      
+            var pdf = pdfFactory(query.type, query.pdfTemplate, data);
             
             if(resSuccess) resSuccess(pdf); 
         };
         
-        options.success();
-        // this.fetch(options);
+        var q;
+                
+        switch(query.pdfTemplate){
+            case 'informedevistas':
+                q = queries.getCasosInformeDeVistas(query.args);
+                break;
+            default:
+                break;
+        }
+         
+        options.query = q.query; 
+        options.args = q.args;
+
+        this.fetch(options);
+        //options.success();
     },
     pdfDemanda: function(query, options){
         var resSuccess = options.success;
         
-        options.success = function(collection, fields){    
-            
+        options.success = function(collection, fields){
             collection.each(function(model){
                var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
                var causal = model.get('causal').replace(/ /g, "").replace(/-/g, "").toLowerCase();
@@ -369,22 +397,21 @@ Models.Casos = Backbone.Collection.extend({
                        attr[key] = Backbone.utils.dateToString(attribute, true);
                        model.set(attr);
                    }  
-               })           
+               });           
             });
                          
             var data = collection.toJSON();
             
-            var pdf = pdfFactory(query.type, data);
+            var pdf = pdfFactory(query.type, '', data);
             
             if(resSuccess) resSuccess(pdf); 
         };
        
-	var q = queries.getCasosPdf(query.casos); 
+	    var q = queries.getCasosPdf(query.casos); 
         options.query = q.query; 
         options.args = q.args;
 
         this.fetch(options);
-
     }
 });
 
