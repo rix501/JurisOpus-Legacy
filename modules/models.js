@@ -353,6 +353,8 @@ Models.Casos = Backbone.Collection.extend({
             
             if(data.length === 0){
                 if(resError) resError('no cases found'); 
+                
+                return;
             }
                       
             var pdf = pdfFactory(query.type, query.pdfTemplate, data);
