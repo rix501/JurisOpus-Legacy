@@ -356,7 +356,7 @@ Models.Casos = Backbone.Collection.extend({
                 
                 return;
             }
-                      
+            
             var pdf = pdfFactory(query.type, query.pdfTemplate, data);
             
             if(resSuccess) resSuccess(pdf); 

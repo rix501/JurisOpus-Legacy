@@ -95,6 +95,8 @@ informedevistas.prototype.drawFirstPage = function(doc, data){
 };
 informedevistas.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones   
+    
+    console.log(data);
     _.forEach(data, function(single){
         doc.text(single.caso)
         .moveUp()
