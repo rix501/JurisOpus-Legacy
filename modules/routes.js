@@ -1,4 +1,5 @@
 var pdfFactory = require('./pdf/PDFFactory');
+var pdfCrowd = require('pdfcrowd');
 
 exports.setup = function(app, Models){    
     // Dummy users
@@ -217,9 +218,19 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
+        // var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
-        res.header('Content-type','application/pdf');
-        res.end(pdf, 'binary');
+        // res.header('Content-type','application/pdf');
+        // res.end(pdf, 'binary');
+
+
+        var client = new pdfCrowd.Pdfcrowd('rix501', '4a552a5f02c7ce5cdac2621a177e6e50');
+        client.convertFile('./public/informe.html', pdfCrowd.sendHttpResponse(res), {
+            width: "14in",
+            height: "8.5in",
+            footer_html: '<div style=text-align:center;font-size:smaller;color:maroon;">\
+                          Page %p out of %n\
+                      </div>'
+        });
     });
 };

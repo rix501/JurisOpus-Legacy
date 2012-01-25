@@ -96,30 +96,83 @@ informedevistas.prototype.drawFirstPage = function(doc, data){
 informedevistas.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones   
     
-    console.log(data);
-    _.forEach(data, function(single){
-        doc.text(single.caso)
+    var numberPages = doc.pages.length;
+
+    for (var i = 0; i < 40; i++) {
+        var nextY = doc.y + doc.currentLineHeight(true);
+
+        if(nextY + doc.currentLineHeight(true) + doc.page.margins.bottom > doc.page.height){
+            doc.addPage();
+
+            doc.moveTo(doc.x ,doc.y)
+            .lineWidth(1)
+            .lineTo(936 , doc.y)
+            .stroke();
+
+            doc.font('Helvetica', 11)
+            .text('Caso', doc.x, doc.y + 4)
+            .moveUp()
+            .text('Residencial', doc.x + 90)
+            .moveUp()
+            .text('Nombre', doc.x + 130)
+            .moveUp()
+            .text('Edificio', doc.x + 130)
+            .moveUp()
+            .text('Apto', doc.x + 70)
+            .moveUp()
+            .text('Causal', doc.x + 70)
+            .moveUp()
+            .text('Observaciones', doc.x + 70);
+
+            doc.x = 72;
+            
+            doc.moveTo(72 ,doc.y)
+            .lineWidth(1)
+            .lineTo(936 , doc.y)
+            .stroke();
+
+            doc.moveDown();
+        }
+
+        doc.text(data[0].caso)
         .moveUp()
-        .text(single.residencial, doc.x + 90)
+        .text(data[0].residencial, doc.x + 90)
         .moveUp()
-        .text(single.nombre, doc.x + 130)
+        .text(data[0].nombre, doc.x + 130)
         .moveUp()
-        .text(single.edificio, doc.x + 130)
+        .text(data[0].edificio, doc.x + 130)
         .moveUp()
-        .text(single.apartamento, doc.x + 70)
+        .text(data[0].apartamento, doc.x + 70)
         .moveUp()
-        .text(single.causalIniciales, doc.x + 70)
+        .text(data[0].causalIniciales, doc.x + 70)
         .moveUp()
-        .text(single.observaciones, doc.x + 70);
+        .text(data[0].observaciones, doc.x + 70);
 
         doc.x = 72;
-    });
+    };
+
+    // _.forEach(data, function(single){
+    //     doc.text(single.caso)
+    //     .moveUp()
+    //     .text(single.residencial, doc.x + 90)
+    //     .moveUp()
+    //     .text(single.nombre, doc.x + 130)
+    //     .moveUp()
+    //     .text(single.edificio, doc.x + 130)
+    //     .moveUp()
+    //     .text(single.apartamento, doc.x + 70)
+    //     .moveUp()
+    //     .text(single.causalIniciales, doc.x + 70)
+    //     .moveUp()
+    //     .text(single.observaciones, doc.x + 70);
+
+    //     doc.x = 72;
+    // });
 };
 
 module.exports = (function(){
     return {
         templates:{
-            basico: new informe(),
             informedevistas: new informedevistas()
         }
     };
