@@ -1,9 +1,17 @@
 var _ = require('underscore');
 var pdf = require('./pdf');
+var PDFTable = require('./PDFTable');
 
 var informe = pdf.makeSubclass();
 informe.prototype.draw = function(doc, data){
 };
+
+informe.prototype.addTable = function(doc, options){
+    var table = new PDFTable(doc, options);
+
+    return table;
+};
+
 
 var informedevistas = informe.makeSubclass();
 informedevistas.prototype.draw = function(doc, data){
