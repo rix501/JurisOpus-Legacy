@@ -37,6 +37,8 @@ informedevistas.prototype.draw = function(doc, data){
 informedevistas.prototype.drawFirstPage = function(doc, data){
     var y, x, width, height;
 
+    //HEADER
+
     doc.font('Helvetica-Bold', 14)
     .text('INFORME DE VISTAS - ' + data[0].primeraComparecencia)
     .text('SALA:' + data[0].sala + 'HORA CITADA:' + data[0].hora,{
@@ -46,35 +48,38 @@ informedevistas.prototype.drawFirstPage = function(doc, data){
 
     /**** DRAWING TABLE ****/
 
-    //Draw divisor line
-    doc.moveTo(doc.x ,doc.y)
-    .lineWidth(1)
-    .lineTo(936 , doc.y)
-    .stroke();
+    var columns = [
+        {
+            title: "Caso",
+            width: 90
+        },
+        {
+            title: "Residencial",
+            width: 130
+        },
+        {
+            title: "Nombre",
+            width: 130
+        },
+        {
+            title: "Edificio",
+            width: 70
+        },
+        {
+            title: "Apto",
+            width: 70
+        },
+        {
+            title: "Causal",
+            width: 70
+        },
+        {
+            title: "Observaciones",
+            width: 0
+        }
+    ];
 
-    doc.font('Helvetica', 11)
-    .text('Caso', doc.x, doc.y + 4)
-    .moveUp()
-    .text('Residencial', doc.x + 90)
-    .moveUp()
-    .text('Nombre', doc.x + 130)
-    .moveUp()
-    .text('Edificio', doc.x + 130)
-    .moveUp()
-    .text('Apto', doc.x + 70)
-    .moveUp()
-    .text('Causal', doc.x + 70)
-    .moveUp()
-    .text('Observaciones', doc.x + 70);
-
-    doc.x = 72;
-    
-    doc.moveTo(72 ,doc.y)
-    .lineWidth(1)
-    .lineTo(936 , doc.y)
-    .stroke();
-
-    doc.moveDown();
+    this.table = this.addTable(doc, columns);
 
     this.addCases(doc, data);
 
@@ -104,59 +109,22 @@ informedevistas.prototype.drawFirstPage = function(doc, data){
 informedevistas.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones   
     
-    var numberPages = doc.pages.length;
+    var row = [];
 
     for (var i = 0; i < 40; i++) {
-        var nextY = doc.y + doc.currentLineHeight(true);
 
-        if(nextY + doc.currentLineHeight(true) + doc.page.margins.bottom > doc.page.height){
-            doc.addPage();
+        row = [
+            {title: data[0].caso},
+            {title: data[0].residencial},
+            {title: data[0].nombre},
+            {title: data[0].edificio},
+            {title: data[0].apartamento},
+            {title: data[0].causalIniciales},
+            {title: data[0].observaciones},
+        ];
 
-            doc.moveTo(doc.x ,doc.y)
-            .lineWidth(1)
-            .lineTo(936 , doc.y)
-            .stroke();
 
-            doc.font('Helvetica', 11)
-            .text('Caso', doc.x, doc.y + 4)
-            .moveUp()
-            .text('Residencial', doc.x + 90)
-            .moveUp()
-            .text('Nombre', doc.x + 130)
-            .moveUp()
-            .text('Edificio', doc.x + 130)
-            .moveUp()
-            .text('Apto', doc.x + 70)
-            .moveUp()
-            .text('Causal', doc.x + 70)
-            .moveUp()
-            .text('Observaciones', doc.x + 70);
-
-            doc.x = 72;
-            
-            doc.moveTo(72 ,doc.y)
-            .lineWidth(1)
-            .lineTo(936 , doc.y)
-            .stroke();
-
-            doc.moveDown();
-        }
-
-        doc.text(data[0].caso)
-        .moveUp()
-        .text(data[0].residencial, doc.x + 90)
-        .moveUp()
-        .text(data[0].nombre, doc.x + 130)
-        .moveUp()
-        .text(data[0].edificio, doc.x + 130)
-        .moveUp()
-        .text(data[0].apartamento, doc.x + 70)
-        .moveUp()
-        .text(data[0].causalIniciales, doc.x + 70)
-        .moveUp()
-        .text(data[0].observaciones, doc.x + 70);
-
-        doc.x = 72;
+        this.table.addRow(row);
     };
 
     // _.forEach(data, function(single){

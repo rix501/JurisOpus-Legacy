@@ -4,10 +4,12 @@ var PDFTable = function(doc, columns, options){
     this.doc = doc;
     this.options = options;
     this.columns = columns;
+    console.log(this);
 };
 
 PDFTable.prototype.addHeaders = function(){  
     //Change to draw line dynamically, according to width
+    console.log(this);
     this.doc.moveTo(this.doc.x ,this.doc.y)
     .lineWidth(1)
     .lineTo(936 , this.doc.y)
@@ -40,6 +42,7 @@ PDFTable.prototype.addHeaders = function(){
 
 PDFTable.prototype.addRow = function(row){
     var doc = this.doc;
+    var that = this;
     
     _.each(row, function(element, index, list){
         var nextY = doc.y + doc.currentLineHeight(true);
@@ -54,7 +57,7 @@ PDFTable.prototype.addRow = function(row){
         }
         else{
             doc.moveUp()
-            .text(element.title, doc.x + list[index-1].width);
+            .text(element.title, doc.x + that.columns[index-1].width);
         }
     });
     
