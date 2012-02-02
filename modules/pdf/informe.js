@@ -16,7 +16,6 @@ informe.prototype.addTable = function(doc, columns, options){
 
 var informedevistas = informe.makeSubclass();
 informedevistas.prototype.draw = function(doc, data){
-    var y, x, width, height;
     var options = {};
 
     if(doc === undefined || doc === null){
@@ -113,7 +112,7 @@ informedevistas.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informedevistas.prototype.addCases = function(doc, data){
+informedevistas.prototype.addCases = function(data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
@@ -127,7 +126,7 @@ informedevistas.prototype.addCases = function(doc, data){
             {title: single.apartamento},
             {title: single.causalIniciales},
             {title: single.observaciones}
-        ]
+        ];
 
         that.table.addRow(row);
     });
