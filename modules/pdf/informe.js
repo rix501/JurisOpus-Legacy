@@ -6,12 +6,13 @@ var informe = pdf.makeSubclass();
 informe.prototype.draw = function(doc, data){
 };
 
-informe.prototype.addTable = function(doc, options){
-    var table = new PDFTable(doc, options);
+informe.prototype.addTable = function(doc, columns, options){
+    options || (options = {});
+
+    var table = new PDFTable(doc, columns, options);
 
     return table;
 };
-
 
 var informedevistas = informe.makeSubclass();
 informedevistas.prototype.draw = function(doc, data){
@@ -29,33 +30,50 @@ informedevistas.prototype.draw = function(doc, data){
     if(doc.pages.length > 1){
         doc.addPage();
     }
+
+    this.addHeader(doc, data);
     
-    this.drawFirstPage(doc, data);
+    this.drawTable(doc, data);
+
+    this.addFooter(doc);
 
     return doc;
 };
-informedevistas.prototype.drawFirstPage = function(doc, data){
-    var y, x, width, height;
 
-    //HEADER
-
+informedevistas.prototype.addHeader = function(doc, data){
     doc.font('Helvetica-Bold', 14)
-    .text('INFORME DE VISTAS - ' + data[0].primeraComparecencia)
-    .text('SALA:' + data[0].sala + 'HORA CITADA:' + data[0].hora,{
+    .text('INFORME DE VISTAS  ' + data[0].primeraComparecencia)
+    .text('SALA: ' + data[0].sala + ' HORA CITADA: ' + data[0].hora,{
     });
   
     doc.moveDown();
+};
 
-    /**** DRAWING TABLE ****/
+informedevistas.prototype.addFooter = function(doc){
+    _.each(doc.pages, function(page, index, pages){
+        doc.page = page;
 
+        doc.moveTo(doc.x, 612 - 72 + 10) 
+        .lineWidth(0.5)                        
+        .lineTo(936, 612 - 72 + 10)
+        .stroke();
+
+        doc.font('Helvetica', 10)
+        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+
+        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
+    });
+};
+
+informedevistas.prototype.drawTable = function(doc, data){
     var columns = [
         {
             title: "Caso",
-            width: 90
+            width: 80
         },
         {
             title: "Residencial",
-            width: 130
+            width: 140
         },
         {
             title: "Nombre",
@@ -83,67 +101,36 @@ informedevistas.prototype.drawFirstPage = function(doc, data){
 
     this.addCases(doc, data);
 
-    //doc.moveDown();
-
-    //Pre-Footer
+    //Table footer
     doc.moveTo(doc.x,doc.y)
     .lineWidth(2)
     .lineTo(936 , doc.y)
     .stroke();
     
     doc.font('Helvetica-Bold', 14)
-    .text('Casos para ver hoy: 32',doc.x, doc.y + 4);
-
-    //Footer
-    doc.moveTo(doc.x, 612 - 72 + 10) 
-    .lineWidth(0.5)                        
-    .lineTo(936, 612 - 72 + 10)
-    .stroke();
-
-    doc.font('Helvetica', 10)
-    .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
 
     return doc;
 
 };
 informedevistas.prototype.addCases = function(doc, data){
-    // caso - residencial - nombre - edificio - apto - causal - observaciones   
-    
+    // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
+    var that = this;
 
-    for (var i = 0; i < 40; i++) {
-
+    _.each(data, function(single){
         row = [
-            {title: data[0].caso},
-            {title: data[0].residencial},
-            {title: data[0].nombre},
-            {title: data[0].edificio},
-            {title: data[0].apartamento},
-            {title: data[0].causalIniciales},
-            {title: data[0].observaciones},
-        ];
+            {title: single.caso},
+            {title: single.residencial},
+            {title: single.nombre},
+            {title: single.edificio},
+            {title: single.apartamento},
+            {title: single.causalIniciales},
+            {title: single.observaciones}
+        ]
 
-
-        this.table.addRow(row);
-    };
-
-    // _.forEach(data, function(single){
-    //     doc.text(single.caso)
-    //     .moveUp()
-    //     .text(single.residencial, doc.x + 90)
-    //     .moveUp()
-    //     .text(single.nombre, doc.x + 130)
-    //     .moveUp()
-    //     .text(single.edificio, doc.x + 130)
-    //     .moveUp()
-    //     .text(single.apartamento, doc.x + 70)
-    //     .moveUp()
-    //     .text(single.causalIniciales, doc.x + 70)
-    //     .moveUp()
-    //     .text(single.observaciones, doc.x + 70);
-
-    //     doc.x = 72;
-    // });
+        that.table.addRow(row);
+    });
 };
 
 module.exports = (function(){

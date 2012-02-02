@@ -4,12 +4,12 @@ var PDFTable = function(doc, columns, options){
     this.doc = doc;
     this.options = options;
     this.columns = columns;
-    console.log(this);
+
+    this.addHeaders();
 };
 
 PDFTable.prototype.addHeaders = function(){  
     //Change to draw line dynamically, according to width
-    console.log(this);
     this.doc.moveTo(this.doc.x ,this.doc.y)
     .lineWidth(1)
     .lineTo(936 , this.doc.y)
@@ -43,15 +43,15 @@ PDFTable.prototype.addHeaders = function(){
 PDFTable.prototype.addRow = function(row){
     var doc = this.doc;
     var that = this;
-    
-    _.each(row, function(element, index, list){
-        var nextY = doc.y + doc.currentLineHeight(true);
 
-        if(nextY + doc.currentLineHeight(true) + doc.page.margins.bottom > doc.page.height){
-            doc.addPage();
-            PDFTable.prototype.addHeaders();
-        }
-        
+    var nextY = this.doc.y + this.doc.currentLineHeight(true);
+
+    if(nextY + this.doc.currentLineHeight(true) + this.doc.page.margins.bottom > this.doc.page.height){
+        this.doc.addPage();
+        this.addHeaders();
+    }
+
+    _.each(row, function(element, index, list){
         if(index === 0){
             doc.text(element.title);
         }
