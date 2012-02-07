@@ -368,6 +368,18 @@ Models.Casos = Backbone.Collection.extend({
             case 'informedevistas':
                 q = queries.getCasosInformeDeVistas(query.args);
                 break;
+            case 'informeparadiligenciar':
+                q = queries.getCasosInformeParaDiligenciar(query.args);
+                break;
+            case 'informependientedeejecucion':
+                q = queries.getCasosInformePendienteDeEjecucion();
+                break;
+            case 'informepresentados':
+                q = queries.getCasosInformePresentados();
+                break;
+            case 'informefacturacion':
+                q = queries.getCasosInformeFacturacion();
+                break;
             default:
                 break;
         }

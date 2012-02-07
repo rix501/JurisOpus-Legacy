@@ -222,6 +222,151 @@ module.exports = {
             args: [fecha]
         }
     },
+    getCasosInformeParaDiligenciar: function(){
+        return {
+            query: "SELECT \
+                ca.seleccionado, \
+                ( SELECT \
+                        re.residencial\
+                    FROM Residenciales re\
+                    WHERE re.id = ca.residencial\
+                ) AS 'residencial', \
+                ca.edificio, \
+                ca.apartamento, \
+                ca.nombre, \
+                ( SELECT \
+                        cau.causal\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causal',  \
+                ca.sala, \
+                ca.presentacion, \
+                ca.caso, \
+                ca.diligenciado, \
+                ca.hora, \
+                ca.primera_comparecencia AS 'primeraComparecencia',  \
+                ca.completado\
+            FROM Casos ca\
+            WHERE ca.seleccionado = 1 \
+            AND ca.caso IS NOT NULL\
+            AND ca.diligenciado = 0\
+            AND ca.primera_comparecencia = ? \
+            AND ca.completado = 0\
+            ORDER BY ca.caso; ",
+            args: [fecha]
+        }
+    },
+    getCasosInformePendienteDeEjecucion: function(){
+        return {
+            query: "SELECT \
+                ca.caso, \
+                ( SELECT \
+                        re.residencial\
+                    FROM Residenciales re\
+                    WHERE re.id = ca.residencial\
+                ) AS 'residencial', \
+                ca.edificio, \
+                ca.apartamento, \
+                ca.nombre, \
+                ca.observaciones, \
+                ca.completado, \
+                ca.sentencia, \
+                ca.ejecutar, \
+                ca.lanzamiento, \
+                DATE_ADD(ca.sentencia, INTERVAL 50 DAY) AS Fecha_a_Ejecutar, \
+                ca.desistido\
+            FROM Casos ca\
+            GROUP BY \
+                ca.caso, \
+                ca.residencial, \
+                ca.edificio, \
+                ca.apartamento, \
+                ca.nombre, \
+                ca.observaciones, \
+                ca.completado, \
+                ca.sentencia, \
+                ca.ejecutar, \
+                ca.lanzamiento, \
+                DATE_ADD(ca.sentencia, INTERVAL 50 DAY), \
+                ca.Desistido\
+            HAVING ca.completado = 0\
+            AND ca.sentencia <> '0000-00-00'\
+            AND ca.lanzamiento = '0000-00-00'\
+            AND (ca.desistido = 0 OR ca.desistido IS NULL)\
+            ORDER BY DATE_ADD(ca.sentencia, INTERVAL 50 DAY);",
+            args: []
+        }
+    },
+    getCasosInformePresentados: function(){
+        return {
+            query: "SELECT \
+                ca.seleccionado, \
+                ( SELECT \
+                        re.residencial\
+                    FROM Residenciales re\
+                    WHERE re.id = ca.residencial\
+                ) AS 'residencial', \
+                ca.edificio, \
+                ca.apartamento, \
+                ca.nombre, \
+                ( SELECT \
+                        cau.causal\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causal', \
+                ca.incumplimiento, \
+                ca.sala, \
+                ca.presentacion, \
+                ca.primera_comparecencia, \
+                ca.caso, \
+                ca.Diligenciado, \
+                ca.completado, \
+                ca.ingresado\
+            FROM Casos ca\
+            WHERE ca.seleccionado = 1\
+            AND (ca.caso IS Null OR ca.caso = '')\
+            AND ca.completado = 0;",
+            args: []
+        }
+    },
+    getCasosInformeFacturacion: function(){
+        return {
+            query: "SELECT \
+                ca.seleccionado, \
+                ca.nombre, \
+                ( SELECT \
+                        re.residencial\
+                    FROM Residenciales re\
+                    WHERE re.id = ca.residencial\
+                ) AS 'residencial', \
+                ca.edificio, \
+                ca.apartamento, \
+                ca.caso, \
+                ca.sala, \
+                ca.hora, \
+                ( SELECT \
+                        cau.causal\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causal', \
+                ca.presentacion, \
+                ca.primera_comparecencia AS 'primeraComparecencia',\
+                ca.segunda_comparecencia AS 'segundaComparecencia',\
+                ca.vista_en_su_fondo AS 'vistaEnSuFondo',\
+                ca.sentencia, \
+                ca.completado, \
+                ca.lanzamiento, \
+                ca.observaciones, \
+                ca.desistido\
+            FROM Casos ca\
+            WHERE ca.completado = 0\
+            ORDER BY \
+                ca.residencial, \
+                ca.edificio, \
+                ca.apartamento;",
+            args: []
+        }
+    },
     getSearchCasosNombre: function(nombre){
         return {
             query: "SELECT\
