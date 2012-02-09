@@ -222,7 +222,7 @@ module.exports = {
             args: [fecha]
         }
     },
-    getCasosInformeParaDiligenciar: function(){
+    getCasosInformeParaDiligenciar: function(fecha){
         return {
             query: "SELECT \
                 ca.seleccionado, \
@@ -349,6 +349,11 @@ module.exports = {
                     FROM Causales cau\
                     WHERE cau.id = ca.causal\
                 )  AS 'causal', \
+                ( SELECT \
+                        cau.siglas\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causalIniciales', \
                 ca.presentacion, \
                 ca.primera_comparecencia AS 'primeraComparecencia',\
                 ca.segunda_comparecencia AS 'segundaComparecencia',\

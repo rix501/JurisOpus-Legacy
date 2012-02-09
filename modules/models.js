@@ -345,7 +345,13 @@ Models.Casos = Backbone.Collection.extend({
                    if(_.isDate(attribute) && !isNaN(attribute.getTime()) ){
                        attr[key] = Backbone.utils.dateToString(attribute, false);
                        model.set(attr);
-                   }  
+                   }
+
+                   if(_.isString(attribute) && _.isEmpty(attribute)){
+                       attr[key] = '-';
+                       model.set(attr);
+                   }
+                   
                });           
             });
             

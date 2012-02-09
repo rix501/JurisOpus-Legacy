@@ -112,7 +112,7 @@ informedevistas.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informedevistas.prototype.addCases = function(data){
+informedevistas.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
@@ -230,7 +230,7 @@ informeparadiligenciar.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informeparadiligenciar.prototype.addCases = function(data){
+informeparadiligenciar.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
@@ -348,7 +348,7 @@ informependientedeejecucion.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informependientedeejecucion.prototype.addCases = function(data){
+informependientedeejecucion.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
@@ -466,7 +466,7 @@ informepresentados.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informepresentados.prototype.addCases = function(data){
+informepresentados.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
@@ -539,28 +539,56 @@ informefacturacion.prototype.addFooter = function(doc){
 informefacturacion.prototype.drawTable = function(doc, data){
     var columns = [
         {
-            title: "Caso",
-            width: 80
-        },
-        {
-            title: "Residencial",
-            width: 140
-        },
-        {
             title: "Nombre",
-            width: 130
+            width: 110
         },
         {
-            title: "Edificio",
-            width: 70
+            title: "Edif",
+            width: 30
         },
         {
             title: "Apto",
-            width: 70
+            width: 30
+        },
+        {
+            title: "Caso",
+            width: 60
+        },
+        {
+            title: "Sala",
+            width: 30
+        },
+        {
+            title: "Hora",
+            width: 50
         },
         {
             title: "Causal",
+            width: 40
+        },
+        {
+            title: "Presentacion",
+            width: 60
+        },        
+        {
+            title: "Primera Comp.",
             width: 70
+        },        
+        {
+            title: "Segunda Comp.",
+            width: 70
+        },        
+        {
+            title: "Vista Fondo",
+            width: 60
+        },        
+        {
+            title: "Sentencia",
+            width: 50
+        },        
+        {
+            title: "Lanzamiento",
+            width: 60
         },
         {
             title: "Observaciones",
@@ -568,7 +596,12 @@ informefacturacion.prototype.drawTable = function(doc, data){
         }
     ];
 
-    this.table = this.addTable(doc, columns);
+    var font = {
+        type: 'Helvetica',
+        size: 9
+    }
+
+    this.table = this.addTable(doc, columns, { font: font});
 
     this.addCases(doc, data);
 
@@ -584,19 +617,28 @@ informefacturacion.prototype.drawTable = function(doc, data){
     return doc;
 
 };
-informefacturacion.prototype.addCases = function(data){
+informefacturacion.prototype.addCases = function(doc, data){
     // caso - residencial - nombre - edificio - apto - causal - observaciones
     var row = [];
     var that = this;
 
     _.each(data, function(single){
         row = [
-            {title: single.caso},
-            {title: single.residencial},
+            
+            //{title: single.residencial},
             {title: single.nombre},
             {title: single.edificio},
             {title: single.apartamento},
+            {title: single.caso},
+            {title: single.sala},
+            {title: single.hora},
             {title: single.causalIniciales},
+            {title: single.presentacion},
+            {title: single.primeraComparecencia},
+            {title: single.segundaComparecencia},
+            {title: single.vistaEnSuFondo},
+            {title: single.sentencia},
+            {title: single.lanzamiento},
             {title: single.observaciones}
         ];
 

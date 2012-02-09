@@ -15,7 +15,13 @@ PDFTable.prototype.addHeaders = function(){
     .lineTo(936 , this.doc.y)
     .stroke();
 
-    this.doc.font('Helvetica', 11);
+    if(this.options.font){
+        this.doc.font(this.options.font.type, this.options.font.size);
+    }
+    else{
+        this.doc.font('Helvetica', 11);
+    }
+
     
     var doc = this.doc;
     
