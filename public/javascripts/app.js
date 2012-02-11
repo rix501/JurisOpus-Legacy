@@ -1124,8 +1124,12 @@
                 $('li.active').removeClass('active');
                 $('li.informes').addClass('active');
             },
-            modal: function(){
-                $('#my-modal').modal('show');
+            modal: function(event){
+                var classList = $(event.target).attr('class');
+                
+                var template = $.trim(classList.replace(/mod/i,'').replace(/primary/i,'').replace(/btn/i,''));
+
+                $('#' + template + '-modal').modal('show');
             },
             print: function(event){ 
                 var informesString = "";
@@ -1169,35 +1173,38 @@
             },
             render: function(){
                 $(this.el).html(this.template());
+
+                var that = this;
                 
-                var modal = $(this.el).find('#my-modal');
-                
-                modal.modal({
-                    backdrop: true,
-                    keyboard: true,
-                    show: false
-                });
-                
-                $(modal).find('.secondary').click(function(e){
-                    $(modal).modal('hide');
-                });
-                
-                $(modal).find('.print').click(this.print);
-                
-                var datepickers = $(this.el).find(".datepicker");
-                
-                _.forEach(datepickers, function(datepicker){
-                    $(datepicker).datepicker({
-                        beforeShow: function(input) {
-                            var field = $(input);
-                            var left = field.position().left + 382;
-                            var top = field.position().top + 142;
-                            setTimeout(function(){
-                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                            },1);                    
-                        },
-                        dateFormat: 'yy-mm-dd'
+                $(this.el).find('.modal').each(function(i, modal){
+                    $(modal).modal({
+                        backdrop: true,
+                        keyboard: true,
+                        show: false
                     });
+                    
+                    $(modal).find('.secondary').click(function(e){
+                        $(modal).modal('hide');
+                    });
+                    
+                    $(modal).find('.print').click(that.print);
+                    
+                    var datepickers = $(that.el).find(".datepicker");
+                    
+                    _.forEach(datepickers, function(datepicker){
+                        $(datepicker).datepicker({
+                            beforeShow: function(input) {
+                                var field = $(input);
+                                var left = field.position().left + 382;
+                                var top = field.position().top + 142;
+                                setTimeout(function(){
+                                    $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                                },1);                    
+                            },
+                            dateFormat: 'yy-mm-dd'
+                        });
+                    });
+
                 });
                 
                 return this;                
