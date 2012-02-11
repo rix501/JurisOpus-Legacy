@@ -9,10 +9,11 @@ var PDFTable = function(doc, columns, options){
 };
 
 PDFTable.prototype.addHeaders = function(){  
-    //Change to draw line dynamically, according to width
+    var width = this.doc.page.width - this.doc.page.margins.left;
+
     this.doc.moveTo(this.doc.x ,this.doc.y)
     .lineWidth(1)
-    .lineTo(936 , this.doc.y)
+    .lineTo(width , this.doc.y)
     .stroke();
 
     if(this.options.font){
@@ -22,7 +23,6 @@ PDFTable.prototype.addHeaders = function(){
         this.doc.font('Helvetica', 11);
     }
 
-    
     var doc = this.doc;
     
     _.each(this.columns, function(element, index, list){
@@ -35,12 +35,11 @@ PDFTable.prototype.addHeaders = function(){
         }
     });
 
-    this.doc.x = 72;
+    this.doc.x = this.doc.page.margins.left;
     
-    //Change to draw line dynamically, according to width
-    this.doc.moveTo(72 ,this.doc.y)
+    this.doc.moveTo(this.doc.page.margins.left ,this.doc.y)
     .lineWidth(1)
-    .lineTo(936 , this.doc.y)
+    .lineTo(width , this.doc.y)
     .stroke();
 
     this.doc.moveDown();

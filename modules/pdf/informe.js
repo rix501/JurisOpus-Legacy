@@ -159,9 +159,7 @@ informeparadiligenciar.prototype.draw = function(doc, data){
 
 informeparadiligenciar.prototype.addHeader = function(doc, data){
     doc.font('Helvetica-Bold', 14)
-    .text('INFORME DE VISTAS  ' + data[0].primeraComparecencia)
-    .text('SALA: ' + data[0].sala + ' HORA CITADA: ' + data[0].hora,{
-    });
+    .text('Casos para diligenciar');
   
     doc.moveDown();
 };
@@ -185,32 +183,40 @@ informeparadiligenciar.prototype.addFooter = function(doc){
 informeparadiligenciar.prototype.drawTable = function(doc, data){
     var columns = [
         {
-            title: "Caso",
-            width: 80
-        },
-        {
             title: "Residencial",
             width: 140
+        },
+        {
+            title: "Edificio",
+            width: 60
+        },
+        {
+            title: "Apto",
+            width: 60
         },
         {
             title: "Nombre",
             width: 130
         },
         {
-            title: "Edificio",
-            width: 70
+            title: "Presentacion",
+            width: 80
         },
         {
-            title: "Apto",
-            width: 70
+            title: "Diligenciado",
+            width: 80
+        },
+        {
+            title: "Caso",
+            width: 80
+        },
+        {
+            title: "1ra Comp.",
+            width: 90
         },
         {
             title: "Causal",
             width: 70
-        },
-        {
-            title: "Observaciones",
-            width: 0
         }
     ];
 
@@ -237,13 +243,16 @@ informeparadiligenciar.prototype.addCases = function(doc, data){
 
     _.each(data, function(single){
         row = [
-            {title: single.caso},
+            
             {title: single.residencial},
-            {title: single.nombre},
             {title: single.edificio},
             {title: single.apartamento},
-            {title: single.causalIniciales},
-            {title: single.observaciones}
+            {title: single.nombre},
+            {title: single.presentacion},
+            {title: single.diligenciado},
+            {title: single.caso},
+            {title: single.primeraComparecencia},
+            {title: single.causalIniciales}
         ];
 
         that.table.addRow(row);
@@ -277,9 +286,8 @@ informependientedeejecucion.prototype.draw = function(doc, data){
 
 informependientedeejecucion.prototype.addHeader = function(doc, data){
     doc.font('Helvetica-Bold', 14)
-    .text('INFORME DE VISTAS  ' + data[0].primeraComparecencia)
-    .text('SALA: ' + data[0].sala + ' HORA CITADA: ' + data[0].hora,{
-    });
+    .text('Casos con sentencias dictadas pendientes de ejecucion')
+    .text('Residencial: ' + data[0].residencial);
   
     doc.moveDown();
 };
@@ -304,35 +312,52 @@ informependientedeejecucion.prototype.drawTable = function(doc, data){
     var columns = [
         {
             title: "Caso",
-            width: 80
-        },
-        {
-            title: "Residencial",
-            width: 140
+            width: 60
         },
         {
             title: "Nombre",
-            width: 130
+            width: 110
         },
         {
-            title: "Edificio",
-            width: 70
+            title: "Edif",
+            width: 30
         },
         {
             title: "Apto",
-            width: 70
-        },
-        {
-            title: "Causal",
-            width: 70
+            width: 30
         },
         {
             title: "Observaciones",
-            width: 0
+            width: 250
+        },
+        {
+            title: "Sentencia",
+            width: 60
+        },  
+        {
+            title: "Fecha Ejecutar",
+            width: 70
+        },
+        {
+            title: "Ejecutar",
+            width: 40
+        }, 
+        {
+            title: "Lanzamiento",
+            width: 60
+        },
+        {
+            title: "Complt",
+            width: 30
         }
     ];
 
-    this.table = this.addTable(doc, columns);
+    var font = {
+        type: 'Helvetica',
+        size: 9
+    }
+
+    this.table = this.addTable(doc, columns, { font: font});
 
     this.addCases(doc, data);
 
@@ -356,12 +381,15 @@ informependientedeejecucion.prototype.addCases = function(doc, data){
     _.each(data, function(single){
         row = [
             {title: single.caso},
-            {title: single.residencial},
             {title: single.nombre},
             {title: single.edificio},
             {title: single.apartamento},
-            {title: single.causalIniciales},
-            {title: single.observaciones}
+            {title: single.observaciones},
+            {title: single.sentencia},
+            {title: single.fechaEjecutar},
+            {title: single.ejecutar},
+            {title: single.lanzamiento},
+            {title: single.completado}
         ];
 
         that.table.addRow(row);
@@ -373,7 +401,7 @@ informepresentados.prototype.draw = function(doc, data){
     var options = {};
 
     if(doc === undefined || doc === null){
-        options.pdflayout = 'landscape';
+        options.pdflayout = 'portrait';
         options.pdfSize = 'legal';
         options.pdfAlign = 'left';
 
@@ -395,9 +423,7 @@ informepresentados.prototype.draw = function(doc, data){
 
 informepresentados.prototype.addHeader = function(doc, data){
     doc.font('Helvetica-Bold', 14)
-    .text('INFORME DE VISTAS  ' + data[0].primeraComparecencia)
-    .text('SALA: ' + data[0].sala + ' HORA CITADA: ' + data[0].hora,{
-    });
+    .text('Casos presentados  ');
   
     doc.moveDown();
 };
@@ -406,13 +432,13 @@ informepresentados.prototype.addFooter = function(doc){
     _.each(doc.pages, function(page, index, pages){
         doc.page = page;
 
-        doc.moveTo(doc.x, 612 - 72 + 10) 
+        doc.moveTo(doc.x, doc.page.height - doc.page.margins.left + 10) 
         .lineWidth(0.5)                        
-        .lineTo(936, 612 - 72 + 10)
+        .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.left + 10)
         .stroke();
 
         doc.font('Helvetica', 10)
-        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+        .text('Fecha del dia de hoy',doc.x, doc.page.height - doc.page.margins.left + 14);
 
         doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
     });
@@ -421,43 +447,44 @@ informepresentados.prototype.addFooter = function(doc){
 informepresentados.prototype.drawTable = function(doc, data){
     var columns = [
         {
-            title: "Caso",
-            width: 80
-        },
-        {
             title: "Residencial",
             width: 140
         },
         {
-            title: "Nombre",
-            width: 130
-        },
-        {
-            title: "Edificio",
-            width: 70
+            title: "Edif",
+            width: 30
         },
         {
             title: "Apto",
-            width: 70
+            width: 30
+        },
+        {
+            title: "Nombre",
+            width: 110
         },
         {
             title: "Causal",
             width: 70
         },
         {
-            title: "Observaciones",
-            width: 0
+            title: "Presentacion",
+            width: 80
         }
     ];
 
-    this.table = this.addTable(doc, columns);
+    var font = {
+        type: 'Helvetica',
+        size: 9
+    }
+
+    this.table = this.addTable(doc, columns, { font: font});
 
     this.addCases(doc, data);
 
     //Table footer
     doc.moveTo(doc.x,doc.y)
     .lineWidth(2)
-    .lineTo(936 , doc.y)
+    .lineTo(doc.page.width - doc.page.margins.left , doc.y)
     .stroke();
     
     doc.font('Helvetica-Bold', 14)
@@ -473,13 +500,12 @@ informepresentados.prototype.addCases = function(doc, data){
 
     _.each(data, function(single){
         row = [
-            {title: single.caso},
             {title: single.residencial},
-            {title: single.nombre},
             {title: single.edificio},
             {title: single.apartamento},
+            {title: single.nombre},
             {title: single.causalIniciales},
-            {title: single.observaciones}
+            {title: single.presentacion}
         ];
 
         that.table.addRow(row);

@@ -250,10 +250,11 @@ module.exports = {
             WHERE ca.seleccionado = 1 \
             AND ca.caso IS NOT NULL\
             AND ca.diligenciado = 0\
-            AND ca.primera_comparecencia = ? \
+            AND ca.primera_comparecencia = '0000-00-00' \
             AND ca.completado = 0\
             ORDER BY ca.caso; ",
-            args: [fecha]
+            //args: [fecha]
+            args: []
         }
     },
     getCasosInformePendienteDeEjecucion: function(){
@@ -273,7 +274,7 @@ module.exports = {
                 ca.sentencia, \
                 ca.ejecutar, \
                 ca.lanzamiento, \
-                DATE_ADD(ca.sentencia, INTERVAL 50 DAY) AS Fecha_a_Ejecutar, \
+                DATE_ADD(ca.sentencia, INTERVAL 50 DAY) AS fechaEjecutar, \
                 ca.desistido\
             FROM Casos ca\
             GROUP BY \
@@ -314,6 +315,11 @@ module.exports = {
                     FROM Causales cau\
                     WHERE cau.id = ca.causal\
                 )  AS 'causal', \
+                ( SELECT \
+                        `siglas`\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causalIniciales', \
                 ca.incumplimiento, \
                 ca.sala, \
                 ca.presentacion, \
