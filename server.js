@@ -24,7 +24,7 @@ app.configure('production', function(){
 	var fs = require('fs');
 	var util = require('util');
 	var is = fs.createReadStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/build/Release/zlib_bindings.node')
-	var os = fs.createWriteStream('./home/node/local/lib/node_modules/pdfkit/node_modules/flate/lib/zlib_bindings.node'); 
+	var os = fs.createWriteStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/lib/zlib_bindings.node'); 
 	util.pump(is, os);
 });
 
