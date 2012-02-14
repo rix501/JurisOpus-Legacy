@@ -250,11 +250,10 @@ module.exports = {
             WHERE ca.seleccionado = 1 \
             AND ca.caso IS NOT NULL\
             AND ca.diligenciado = 0\
-            AND ca.primera_comparecencia = '0000-00-00' \
+            AND ca.primera_comparecencia = ? \
             AND ca.completado = 0\
             ORDER BY ca.caso; ",
-            //args: [fecha]
-            args: []
+            args: [fecha]
         }
     },
     getCasosInformePendienteDeEjecucion: function(){

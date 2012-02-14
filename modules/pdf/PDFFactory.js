@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
-var demandas = require('./demanda');
-var informes = require('./informe');
+var demandas = require('./demandas');
+var informes = require('./informes');
 
 var PDFFactory = module.exports = function(type, template, data){
     var doc, pdf;
