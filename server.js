@@ -21,8 +21,6 @@ app.configure('development', function(){
 
 app.configure('production', function(){
 	app.use(express.errorHandler()); 
-
-	util.pump(is, os);
 });
 
 //My Libs
