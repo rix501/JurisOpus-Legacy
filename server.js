@@ -31,6 +31,7 @@ var Models = require('./modules/models');
 
  //"express":">=2.5.8",
     //"mysql":">=0.9.5"
+    //"pdfkit":">=0.1.6",
  
 // Routes
 routes.setup(app, Models);
