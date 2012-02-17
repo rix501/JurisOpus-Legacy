@@ -39,5 +39,5 @@ var Models = require('./modules/models');
 // Routes
 routes.setup(app, Models);
 
-app.listen(process.env.C9_PORT || process.env.PORT || 8001);
+app.listen(process.env.C9_PORT || process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
