@@ -32,12 +32,11 @@ app.configure('production', function(){
 var routes = require('./modules/routes');
 var Models = require('./modules/models');
 
- //"express":">=2.5.8",
-    //"mysql":">=0.9.5"
+ 	//"express":">=2.5.8",
+    //"mysql":">=0.9.5",
     //"pdfkit":">=0.1.6",
-    //    "underscore":">=1.1.7",
-    //"backbone":">=0.5.3",
-    //"express":">=2.5.8"
+    //"underscore":">=1.1.7",
+    //"backbone":">=0.5.3"
  
 // Routes
 routes.setup(app, Models);
