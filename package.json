@@ -12,9 +12,6 @@
     "node":">=0.4.10"
   },
   "dependencies": {
-    "underscore":">=1.1.7",
-    "backbone":">=0.5.3",
-    "express":">=2.5.8"
   },
   "devDependencies": {}
 }
