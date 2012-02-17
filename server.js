@@ -1,4 +1,8 @@
-
+//system and npm libs
+// var fs = require('fs');
+// var util = require('util');
+// var is = fs.createReadStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/build/Release/zlib_bindings.node');
+// var os = fs.createWriteStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/lib/zlib_bindings.node');  
 
 var express = require('express');
 var fs = require('fs');
@@ -37,5 +41,5 @@ var Models = require('./modules/models');
 // Routes
 routes.setup(app, Models);
 
-app.listen(process.env.C9_PORT || process.env.PORT || 8001);
+app.listen(process.env.C9_PORT || process.env.PORT || 5000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
