@@ -9,7 +9,7 @@
   },
   "main": "server.js",
   "engines": {
-    "node":">=0.4"
+    "node":">=0.4.10"
   },
   "dependencies": {
     "express":">=2.5.8",
