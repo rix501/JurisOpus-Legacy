@@ -1,8 +1,9 @@
 //system and npm libs
 var fs = require('fs');
 var util = require('util');
-var is = fs.createReadStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/build/Release/zlib_bindings.node');
-var os = fs.createWriteStream('/home/node/local/lib/node_modules/pdfkit/node_modules/flate/lib/zlib_bindings.node');  
+var is = fs.createReadStream('./node_modules/pdfkit/node_modules/flate/build/Release/zlib_bindings.node')
+var os = fs.createWriteStream('./node_modules/pdfkit/node_modules/flate/lib/zlib_bindings.node');
+util.pump(is, os);
 
 var express = require('express');
 var fs = require('fs');
@@ -31,12 +32,6 @@ app.configure('production', function(){
 //My Libs
 var routes = require('./modules/routes');
 var Models = require('./modules/models');
-
- 	//"express":">=2.5.8",
-    //"mysql":">=0.9.5",
-    //"pdfkit":">=0.1.6",
-    //"underscore":">=1.1.7",
-    //"backbone":">=0.5.3"
  
 // Routes
 routes.setup(app, Models);
