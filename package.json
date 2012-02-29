@@ -14,7 +14,7 @@
   "dependencies": {
     "express":">=2.5.8",
     "mysql":">=0.9.5",
-    "pdfkit":">=0.1.5",
+    "pdfkit":">=0.1.0",
     "underscore":">=1.1.7",
     "backbone":">=0.5.3"
   },
