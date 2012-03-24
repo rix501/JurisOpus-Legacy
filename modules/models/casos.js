@@ -1,9 +1,10 @@
 var _ = require('underscore');
 
-var pdfFactory = require('../pdf/PDFFactory');
 var client = require('../db');
 var queries = require('../queries');
 var utils = require('../utils');
+if(process.env.NODE_ENV == 'development')
+    var pdfFactory = require('../pdf/PDFFactory');
 
 module.exports = function(Backbone, Models) {
 
@@ -160,8 +161,7 @@ module.exports = function(Backbone, Models) {
                 this.pdfDemanda(query, options);
             
             if(query.type === "informes")
-                this.pdfInforme(query, options);
-            
+                this.pdfInforme(query, options);           
         },
         pdfInforme: function(query, options){
             var resSuccess = options.success;
@@ -265,5 +265,4 @@ module.exports = function(Backbone, Models) {
             this.fetch(options);
         }
     });
-
 };

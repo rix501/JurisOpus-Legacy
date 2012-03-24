@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 
 var client = require('../db');
+var utils = require('../utils');
 
 //Backbone Modification
 Backbone.Model.prototype.fetch = function(options){
@@ -18,7 +19,7 @@ Backbone.Model.prototype.fetch = function(options){
         if (success) success(model, fields);
     };
     
-    options.error = Backbone.utils.wrapError(options.error, model, options);
+    options.error = utils.wrapError(options.error, model, options);
     return (this.sync || Backbone.sync).call(this, 'read', this, options);
 };
 
@@ -64,7 +65,7 @@ Backbone.Model.prototype.save = function(attrs, options) {
         if (success) success(model, fields);
     };
     
-    options.error = Backbone.utils.wrapError(options.error, model, options);
+    options.error = utils.wrapError(options.error, model, options);
     var method = this.isNew() ? 'create' : 'update';
     return (this.sync || Backbone.sync).call(this, method, this, options);
 };
@@ -98,7 +99,7 @@ Backbone.Model.prototype.toDatatableArray = function(){
                data[key] = "";
            }
            else{
-               data[key] = Backbone.utils.dateToString(attribute);
+               data[key] = utils.dateToString(attribute);
            }
        }
              

@@ -845,7 +845,7 @@
                     if($('#actualizar-table .row_selected').length === 0)
                         $('.dataTables_wrapper .edit').addClass('disabled');
                 }
-                else{
+                else if(!$(event.currentTarget).children('td').hasClass('dataTables_empty')){
                     $(event.currentTarget).addClass('row_selected');
                     $('.dataTables_wrapper .edit').removeClass('disabled');
                 }
@@ -986,11 +986,25 @@
                 this.oTable.fnAddData(data);
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
+
+                var dataProp = this.oTable.fnSettings().aoColumns[this.oTable.fnSettings().aaSorting[0][0]].mDataProp;
+
+                data = _.sortBy(data, function(model){
+                    return model[dataProp];
+                });
+
+                if(this.oTable.fnSettings().aaSorting[0][1] === 'desc')
+                    data.reverse();
+
                 $("tbody tr").each(function(i, elem){
                     if(data[i])
                         $(this).addClass(data[i].id.toString()); 
                 });
                 $('table tr').click(this.selectRow);
+            },
+            rowAssign: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                $(nRow).addClass(aData.id.toString());
+                return nRow;
             },
             loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();
@@ -999,6 +1013,7 @@
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
+                    "fnRowCallback": this.rowAssign,
                     "aoColumns": [                 
                         {   
                             "mDataProp": "nombre",
@@ -1025,6 +1040,9 @@
                             "sTitle":"Fecha Presentacion" 
                         }
                     ],
+                    "oLanguage": {
+                        "sSearch": "Buscar"
+                    },
                     "aaData": data
                 };
 
@@ -1036,12 +1054,8 @@
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
                 
-                $("tbody tr").each(function(i, elem){
-                    if(data[i])
-                        $(this).addClass(data[i].id.toString()); 
-                });
-                
-                $('table tr').click(this.selectRow);
+                $('table').on('click', 'tr', this.selectRow);
+
                 $('.dataTables_wrapper .edit').click(this.editRow);
             },
             render: function(){

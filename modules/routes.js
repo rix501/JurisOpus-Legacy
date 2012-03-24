@@ -1,4 +1,5 @@
-var pdfFactory = require('./pdf/PDFFactory');
+if(process.env.NODE_ENV == 'development')
+    var pdfFactory = require('./pdf/PDFFactory');
 
 exports.setup = function(app, Models){    
     // Dummy users
