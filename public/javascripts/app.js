@@ -115,30 +115,30 @@
                 
                 $('#info-msg p').html(msg);
                 
-                if($infoMsg.hasClass('error')) 
-                    $infoMsg.removeClass('error');
+                if($infoMsg.hasClass('alert-error')) 
+                    $infoMsg.removeClass('alert-error');
                     
-                if(!$infoMsg.hasClass('success')) 
-                    $infoMsg.addClass('success'); 
+                if(!$infoMsg.hasClass('alert-success')) 
+                    $infoMsg.addClass('alert-success'); 
                     
                 if(!$infoMsg.hasClass('in')) 
                     $infoMsg.addClass('in');      
                                      
 				$infoMsg.css('display','block');
                 window.setTimeout(function(){
-                    $('.alert-message[data-alert] .close').trigger('click');
+                    $('.alert .close').trigger('click');
                 }, 1500);
             },
             errorMessage: function(msg){
-                $infoMsg = $('.alert-message');
+                $infoMsg = $('.alert');
                                         
-                $('.alert-message p').html(msg);
+                $('.alert span').html(msg);
                 
-                if($infoMsg.hasClass('success')) 
-                    $infoMsg.removeClass('success');
+                if($infoMsg.hasClass('alert-success')) 
+                    $infoMsg.removeClass('alert-success');
                     
-                if(!$infoMsg.hasClass('error'))
-                    $infoMsg.addClass('error');
+                if(!$infoMsg.hasClass('alert-error'))
+                    $infoMsg.addClass('alert-error');
                 
                 if(!$infoMsg.hasClass('in')) 
                     $infoMsg.addClass('in');
@@ -146,7 +146,7 @@
 				$infoMsg.css('display','block');
                 
 				window.setTimeout(function(){
-                    $('.alert-message[data-alert] .close').trigger('click');
+                   $('.alert .close').trigger('click');
 				}, 3000);
             },
             render: function() {
@@ -232,8 +232,8 @@
                     $(datepicker).datepicker({
                         beforeShow: function(input) {
                             var field = $(input);
-                            var left = field.position().left;
-                            var top = field.position().top + 28;
+                            var left = field.offset().left;
+                            var top = field.offset().top + 28;
                             setTimeout(function(){
                                 $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
                             },1);                    
@@ -615,7 +615,7 @@
             template: _.template($("#container-demandas-seleccionar-template").html()),
             events: {
                 'click .print':'print',
-                'click .tabs li a': 'selectTab'
+                'click .nav-tabs li a': 'selectTab'
             },
             //add event to collection for when a model is removed       
             initialize: function(){
@@ -625,7 +625,7 @@
             },
             selectTab: function(event){
                 event.preventDefault();
-                $('.tabs li.active').removeClass('active');
+                $('.nav-tabs li.active').removeClass('active');
                 $('.dataTables_wrapper').removeClass('active');
                 
                 var liNode = $(event.target).parent('li');
@@ -651,7 +651,7 @@
             print: function(){
                 var casosString = "";
                 
-                var liNode = $('.tabs li.active');
+                var liNode = $('.nav-tabs li.active');
                 
                 var demandaType = liNode.attr('class').replace(/active/i, '').trim();
                 
@@ -832,7 +832,7 @@
         window.ContainerDemandasActualizarView = ContainerView.extend({
             template:  _.template($("#container-demandas-actualizar-template").html()),
             events: {
-                'click .pills li a': 'selectPill'
+                'click .nav-pills li a': 'selectPill'
             },
             initialize: function() {
                 _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
@@ -874,9 +874,12 @@
                     $('#actualizar-bulk-modal').modal('show');
                 }
             },
+            assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                $(nRow).addClass(aData.id.toString());
+            },
             selectPill: function(event){
                 event.preventDefault();
-                $('.pills li.active').removeClass('active');
+                $('.nav-pills li.active').removeClass('active');
                 
                 var liNode = $(event.target).parent('li');
                 
@@ -905,7 +908,7 @@
                 }
             },
             modalFilter: function(event){
-                var liNode = $('.pills li.active');
+                var liNode = $('.nav-pills li.active');
                 
                 var filterType = liNode.attr('class').replace(/active/i, "").trim();
                 
@@ -1002,10 +1005,6 @@
                 });
                 $('table tr').click(this.selectRow);
             },
-            rowAssign: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                $(nRow).addClass(aData.id.toString());
-                return nRow;
-            },
             loadTable: function(collection, resp){
                 var data = this.collection.filterFechaPresentacion();
                                 
@@ -1013,7 +1012,7 @@
                     "sScrollX": "100%",
                     "sScrollXInner": "1300px",
                     "bScrollCollapse": true,
-                    "fnRowCallback": this.rowAssign,
+                    "fnRowCallback": this.assignRow,
                     "aoColumns": [                 
                         {   
                             "mDataProp": "nombre",
@@ -1048,7 +1047,7 @@
 
                 this.oTable = $('#actualizar-table').dataTable(opts);
                 
-                $('#actualizar-table_filter').after('<button class="edit primary btn disabled">Editar</button>');
+                $('#actualizar-table_filter').after('<button class="edit btn-primary btn disabled">Editar</button>');
                 
                 $('#actualizar-table_wrapper').addClass('active');
                 this.oTable.fnAdjustColumnSizing();
@@ -1109,8 +1108,8 @@
                     $(datepicker).datepicker({
                         beforeShow: function(input) {
                             var field = $(input);
-                            var left = field.position().left + 382;
-                            var top = field.position().top + 142;
+                            var left = field.offset().left + 382;
+                            var top = field.offset().top + 142;
                             setTimeout(function(){
                                 $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
                             },1);                    
@@ -1209,8 +1208,8 @@
                         $(datepicker).datepicker({
                             beforeShow: function(input) {
                                 var field = $(input);
-                                var left = field.position().left + 382;
-                                var top = field.position().top + 142;
+                                var left = field.offset().left + 382;
+                                var top = field.offset().top + 142;
                                 setTimeout(function(){
                                     $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
                                 },1);                    
@@ -1230,16 +1229,15 @@
         window.JurisOpus = Backbone.Router.extend({
             routes: {
                 '': 'entrar',
-                '/': 'entrar',
-                '/entrar': 'entrar',
-                '/buscar': 'buscar',
-                '/editar/:caseId': 'editar',
-                '/demandas': 'demandas',
-                '/demandas/:listName': 'demandas',
-                '/informes': 'informes',
-                '/actualizar': 'actualizar',
-                '/resolucion': 'resolucion',
-                '/login':'login' 
+                'entrar': 'entrar',
+                'buscar': 'buscar',
+                'editar/:caseId': 'editar',
+                'demandas': 'demandas',
+                'demandas/:listName': 'demandas',
+                'informes': 'informes',
+                'actualizar': 'actualizar',
+                'resolucion': 'resolucion',
+                'login':'login' 
             },
             initialize: function() {
                 this.pageView = new PageView();

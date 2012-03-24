@@ -1,9 +1,10 @@
 <!DOCTYPE html> 
 <html>
 <head>
-    <title>Juris Opus</title>
+    <title>JurisOpus</title>
     <!-- Local Libs -->
     <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
+    <script type="text/javascript" src="/javascripts/bootstrap-transition.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap-dropdown.js"></script>
@@ -19,19 +20,20 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/stylesheets/jquery-ui.custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/stylesheets/demo_table.css" type="text/css" media="screen" charset="utf-8" />  
+    <link rel="stylesheet" href="/stylesheets/bootstrap-responsive.min.css" type="text/css" media="screen" charset="utf-8" />  
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css" media="screen" charset="utf-8" />  
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" charset="utf-8" />
     <!-- Templates -->
     <script type="text/template" id="page-template">
-        <div class="topbar" data-dropdown="dropdown">
-            <div class="topbar-inner">
+        <div class="navbar navbar-fixed-top" >
+            <div class="navbar-inner">
                 <div class="container">
-                    <h3><a href="/">JurisOpus</a></h3>
+                    <a class="brand" href="/">JurisOpus</a>
                     <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
                         <li class="dropdown demandas">
-                            <a href="#" class="dropdown-toggle">Demandas</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Demandas <span class="caret"></span></a>                          
                             <ul class="dropdown-menu">
                                 <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
                                 <li><a href="/#/demandas/actualizar">Actualizar</a></li>
@@ -59,8 +61,8 @@
         <div id="content"></div>
     </script>
 	<script type="text/template" id="container-entrar-template">
-            <div class="alert-message error fade in" id="info-msg" data-alert="alert">
-                <a class="close" href="#">×</a>
+            <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
+                <a class="close" data-dismiss="alert">×</a>
                 <p></p>
             </div>
             <form class="main-form form-stacked">
@@ -104,7 +106,7 @@
                         <div class="form-cell">
                             <label for="casoRecibido">Caso Recibido:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
+                                <input class="span3 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
                             </div>
                         </div>
                         <div class="form-cell">
@@ -163,7 +165,7 @@
                         <div class="form-cell">
                             <label for="deudaRecibida">Deuda Recibida:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
+                                <input class="span3 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -177,7 +179,7 @@
                         <div class="form-cell">
                             <label for="ultimoReexamen">Ultimo Re-examen:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
+                                <input class="span3 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -198,7 +200,7 @@
                         <div class="form-cell">
                             <label for="presentacion">Presentacion:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="presentacion" name="presentacion" size="30" type="text">
+                                <input class="span3 datepicker" id="presentacion" name="presentacion" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -212,7 +214,7 @@
                         <div class="form-cell">
                             <label for="diligenciadoEn">Diligenciado  En:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
+                                <input class="span3 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
@@ -232,31 +234,31 @@
                         <div class="form-cell">
                             <label for="primeraComparecencia">1ra Comparecencia:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
+                                <input class="span3 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="segundaComparecencia">2da Comparecencia:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                                <input class="span3 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="vistaSegundo">Vista en su Segundo:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
+                                <input class="span3 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="sentencia">Sentencia:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="sentencia" name="sentencia" size="30" type="text">
+                                <input class="span3 datepicker" id="sentencia" name="sentencia" size="30" type="text">
                             </div>                        
                         </div>
                         <div class="form-cell">
                             <label for="lanzamiento">Lanzamiento:</label>
                             <div class="input">
-                                <input class="medium datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
+                                <input class="span3 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
                             </div>                        
                         </div>
                     </div>
@@ -269,28 +271,28 @@
                         </div>
                     </div>
                     <div class="clearfix submit-btns">
-                        <button type="submit" class="btn primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                         <div class="spinner"></div>
                     </div>                
                 </fieldset>
             </form>
     </script>
     <script type="text/template" id="container-buscar-template">
-        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
-            <a class="close" href="#">×</a>
-            <p></p>
+        <div class="alert alert-error fade in" id="info-msg">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
         </div>
         <div id="results-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+                <<a class="close" data-dismiss="modal">×</a>
                 <h3>Resultados. Escoja uno.</h3>
             </div>
             <div class="modal-body">
                 <table id='results'></table>
             </div>
             <div class="modal-footer">
-                <button class="btn primary disabled edit">Editar</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="btn btn-primary disabled edit">Editar</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <form class="search form-stacked">
@@ -308,13 +310,13 @@
                     <div class="form-cell">                        
                         <label for="edificio">Edificio</label>
                         <div class="input">
-                            <input class="span3" id="edificio" name="edificio" size="30" type="text">
+                            <input class="span1" id="edificio" name="edificio" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">                        
                         <label for="apartamento">Apartamento</label>
                         <div class="input">
-                            <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
+                            <input class="span1" id="apartamento" name="apartamento" size="30" type="text">
                         </div>
                     </div>
                 </div>
@@ -347,15 +349,15 @@
                 <div class="clearfix">
                     <div class="submit-btns">
                         <div class="spinner"></div>
-                        <button type="submit" class="btn primary">Buscar</button>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
                     </div>  
                 </div>  
             </fieldset>
         </form>
     </script>
     <script type="text/template" id="container-editar-template">
-        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
-            <a class="close" href="#">×</a>
+        <div class="aalert alert-error fade in" id="info-msg" >
+            <a class="close" data-dismiss="alert">×</a>
             <p></p>
         </div>
         <form class="main-form form-stacked">
@@ -399,7 +401,7 @@
                     <div class="form-cell">
                         <label for="casoRecibido">Caso Recibido:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
+                            <input class="span3 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
                         </div>
                     </div>
                     <div class="form-cell">
@@ -458,7 +460,7 @@
                     <div class="form-cell">
                         <label for="deudaRecibida">Deuda Recibida:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
+                            <input class="span3 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
@@ -472,7 +474,7 @@
                     <div class="form-cell">
                         <label for="ultimoReexamen">Ultimo Re-examen:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
+                            <input class="span3 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -493,7 +495,7 @@
                     <div class="form-cell">
                         <label for="presentacion">Presentacion:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="presentacion" name="presentacion" size="30" type="text">
+                            <input class="span3 datepicker" id="presentacion" name="presentacion" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -507,7 +509,7 @@
                     <div class="form-cell">
                         <label for="diligenciadoEn">Diligenciado  En:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
+                            <input class="span3 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
@@ -527,31 +529,31 @@
                     <div class="form-cell">
                         <label for="primeraComparecencia">1ra Comparecencia:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
+                            <input class="span3 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="segundaComparecencia">2da Comparecencia:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                            <input class="span3 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="vistaSegundo">Vista en su Segundo:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
+                            <input class="span3 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="sentencia">Sentencia:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="sentencia" name="sentencia" size="30" type="text">
+                            <input class="span3 datepicker" id="sentencia" name="sentencia" size="30" type="text">
                         </div>                        
                     </div>
                     <div class="form-cell">
                         <label for="lanzamiento">Lanzamiento:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
+                            <input class="span3 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
                         </div>                        
                     </div>
                 </div>
@@ -585,65 +587,65 @@
                 <div class="clearfix">
                     <div class="submit-btns">
                         <div class="spinner"></div>
-                        <button type="submit" class="btn primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>  
                 </div>            
             </fieldset>
         </form>
     </script>
     <script type="text/template" id="container-demandas-seleccionar-template">
-        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
-            <a class="close" href="#">×</a>
+        <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
+            <a class="close" data-dismiss="alert">×</a>
             <p></p>
         </div>
 		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+                <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Marcar demanadas completadas?</h3>
             </div>
             <div class="modal-body">
                 <table id='results'></table>
             </div>
             <div class="modal-footer">
-                <button class="btn primary disabled edit">Editar</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="btn btn-primary disabled edit">Editar</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <h2>Seleccionar Demandas</h2>
-        <ul class="tabs">
+        <ul class="nav nav-tabs">
             <li class="active ic"><a href="#">Implementacion de Contrato</a></li>
             <li class="oi"><a href="#">Ocupacion Ilegal</a></li>
             <li class="re"><a href="#">Re-Examen</a></li>
             <li class="fr"><a href="#">Pago y de Re-Examen</a></li>
             <li class="fp"><a href="#">Falta de Pago</a></li>
         </ul>
-        <table id="ic" class="demanda"></table>
-        <table id="oi" class="demanda"></table>
-        <table id="re" class="demanda"></table>
-        <table id="fr" class="demanda"></table>
-        <table id="fp" class="demanda"></table>
+        <table id="ic" class="demanda table table-bordered table-striped"></table>
+        <table id="oi" class="demanda table table-bordered table-striped"></table>
+        <table id="re" class="demanda table table-bordered table-striped"></table>
+        <table id="fr" class="demanda table table-bordered table-striped"></table>
+        <table id="fp" class="demanda table table-bordered table-striped"></table>
     </script>
 	<script type="text/template" id="container-demandas-actualizar-template">
-        <div class="alert-message error fade in" id="info-msg" data-alert="alert">
-            <a class="close" href="#">×</a>
-            <p></p>
+        <div class="alert alert-error fade in" id="info-msg">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
         </div>
 		<div id="actualizar-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+                <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Que día de 1ra comparecencia?</h3>
             </div>
             <div class="modal-body">
-                <input class="medium datepicker" id="casoRecibido" name="fecha" size="30" type="text">
+                <input class="span3 datepicker" id="casoRecibido" name="fecha" size="30" type="text">
             </div>
             <div class="modal-footer">
-                <button class="btn primary filter">Filtrar</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="btn btn-primary filter">Filtrar</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+                <a class="close" data-dismiss="alert">×</a>
                 <h3>Hacer cambios en grupo:</h3>
             </div>
             <div class="modal-body">
@@ -652,19 +654,19 @@
                     <div class="clearfix">
                         <label for="sala">Sala:</label>
                         <div class="input">
-                            <input class="medium" id="sala" name="sala" size="30" type="text">
+                            <input class="span3" id="sala" name="sala" size="30" type="text">
                         </div>
                     </div>
                     <div class="clearfix">                
                         <label for="fecha">Fecha:</label>
                         <div class="input">
-                            <input class="medium datepicker" id="fecha" name="fecha" size="30" type="text">
+                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
                         </div>
                     </div>
                     <div class="clearfix">                
                         <label for="hora">Hora:</label>
                         <div class="input">
-                            <input class="medium" id="hora" name="hora" size="30" type="text">
+                            <input class="span3" id="hora" name="hora" size="30" type="text">
                         </div>
                     </div>
                     </fieldset>
@@ -673,45 +675,45 @@
             <div class="modal-footer">
                 <span class="label" style="display: none;"></span>
                 <div class="spinner"></div>
-                <button class="btn primary edit">Editar</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="btn btn-primary edit">Editar</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <h2>Actualizar Demandas</h2>
-        <ul class="pills">
+        <ul class="nav nav-pills">
             <li class="active presentacion"><a href="#">Fecha de Presentación</a></li>
             <li class="salahora"><a href="#">Sala, Hora, y dia para 1ra Comparecencia</a></li>
             <li class="primeravista"><a href="#">Información de 1ra Vista</a></li>
             <li class="rediligenciar"><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
         </ul>
-        <table id="actualizar-table" class="active"></table>
+        <table id="actualizar-table" class="active table table-bordered table-striped"></table>
 	</script>
     <script type="text/template" id="container-informes-template">
         <h2>Informes</h2>
         <div id="informedevistas-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+                <a class="close" data-dismiss="alert">×</a>
             </div>
             <div class="modal-body">
                 <h3>¿Señalado para que fecha?</h3>
                 <input class="span3 datepicker" size="30" type="text" />
             </div>
             <div class="modal-footer">
-                <button class="informedevistas btn print primary">Imprimir</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="informedevistas btn print btn-primary">Imprimir</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <div id="informeparadiligenciar-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
-                <a href="#" class="close">×</a>
+               <a class="close" data-dismiss="modal">×</a>
             </div>
             <div class="modal-body">
                 <h3>¿Señalado para que fecha?</h3>
                 <input class="span3 datepicker" size="30" type="text" />
             </div>
             <div class="modal-footer">
-                <button class="informeparadiligenciar btn print primary">Imprimir</button>
-                <button class="btn secondary">Cancel</button>
+                <button class="informeparadiligenciar btn print btn-primary">Imprimir</button>
+                <button class="btn btn-secondary">Cancel</button>
             </div>
         </div>
         <div class="row informes">
@@ -743,84 +745,6 @@
                 <p><button class="informependientedeejecucion print btn">Imprimir &raquo;</button></p>
             </div>
         </div>
-    </script>
-    <script type="text/template" id="container-informes-list-template">
-        <form class='list informes-list'>
-            <ul class="unstyled">
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de Casos Presentados</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Informe de Vista de 1ra Comparecencia</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Informe de Vista de 2da Comparecencia</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Informe de Facturacion Nuevo</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Informe de Facturacion - Addendum</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Area de Informes Adicionales*</label>
-                </li>
-            </ul>
-        </form>
-    </script>
-    <script type="text/template" id="container-actualizar-template">
-        <form class='list actualizar-list'>
-            <ul class="unstyled">
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Actualizar Fecha de Presentacion</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Actualizar Sala, Hora, y dia para la 1ra Comparecencia</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Actualizar Informacion de la 1ra Vista</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Casos a Re-Diligencia (Sin Demanda)</label>
-                </li>
-            </ul>
-        </form>
-    </script>
-    <script type="text/template" id="container-resolucion-template">
-        <form class='list resolucion-list'>
-            <ul class="unstyled">
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Preparar Mandamiento de Lanzamiento</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Actualizar Casos con Sentencias Dictadas y Pendientes de Ejecucion</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Buscar Casos Duplicados</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de Casos con sentencias dictadas</label>
-                </li>
-                <li>
-                    <input id="cobro" name="but" type="button" class="btn redirect">
-                    <label for="but">Lista de Casos Completados o Desistidos</label>
-                </li>
-            </ul>
-        </form>
     </script>
 </head>
 <body>
