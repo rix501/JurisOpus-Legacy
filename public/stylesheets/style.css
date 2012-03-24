@@ -19,8 +19,7 @@ body.login {
 
 .login #info-msg {
     display: none;
-    margin: 0 0 10px 42.3%;
-    width: 165px;
+    width: 170px;
 }
 
 .login-form {
