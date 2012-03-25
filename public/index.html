@@ -3,19 +3,19 @@
 <head>
     <title>JurisOpus</title>
     <!-- Local Libs -->
-    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>    
-    <script type="text/javascript" src="/javascripts/bootstrap-transition.js"></script>
-    <script type="text/javascript" src="/javascripts/bootstrap-alerts.js"></script>
-    <script type="text/javascript" src="/javascripts/bootstrap-modal.js"></script>
-    <script type="text/javascript" src="/javascripts/bootstrap-dropdown.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery-ui.custom.min.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery.dataTables.min.js"></script>
-    <!--<script type="text/javascript" src="/javascripts/jquery.dataTables.editable.js"></script>-->
-    <script type="text/javascript" src="/javascripts/underscore.min.js"></script>
-    <script type="text/javascript" src="/javascripts/backbone.min.js"></script>
-    <script type="text/javascript" src="/javascripts/spin.min.js"></script>
-    <!-- <script type="text/javascript" src="/javascripts/backbone.js"></script> -->
+    <script type="text/javascript" src="/javascripts/vendor/jquery.min.js"></script>    
+    <script type="text/javascript" src="/javascripts/vendor/bootstrap-transition.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/bootstrap-alerts.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/underscore.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/backbone.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vendor/spin.min.js"></script>
     <!-- My Scripts -->
+    <script type="text/javascript" src="/javascripts/models.js"></script>
+    <script type="text/javascript" src="/javascripts/views.js"></script>
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <!-- Styles -->
     <link rel="stylesheet" href="/stylesheets/jquery-ui.custom.css" type="text/css" media="screen" charset="utf-8" />
@@ -619,11 +619,7 @@
             <li class="fr"><a href="#">Pago y de Re-Examen</a></li>
             <li class="fp"><a href="#">Falta de Pago</a></li>
         </ul>
-        <table id="ic" class="demanda table table-bordered table-striped"></table>
-        <table id="oi" class="demanda table table-bordered table-striped"></table>
-        <table id="re" class="demanda table table-bordered table-striped"></table>
-        <table id="fr" class="demanda table table-bordered table-striped"></table>
-        <table id="fp" class="demanda table table-bordered table-striped"></table>
+        <table id="seleccionar-table" class="demanda table table-bordered table-striped"></table>
     </script>
 	<script type="text/template" id="container-demandas-actualizar-template">
         <div class="alert alert-error fade in" id="info-msg">
@@ -717,29 +713,29 @@
             </div>
         </div>
         <div class="row informes">
-            <div class="span5">
+            <div class="span4">
                 <h3>Vista de Primera Comparecencia</h3>
                 <p>Esto es una descripcion básica del informe</p>
                 <p><button class="informedevistas mod btn">Imprimir &raquo;</button></p>
             </div>
-            <div class="span5">
+            <div class="span4">
                 <h3>Casos para Diligenciar</h3>
                 <p>Esto es una descripcion básica del informe</p>
                 <p><button class="btn informeparadiligenciar mod">Imprimir &raquo;</button></p>
             </div>
-            <div class="span5">
+            <div class="span4">
                 <h3>Facturación Nuevo</h3>
                 <p>Esto es una descripcion básica del informe</p>
                 <p><button class="informefacturacion print btn">Imprimir &raquo;</button></p>
             </div>
         </div>
         <div class="row informes">
-            <div class="span5">
+            <div class="span4">
                 <h3>Casos Presentados</h3>
                 <p>Esto es una descripcion básica del informe</p>
                 <p><button class="informepresentados print btn">Imprimir &raquo;</button></p>
             </div>
-            <div class="span6">
+            <div class="span5">
                 <h3>Sentencias Pendientes de Ejecución</h3>
                 <p>Esto es una descripcion básica del informe</p>
                 <p><button class="informependientedeejecucion print btn">Imprimir &raquo;</button></p>

@@ -141,10 +141,6 @@ hr {
     left: 43%;
 }
 
-.informes.row {
-    
-}
-
 form.list {
     margin: 10px auto;
     border: 3px solid #919191;
@@ -192,9 +188,9 @@ textarea.xxlarge {
 }
 
 tr.even.row_selected td {
-    background-color: #B0BED9;
+    background-color: #B0BED9 !important;
 }
 
 tr.odd.row_selected td {
-    background-color: #9FAFD1;
+    background-color: #9FAFD1 !important;
 }

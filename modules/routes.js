@@ -202,6 +202,9 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdf', checkAuth, function(req, res){
+        if(process.env.NODE_ENV == 'production')
+            return;
+
         var cases = new Models.Casos();
         
         cases.pdf(req.query, {
@@ -218,6 +221,9 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
+        if(process.env.NODE_ENV == 'production')
+            return;
+        
         var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
         res.header('Content-type','application/pdf');
