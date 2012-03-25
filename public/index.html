@@ -416,62 +416,33 @@
             </div>
         </div>
         <div class="page-header"><h1>Buscar Caso</h1></div>
-        <form class="search form-stacked">
+        <form class="search form-vertical">
             <fieldset>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="residencial">Residencial</label>
-                        <div class="residenciales input">
-                            <div class="spinner"></div>
-	                        <select name="residencial" id="residencial">
-	                        </select>
-                        </div>
-                    </div>
-                    <div class="form-cell">                        
-                        <label for="edificio">Edificio</label>
-                        <div class="input">
-                            <input class="span1" id="edificio" name="edificio" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="form-cell">                        
-                        <label for="apartamento">Apartamento</label>
-                        <div class="input">
-                            <input class="span1" id="apartamento" name="apartamento" size="30" type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell"> 
-                        o
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="nombre">Nombre</label>
-                        <div class="input">
-                            <input class="span3" id="nombre" name="nombre" size="30" type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell"> 
-                        o
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="caso">Caso</label>
-                        <div class="input">
-                            <input class="span3" id="caso" name="caso" size="30" type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="submit-btns">
+                <div class="row span10">
+                    <div class="row span3 well">
                         <div class="spinner"></div>
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                    </div>  
-                </div>  
+                        <label for="residencial">Residencial</label>
+                        <select name="residencial" id="residencial"></select>
+                        <label for="edificio">Edificio</label>
+                        <input class="span2" id="edificio" name="edificio" size="30" type="text">
+                        <label for="apartamento">Apartamento</label>
+                        <input class="span2" id="apartamento" name="apartamento" size="30" type="text">
+                        <div class="spinner"></div>
+                        <button type="button" id="search-direccion" class="btn btn-primary">Buscar</button>
+                    </div>
+                    <div class="row span2 well">
+                        <label for="nombre">Nombre</label>
+                        <input class="span2" id="nombre" name="nombre" size="30" type="text">
+                        <div class="spinner"></div>
+                        <button type="button" id="search-nombre" class="btn btn-primary">Buscar</button>
+                    </div>
+                    <div class="row span2 well">
+                        <label for="caso">Caso</label>
+                        <input class="span2" id="caso" name="caso" size="30" type="text">
+                        <div class="spinner"></div>
+                        <button type="button" id="search-caso" class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
             </fieldset>
         </form>
     </script>

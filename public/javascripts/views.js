@@ -231,7 +231,7 @@ $(document).ready(function(){
 
     window.ContainerBuscarView = ContainerView.extend({
         events: {
-            'submit':'submitForm'
+            'click button':'submitForm'
         },
         template:  _.template($("#container-buscar-template").html()),
         loadResidenciales: function(){
@@ -300,17 +300,25 @@ $(document).ready(function(){
         submitForm: function(event){
             event.preventDefault();
         
+            var searchType = $(event.currentTarget).attr('id');
             var resultCasos = new Models.Casos();
-        
             var viewObj = this;
-        
-            var query = {
-                residencial: $('#residencial').val(),
-                edificio: $('#edificio').val(),
-                apartamento: $('#apartamento').val(),
-                nombre: $('#nombre').val(),
-                caso: $('#caso').val()
-            };
+            var query = {};
+
+            switch(searchType) {
+                case 'search-direccion':
+                    query.residencial = $('#residencial').val();
+                    query.edificio = $('#edificio').val();
+                    query.apartamento = $('#apartamento').val();
+                    break;
+                case 'search-caso':
+                    query.caso = $('#caso').val();
+                    break;
+                case 'search-nombre':
+                    query.nombre = $('#nombre').val();
+                    break;
+                default:
+            }
         
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.submit-btns .spinner')[0]);
