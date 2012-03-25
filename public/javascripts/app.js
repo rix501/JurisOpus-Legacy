@@ -5,12 +5,8 @@ $(document).ready(function(){
             'entrar': 'entrar',
             'buscar': 'buscar',
             'editar/:caseId': 'editar',
-            'demandas': 'demandas',
             'demandas/:listName': 'demandas',
-            'informes': 'informes',
-            'actualizar': 'actualizar',
-            'resolucion': 'resolucion',
-            'login':'login' 
+            'informes': 'informes'
         },
         initialize: function() {
             this.pageView = new PageView();
@@ -49,16 +45,6 @@ $(document).ready(function(){
             this.containerInformesView = new ContainerInformesView();
             $('#content').empty();
             $('#content').append(this.containerInformesView.render().el); 
-        },
-        actualizar: function(){
-            this.containerActualizarView = new ContainerActualizarView();
-            $('#content').empty();
-            $('#content').append(this.containerActualizarView.render().el);                 
-        },
-        resolucion: function(){
-            this.containerResolucionView = new ContainerResolucionView();
-            $('#content').empty();
-            $('#content').append(this.containerResolucionView.render().el);                 
         }
     });
 

@@ -65,6 +65,10 @@ hr {
     width: 555px;
 }
 
+.clearfix.form-row {
+    margin-bottom: 10px;
+}
+
 .form-row .form-cell {
 	display: inline-block;
 	margin-right: 5px;

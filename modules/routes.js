@@ -5,6 +5,8 @@ exports.setup = function(app, Models){
     // Dummy users
     var users = [
         { id: 0, username: 'tester', password: 'jurisopus', email: '', role: 'tester' },
+        { id: 0, username: 'kmirizarry', password: 'jurisopus', email: '', role: 'tester' },
+        { id: 0, username: 'guillo', password: 'jurisopus', email: '', role: 'tester' },
         { id: 1, username: 'rix', password: 'supersecret', email: 'rix501@gmail.com', role: 'admin' }
     ]; 
      
@@ -223,7 +225,7 @@ exports.setup = function(app, Models){
     app.get('/pdfTest', function(req,res){
         if(process.env.NODE_ENV == 'production')
             return;
-        
+
         var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
         res.header('Content-type','application/pdf');

@@ -61,221 +61,341 @@
         <div id="content"></div>
     </script>
 	<script type="text/template" id="container-entrar-template">
-            <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
-                <a class="close" data-dismiss="alert">×</a>
-                <p></p>
-            </div>
-            <form class="main-form form-stacked">
-                <fieldset>
-                    <legend>Entrar Caso Nuevo</legend>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">
-                            <label for="residencial">Residencial</label>
-                            <div class="input residenciales">
-                                <div class="spinner"></div>
-                                <select name="residencial" id="residencial">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-cell">
-                            <label for="edificio">Edificio:</label>
-                            <div class="input">
-                                <input class="span3" id="edificio" name="edificio" size="30" type="text">
-                            </div>
-                        </div>
-                        <div class="form-cell">
-                            <label for="apartamento">Apartamento:</label>
-                            <div class="input">
-                                <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="area">Area:</label>
-                            <div class="input">
-                                <input class="span3" id="area" name="area" size="30" type="text">
-                            </div>                        
-                        </div>
-                    </div>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">                        
-                            <label for="nombre">Nombre:</label>
-                            <div class="input">
-                                <input class="span3" id="nombre" name="nombre" size="30" type="text">
-                            </div>
-                        </div>
-                        <div class="form-cell">
-                            <label for="casoRecibido">Caso Recibido:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
-                            </div>
-                        </div>
-                        <div class="form-cell">
-                            <label for="seleccionado">Seleccionado:</label>
-                            <div class="input check">
-                                <label>
-                                    <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
-                                </label>
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="completado">Completado:</label>
-                            <div class="input check">
-                                <label>
-                                    <input type="checkbox" id="completado" name="completado" value="1">
-                                </label>
-                            </div>                        
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">                        
-                            <label for="causal">Causal</label>
-                            <div class="input causales">
-                                <div class="spinner"></div>
-                                <select name="causal" id="causal">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">                        
-                            <label for="rentaMensual">Renta Mensual</label>
-                            <div class="input">
-                                <input class="span3" id="rentaMensual" name="rentaMensual" size="30" type="text">
-                            </div>
-                        </div>
-                        <div class="form-cell">
-                            <label for="mesesAdeudados">Meses Adeudados:</label>
-                            <div class="input">
-                                <input class="span3" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="deudaRenta">Deuda Renta:</label>
-                            <div class="input">
-                                <input class="span3" id="deudaRenta" name="deudaRenta" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
-                            <div class="input">
-                                <input class="span3" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="deudaRecibida">Deuda Recibida:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
-                            </div>                        
-                        </div>
-                    </div>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">
-                            <label for="deudaTotal">Deuda Total:</label>
-                            <div class="input">
-                                <input class="span3" id="deudaTotal" name="deudaTotal" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="ultimoReexamen">Ultimo Re-examen:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="incumplimiento">Incumplimiento:</label>
-                            <div class="input">
-                                <input class="span3" id="incumplimiento" name="incumplimiento" size="30" type="text">
-                            </div>                        
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">
-                            <label for="caso">Caso:</label>
-                            <div class="input">
-                                <input class="span3" id="caso" name="caso" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="presentacion">Presentacion:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="presentacion" name="presentacion" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="diligenciado">Diligenciado:</label>
-                            <div class="input check">
-                                <label>
-                                    <input type="checkbox" id="diligenciado" name="diligenciado" value="option1">
-                                </label>
-                            </div>                          
-                        </div>
-                        <div class="form-cell">
-                            <label for="diligenciadoEn">Diligenciado  En:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="sala">Sala:</label>
-                            <div class="input">
-                                <input class="span2" id="sala" name="sala" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="hora">Hora:</label>
-                            <div class="input">
-                                <input class="span2" id="hora" name="hora" size="30" type="text">
-                            </div>                        
-                        </div>
-                    </div>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">
-                            <label for="primeraComparecencia">1ra Comparecencia:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="segundaComparecencia">2da Comparecencia:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="vistaSegundo">Vista en su Segundo:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="sentencia">Sentencia:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="sentencia" name="sentencia" size="30" type="text">
-                            </div>                        
-                        </div>
-                        <div class="form-cell">
-                            <label for="lanzamiento">Lanzamiento:</label>
-                            <div class="input">
-                                <input class="span3 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
-                            </div>                        
-                        </div>
-                    </div>
-                    <div class="clearfix form-row">
-                        <div class="form-cell">
-                            <label for="observaciones">Observaciones:</label>
-                            <div class="input">
-                                <textarea class="xxlarge" id="observaciones" name="observaciones"></textarea>
-                            </div>                        
-                        </div>
-                    </div>
-                    <div class="clearfix submit-btns">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
+            <a class="close" data-dismiss="alert">×</a>
+            <p></p>
+        </div>
+        <div class="page-header"><h1>Entrar Caso Nuevo</h1></div>
+        <form class="main-form form-stacked form-horizontal">
+            <fieldset>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="residencial">Residencial</label>
                         <div class="spinner"></div>
-                    </div>                
-                </fieldset>
-            </form>
+                        <select name="residencial" id="residencial">
+                        </select>
+                    </div>
+                    <div class="form-cell">
+                        <label for="edificio">Edificio:</label>
+                        <input class="span2" id="edificio" name="edificio" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="apartamento">Apartamento:</label>
+                        <input class="span2" id="apartamento" name="apartamento" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="area">Area:</label>
+                        <input class="span2" id="area" name="area" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="nombre">Nombre:</label>
+                        <input class="span3" id="nombre" name="nombre" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="casoRecibido">Caso Recibido:</label>
+                        <input class="span2 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="seleccionado">Seleccionado:</label>
+                        <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
+                    </div>
+                    <div class="form-cell">
+                        <label for="completado">Completado:</label>
+                        <input type="checkbox" id="completado" name="completado" value="1">                  
+                    </div>
+                </div>
+                <hr>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="causal">Causal</label>
+                        <div class="spinner"></div>
+                        <select name="causal" id="causal">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="rentaMensual">Renta Mensual</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="rentaMensual" name="rentaMensual" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="mesesAdeudados">Meses Adeudados:</label>
+                        <input class="span2" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRenta">Deuda Renta:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaRenta" name="deudaRenta" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRecibida">Deuda Recibida:</label>
+                        <input class="span2 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="deudaTotal">Deuda Total:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaTotal" name="deudaTotal" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="ultimoReexamen">Ultimo Re-examen:</label>
+                        <input class="span2 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="incumplimiento">Incumplimiento:</label>
+                        <input class="span2" id="incumplimiento" name="incumplimiento" size="30" type="text">
+                    </div>
+                </div>
+                <hr>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="caso">Caso:</label>
+                        <input class="span2" id="caso" name="caso" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="presentacion">Presentacion:</label>
+                        <input class="span2 datepicker" id="presentacion" name="presentacion" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="diligenciado">Diligenciado:</label>
+                        <input type="checkbox" id="diligenciado" name="diligenciado" value="option1">
+                    </div>
+                    <div class="form-cell">
+                        <label for="diligenciadoEn">Diligenciado  En:</label>
+                        <input class="span2 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="sala">Sala:</label>
+                        <input class="span2" id="sala" name="sala" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="hora">Hora:</label>
+                        <input class="span2" id="hora" name="hora" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="primeraComparecencia">1ra Comparecencia:</label>
+                        <input class="span2 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="segundaComparecencia">2da Comparecencia:</label>
+                        <input class="span2 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="vistaSegundo">Vista en su Segundo:</label>
+                        <input class="span2 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="sentencia">Sentencia:</label>
+                        <input class="span2 datepicker" id="sentencia" name="sentencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="lanzamiento">Lanzamiento:</label>
+                        <input class="span2 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="observaciones">Observaciones:</label>
+                        <textarea class="span12" rows="6" id="observaciones" name="observaciones"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix submit-btns">
+                    <button type="submit" class="btn btn-primary btn-large">Guardar</button>
+                    <div class="spinner"></div>
+                </div>                
+            </fieldset>
+        </form>
+    </script>
+    <script type="text/template" id="container-editar-template">
+        <div class="alert alert-error fade in" id="info-msg" >
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div class="page-header"><h1>Editar Casos</h1></div>
+        <form class="main-form form-stacked form-horizontal">
+            <fieldset>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="residencial">Residencial</label>
+                        <div class="spinner"></div>
+                        <select name="residencial" id="residencial">
+                        </select>
+                    </div>
+                    <div class="form-cell">
+                        <label for="edificio">Edificio:</label>
+                        <input class="span2" id="edificio" name="edificio" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="apartamento">Apartamento:</label>
+                        <input class="span2" id="apartamento" name="apartamento" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="area">Area:</label>
+                        <input class="span2" id="area" name="area" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="nombre">Nombre:</label>
+                        <input class="span3" id="nombre" name="nombre" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="casoRecibido">Caso Recibido:</label>
+                        <input class="span2 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="seleccionado">Seleccionado:</label>
+                        <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
+                    </div>
+                    <div class="form-cell">
+                        <label for="completado">Completado:</label>
+                        <input type="checkbox" id="completado" name="completado" value="1">                  
+                    </div>
+                </div>
+                <hr>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="causal">Causal</label>
+                        <div class="control-group warning">
+                            <div class="spinner"></div>
+                            <select name="causal" id="causal">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">                        
+                        <label for="rentaMensual">Renta Mensual</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="rentaMensual" name="rentaMensual" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="mesesAdeudados">Meses Adeudados:</label>
+                        <input class="span2" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRenta">Deuda Renta:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaRenta" name="deudaRenta" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="deudaRecibida">Deuda Recibida:</label>
+                        <input class="span2 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="deudaTotal">Deuda Total:</label>
+                        <div class="input-prepend">
+                            <span class="add-on">$</span><input class="span2" id="deudaTotal" name="deudaTotal" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="form-cell">
+                        <label for="ultimoReexamen">Ultimo Re-examen:</label>
+                        <input class="span2 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="incumplimiento">Incumplimiento:</label>
+                        <input class="span2" id="incumplimiento" name="incumplimiento" size="30" type="text">
+                    </div>
+                </div>
+                <hr>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="caso">Caso:</label>
+                        <input class="span2" id="caso" name="caso" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="presentacion">Presentacion:</label>
+                        <input class="span2 datepicker" id="presentacion" name="presentacion" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="diligenciado">Diligenciado:</label>
+                        <input type="checkbox" id="diligenciado" name="diligenciado" value="option1">
+                    </div>
+                    <div class="form-cell">
+                        <label for="diligenciadoEn">Diligenciado  En:</label>
+                        <input class="span2 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="sala">Sala:</label>
+                        <input class="span2" id="sala" name="sala" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="hora">Hora:</label>
+                        <input class="span2" id="hora" name="hora" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="primeraComparecencia">1ra Comparecencia:</label>
+                        <input class="span2 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="segundaComparecencia">2da Comparecencia:</label>
+                        <input class="span2 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="vistaSegundo">Vista en su Segundo:</label>
+                        <input class="span2 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="sentencia">Sentencia:</label>
+                        <input class="span2 datepicker" id="sentencia" name="sentencia" size="30" type="text">
+                    </div>
+                    <div class="form-cell">
+                        <label for="lanzamiento">Lanzamiento:</label>
+                        <input class="span2 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
+                    </div>
+                </div>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="observaciones">Observaciones:</label>
+                        <textarea class="span12" rows="6" id="observaciones" name="observaciones"></textarea>
+                    </div>
+                </div>
+                <hr>
+                <div class="clearfix form-row">
+                    <div class="form-cell">
+                        <label for="rediligenciar">Re-diligenciar:</label>
+                        <input type="checkbox" id="rediligenciar" name="rediligenciar" value="rediligenciar">                     
+                    </div>
+                    <div class="form-cell">
+                        <label for="ejecutar">Ejecutar:</label>
+                        <input id="ejecutar" type="checkbox" name="ejecutar" value="1">                       
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="submit-btns">
+                        <div class="spinner"></div>
+                        <button type="submit" class="btn btn-primary btn-large">Guardar</button>
+                    </div>  
+                </div>            
+            </fieldset>
+        </form>
     </script>
     <script type="text/template" id="container-buscar-template">
         <div class="alert alert-error fade in" id="info-msg">
@@ -284,20 +404,20 @@
         </div>
         <div id="results-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
-                <<a class="close" data-dismiss="modal">×</a>
-                <h3>Resultados. Escoja uno.</h3>
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Seleccionar para editar</h3>
             </div>
             <div class="modal-body">
-                <table id='results'></table>
+                <table id='results' class="demanda table table-bordered table-striped"></table>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary disabled edit">Editar</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
+        <div class="page-header"><h1>Buscar Caso</h1></div>
         <form class="search form-stacked">
             <fieldset>
-                <legend>Buscar Caso</legend>
                 <div class="clearfix form-row">
                     <div class="form-cell">                        
                         <label for="residencial">Residencial</label>
@@ -355,244 +475,6 @@
             </fieldset>
         </form>
     </script>
-    <script type="text/template" id="container-editar-template">
-        <div class="aalert alert-error fade in" id="info-msg" >
-            <a class="close" data-dismiss="alert">×</a>
-            <p></p>
-        </div>
-        <form class="main-form form-stacked">
-            <fieldset>
-                <legend>Editar Caso</legend>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="residencial">Residencial</label>
-                        <div class="input residenciales">
-                            <div class="spinner"></div>
-                            <select name="residencial" id="residencial">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-cell">
-                        <label for="edificio">Edificio:</label>
-                        <div class="input">
-                            <input class="span3" id="edificio" name="edificio" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="form-cell">
-                        <label for="apartamento">Apartamento:</label>
-                        <div class="input">
-                            <input class="span3" id="apartamento" name="apartamento" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="area">Area:</label>
-                        <div class="input">
-                            <input class="span3" id="area" name="area" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="nombre">Nombre:</label>
-                        <div class="input">
-                            <input class="span3" id="nombre" name="nombre" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="form-cell">
-                        <label for="casoRecibido">Caso Recibido:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="form-cell">
-                        <label for="seleccionado">Seleccionado:</label>
-                        <div class="input check">
-                            <label>
-                                <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
-                            </label>
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="completado">Completado:</label>
-                        <div class="input check">
-                            <label>
-                                <input type="checkbox" id="completado" name="completado" value="1">
-                            </label>
-                        </div>                        
-                    </div>
-                </div>
-                <hr>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="causal">Causal</label>
-                        <div class="causales input">
-                            <div class="spinner"></div>
-                            <select name="causal" id="causal">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">                        
-                        <label for="rentaMensual">Renta Mensual</label>
-                        <div class="input">
-                            <input class="span3" id="rentaMensual" name="rentaMensual" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="form-cell">
-                        <label for="mesesAdeudados">Meses Adeudados:</label>
-                        <div class="input">
-                            <input class="span3" id="mesesAdeudados" name="mesesAdeudados" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="deudaRenta">Deuda Renta:</label>
-                        <div class="input">
-                            <input class="span3" id="deudaRenta" name="deudaRenta" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="deudaRentaNegativa">Deuda Renta Negativa:</label>
-                        <div class="input">
-                            <input class="span3" id="deudaRentaNegativa" name="deudaRentaNegativa" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="deudaRecibida">Deuda Recibida:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="deudaRecibida" name="deudaRecibida" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="deudaTotal">Deuda Total:</label>
-                        <div class="input">
-                            <input class="span3" id="deudaTotal" name="deudaTotal" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="ultimoReexamen">Ultimo Re-examen:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="ultimoReexamen" name="ultimoReexamen" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="incumplimiento">Incumplimiento:</label>
-                        <div class="input">
-                            <input class="span3" id="incumplimiento" name="incumplimiento" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <hr>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="caso">Caso:</label>
-                        <div class="input">
-                            <input class="span3" id="caso" name="caso" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="presentacion">Presentacion:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="presentacion" name="presentacion" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="diligenciado">Diligenciado:</label>
-                        <div class="input check">
-                            <label>
-                                <input type="checkbox" id="diligenciado" name="diligenciado" value="option1">
-                            </label>
-                        </div>                          
-                    </div>
-                    <div class="form-cell">
-                        <label for="diligenciadoEn">Diligenciado  En:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="diligenciadoEn" name="diligenciadoEn" size="16"  type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="sala">Sala:</label>
-                        <div class="input">
-                            <input class="span2" id="sala" name="sala" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="hora">Hora:</label>
-                        <div class="input">
-                            <input class="span2" id="hora" name="hora" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="primeraComparecencia">1ra Comparecencia:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="primeraComparecencia" name="primeraComparecencia" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="segundaComparecencia">2da Comparecencia:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="vistaSegundo">Vista en su Segundo:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="vistaSegundo" name="vistaSegundo" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="sentencia">Sentencia:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="sentencia" name="sentencia" size="30" type="text">
-                        </div>                        
-                    </div>
-                    <div class="form-cell">
-                        <label for="lanzamiento">Lanzamiento:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="lanzamiento" name="lanzamiento" size="30" type="text">
-                        </div>                        
-                    </div>
-                </div>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="observaciones">Observaciones:</label>
-                        <div class="input">
-                            <textarea class="xxlarge" id="observaciones" name="observaciones"></textarea>
-                        </div>                        
-                    </div>
-                </div>
-                <hr>
-                <div class="clearfix form-row">
-                    <div class="form-cell">
-                        <label for="rediligenciar">Re-diligenciar:</label>
-                        <div class="input check">
-                            <label>
-                                <input type="checkbox" id="rediligenciar" name="rediligenciar" value="rediligenciar">
-                            </label>
-                        </div>                       
-                    </div>
-                    <div class="form-cell">
-                        <label for="ejecutar">Ejecutar:</label>
-                        <div class="input check">
-                            <label>
-                                <input id="ejecutar" type="checkbox" name="ejecutar" value="1">
-                            </label>
-                        </div>                       
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <div class="submit-btns">
-                        <div class="spinner"></div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>  
-                </div>            
-            </fieldset>
-        </form>
-    </script>
     <script type="text/template" id="container-demandas-seleccionar-template">
         <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
             <a class="close" data-dismiss="alert">×</a>
@@ -608,10 +490,10 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary disabled edit">Editar</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
-        <h2>Seleccionar Demandas</h2>
+        <div class="page-header"><h1>Seleccionar Demandas</h1></div>
         <ul class="nav nav-tabs">
             <li class="active ic"><a href="#">Implementacion de Contrato</a></li>
             <li class="oi"><a href="#">Ocupacion Ilegal</a></li>
@@ -636,7 +518,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary filter">Filtrar</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
         <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
@@ -672,10 +554,11 @@
                 <span class="label" style="display: none;"></span>
                 <div class="spinner"></div>
                 <button class="btn btn-primary edit">Editar</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
-        <h2>Actualizar Demandas</h2>
+        <div class="page-header"><h1>Actualizar Demandas</h1></div>
+        <h2></h2>
         <ul class="nav nav-pills">
             <li class="active presentacion"><a href="#">Fecha de Presentación</a></li>
             <li class="salahora"><a href="#">Sala, Hora, y dia para 1ra Comparecencia</a></li>
@@ -685,7 +568,7 @@
         <table id="actualizar-table" class="active table table-bordered table-striped"></table>
 	</script>
     <script type="text/template" id="container-informes-template">
-        <h2>Informes</h2>
+        <div class="page-header"><h1>Informes</h1></div>
         <div id="informedevistas-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="alert">×</a>
@@ -696,7 +579,7 @@
             </div>
             <div class="modal-footer">
                 <button class="informedevistas btn print btn-primary">Imprimir</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
         <div id="informeparadiligenciar-modal" class="modal hide fade in" style="display: none; ">
@@ -709,7 +592,7 @@
             </div>
             <div class="modal-footer">
                 <button class="informeparadiligenciar btn print btn-primary">Imprimir</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
         <div class="row informes">
