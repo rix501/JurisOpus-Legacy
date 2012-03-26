@@ -49,7 +49,7 @@ $(document).ready(function(){
         successMessage: function(msg){
             $infoMsg = $('#info-msg');
             
-            $('#info-msg p').html(msg);
+            $('.alert span').html(msg);
             
             if($infoMsg.hasClass('alert-error')) 
                 $infoMsg.removeClass('alert-error');
