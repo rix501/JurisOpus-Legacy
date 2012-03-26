@@ -1,5 +1,22 @@
 //Views and Router
 $(document).ready(function(){
+
+    function SetDatepickers(datepickers, leftCoordinate, topCoordinate){
+        _.forEach(datepickers, function(datepicker){
+            $(datepicker).datepicker({
+                beforeShow: function(input) {
+                    var field = $(input);
+                    var left = field.offset().left + leftCoordinate;
+                    var top = field.offset().top + topCoordinate;
+                    setTimeout(function(){
+                        $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
+                    },1);                    
+                },
+                dateFormat: 'yy-mm-dd'
+            });
+        });
+    };
+
     window.PageView = Backbone.View.extend({
         template: _.template($("#page-template").html()),
         el: 'body',
@@ -79,6 +96,7 @@ $(document).ready(function(){
         events: {
             'submit':'submitForm'
         },
+        template: _.template($("#container-form-template").html()),
         loadResidenciales: function(){
             var that = this;
             
@@ -143,23 +161,11 @@ $(document).ready(function(){
             });
         },
         render: function(){
-            $(this.el).html(this.template());
+            $(this.el).html(this.template({isEdit: this.isEdit}));
             
             var datepickers = $(this.el).find(".datepicker");
             
-            _.forEach(datepickers, function(datepicker){
-                $(datepicker).datepicker({
-                    beforeShow: function(input) {
-                        var field = $(input);
-                        var left = field.offset().left;
-                        var top = field.offset().top + 28;
-                        setTimeout(function(){
-                            $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                        },1);                    
-                    },
-                    dateFormat: 'yy-mm-dd'
-                });
-            });
+            SetDatepickers(datepickers, 0, 28);
                
             this.loadResidenciales();
             this.loadCausales();   
@@ -169,12 +175,12 @@ $(document).ready(function(){
     });
     
     window.ContainerEntrarView = ContainerMainFormView.extend({
-        template: _.template($("#container-entrar-template").html()),
         initialize: function() {
             _.bindAll(this, 'render', 'submitForm' ,'successMessage', 'errorMessage');
             $('li.active').removeClass('active');
             $('li.entrar').addClass('active');
         },
+        isEdit: false,
         submitForm: function(event){
             event.preventDefault(); 
                                        
@@ -407,7 +413,6 @@ $(document).ready(function(){
     });
     
     window.ContainerEditarView = ContainerMainFormView.extend({
-        template: _.template($("#container-editar-template").html()),
         initialize: function() {
             _.bindAll(this, 'render', 'submitForm' ,'fillForm', 'error', 'fillResidenciales', 'fillCausales');
             $('li.active').removeClass('active');
@@ -418,6 +423,7 @@ $(document).ready(function(){
             this.model.bind('error', this.error);
             this.model.fetch();                         
         },
+        isEdit: true,
         error: function(err){
             this.errorMessage('Error buscando caso');
         },
@@ -538,47 +544,120 @@ $(document).ready(function(){
         }
     });
     
-    window.ContainerDemandasSeleccionarView = ContainerView.extend({
-        template: _.template($("#container-demandas-seleccionar-template").html()),
+    window.ContainerCasosTableView = ContainerView.extend({
         events: {
-            'click .print':'print',
-            'click .nav-tabs li a': 'selectTab'
+            'click .nav li a': 'selectNav'
         },
+        selectNav: function(event){
+            event.preventDefault();
+            $('.nav li.active').removeClass('active');
+            
+            var liNode = $(event.target).parent('li');
+            
+            var type = liNode.attr('class');
+            
+            liNode.addClass('active');
+
+            return type;
+        },
+        selectRow: function(event){
+            if ( $(event.currentTarget).hasClass('row_selected') ){
+                $(event.currentTarget).removeClass('row_selected');
+
+                if($('#casos-table .row_selected').length === 0)
+                    $('.dataTables_wrapper .action').addClass('disabled');
+            }
+            else if(!$(event.currentTarget).children('td').hasClass('dataTables_empty')){
+                $(event.currentTarget).addClass('row_selected');
+                $('.dataTables_wrapper .action').removeClass('disabled');
+            }
+        },
+        assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+            $(nRow).addClass(aData.id.toString());
+        },
+        filterTable:function(data){
+            this.oTable.fnClearTable();
+            this.oTable.fnAddData(data);
+            this.oTable.fnAdjustColumnSizing();
+            this.oTable.fnDraw();
+        },
+        loadTable: function(data, options){
+            var opts = {
+                "sScrollX": "100%",
+                "sScrollXInner": "1300px",
+                "bScrollCollapse": true,
+                "fnRowCallback": this.assignRow,
+                "aoColumns": [                 
+                    {   
+                        "mDataProp": "nombre",
+                        "sTitle":"Nombre" 
+                    },
+                    {
+                        "mDataProp": "residencial",
+                        "sTitle":"Residencial"
+                    },
+                    { 
+                        "mDataProp": "edificio",
+                        "sTitle":"Edificio" 
+                    },
+                    { 
+                        "mDataProp": "apartamento",
+                        "sTitle":"Apartamento" 
+                    },
+                    { 
+                        "mDataProp": "casoRecibido",
+                        "sTitle":"Ingresado" 
+                    },
+                    { 
+                        "mDataProp": "presentacion",
+                        "sTitle":"Fecha Presentacion" 
+                    }
+                ],
+                "oLanguage": {
+                    "sSearch": "Buscar"
+                },
+                "aaData": data
+            };
+
+            this.oTable = $('#casos-table').dataTable(opts);
+            
+            $('#casos-table_wrapper').addClass('active');
+            
+            this.oTable.fnAdjustColumnSizing();
+            this.oTable.fnDraw();
+            
+            $('#casos-table').on('click', 'tr', this.selectRow);
+        },
+        render: function(type){
+            $(this.el).html(this.template());
+  
+            this.collection = new Models.Casos();
+            
+            this.collection.url = '/casos-datatable/' + type;
+            
+            this.collection.fetch({
+                success: this.loadTable,
+                error: function(error){
+                    console.log(error);
+                }
+            });
+
+            return this;
+        }
+    });
+
+    window.ContainerDemandasSeleccionarView = ContainerCasosTableView.extend({
+        template: _.template($("#container-demandas-seleccionar-template").html()),
         //add event to collection for when a model is removed       
         initialize: function(){
             _.bindAll(this, 'render', 'selectRow', 'loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
         },
-        selectTab: function(event){
-            event.preventDefault();
-            $('.nav-tabs li.active').removeClass('active');
-            
-            var liNode = $(event.target).parent('li');
-            
-            var demandaType = liNode.attr('class');
-                         
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
-            
-            liNode.addClass('active');
+        selectNav: function(event){
+            var demandaType = ContainerCasosTableView.prototype.selectNav.call(this, event);
             
             this.filterTable(this.collection.filterCausal(demandaType));
-        },
-        selectRow: function(event){
-            if ( $(event.currentTarget).hasClass('row_selected') ){
-                $(event.currentTarget).removeClass('row_selected');
-
-                if($('#seleccionar-table .row_selected').length === 0)
-                    $('.dataTables_wrapper .print').addClass('disabled');
-            }
-            else if(!$(event.currentTarget).children('td').hasClass('dataTables_empty')){
-                $(event.currentTarget).addClass('row_selected');
-                $('.dataTables_wrapper .print').removeClass('disabled');
-            }
-        },
-        assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-            $(nRow).addClass(aData.id.toString());
         },
         print: function(){
             if($('.dataTables_wrapper .print').hasClass('disabled'))
@@ -606,103 +685,32 @@ $(document).ready(function(){
                             
             iframe.style.display = "none";
             document.body.appendChild(iframe);
-        },
-        filterTable:function(data){
-            this.oTable.fnClearTable();
-            this.oTable.fnAddData(data);
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
-        },            
+        },          
         loadTable: function(collection, reponse){
             var data = this.collection.filterCausal('ic');
-            var opts = {
-                "sScrollX": "100%",
-                "sScrollXInner": "1300px",
-                "bScrollCollapse": true,
-                "fnRowCallback": this.assignRow,
-                "aoColumns": [
-                    {   
-                        "mDataProp": "nombre",
-                        "sTitle":"Nombre" 
-                    },
-                    {
-                        "mDataProp": "residencial",
-                        "sTitle":"Residencial"
-                    },
-                    { 
-                        "mDataProp": "edificio",
-                        "sTitle":"Edificio" 
-                    },
-                    { 
-                        "mDataProp": "apartamento",
-                        "sTitle":"Apartamento" 
-                    },
-                    { 
-                        "mDataProp": "casoRecibido",
-                        "sTitle":"Ingresado" 
-                    },
-                    { 
-                        "mDataProp": "presentacion",
-                        "sTitle":"Fecha Presentacion" 
-                    }
-                ],
-                "aaData": data
-            };
-            
-            this.oTable = $('#seleccionar-table').dataTable(opts);
-            
-            $('#seleccionar-table').after('<button class="print btn disabled">Imprimir</button>');
-            
-            $('#seleccionar-table_wrapper').addClass('active');
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
-            
-            $('#seleccionar-table').on('click', 'tr', this.selectRow);
+            var options = {};
+            ContainerCasosTableView.prototype.loadTable.call(this, data, options);
+                   
+            $('#casos-table_filter').after('<button class="action btn disabled">Imprimir</button>');
+            $('.dataTables_wrapper .action').click(this.print);
         },
         render: function(){
-            $(this.el).html(this.template());
-  
-            this.collection = new Models.Casos();
-            
-            this.collection.url = '/casos-datatable/seleccionar';
-            
-            this.collection.fetch({
-                success: this.loadTable,
-                error: function(error){
-                    console.log(error);
-                }
-            });
-
-            return this;
+            return ContainerCasosTableView.prototype.render.call(this, 'seleccionar');
         }
     });
     
-    window.ContainerDemandasActualizarView = ContainerView.extend({
+    window.ContainerDemandasActualizarView = ContainerCasosTableView.extend({
         template:  _.template($("#container-demandas-actualizar-template").html()),
-        events: {
-            'click .nav-pills li a': 'selectPill'
-        },
         initialize: function() {
-            _.bindAll(this, 'render', 'selectPill', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
+            _.bindAll(this, 'render', 'selectNav', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
-        },
-        selectRow: function(event){
-            if ( $(event.currentTarget).hasClass('row_selected') ){
-                $(event.currentTarget).removeClass('row_selected');
-                if($('#actualizar-table .row_selected').length === 0)
-                    $('.dataTables_wrapper .edit').addClass('disabled');
-            }
-            else if(!$(event.currentTarget).children('td').hasClass('dataTables_empty')){
-                $(event.currentTarget).addClass('row_selected');
-                $('.dataTables_wrapper .edit').removeClass('disabled');
-            }
         },
         editRow: function(event){
             if($('.dataTables_wrapper .edit').hasClass('disabled'))
                 return;
             
-            var $selectRow = $('#actualizar-table .row_selected');
+            var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
                 var id = $($selectRow[0])
@@ -722,18 +730,8 @@ $(document).ready(function(){
                 $('#actualizar-bulk-modal').modal('show');
             }
         },
-        assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-            $(nRow).addClass(aData.id.toString());
-        },
-        selectPill: function(event){
-            event.preventDefault();
-            $('.nav-pills li.active').removeClass('active');
-            
-            var liNode = $(event.target).parent('li');
-            
-            var filterType = liNode.attr('class');
-            
-            liNode.addClass('active');
+        selectNav: function(event){
+            var filterType = ContainerCasosTableView.prototype.selectNav.call(this, event);
             
             switch(filterType){
                 case 'presentacion':
@@ -832,77 +830,16 @@ $(document).ready(function(){
                 }
             });
         },
-        filterTable:function(data){
-            this.oTable.fnClearTable();
-            this.oTable.fnAddData(data);
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
-        },
         loadTable: function(collection, resp){
             var data = this.collection.filterFechaPresentacion();
-                            
-            var opts = {
-                "sScrollX": "100%",
-                "sScrollXInner": "1300px",
-                "bScrollCollapse": true,
-                "fnRowCallback": this.assignRow,
-                "aoColumns": [                 
-                    {   
-                        "mDataProp": "nombre",
-                        "sTitle":"Nombre" 
-                    },
-                    {
-                        "mDataProp": "residencial",
-                        "sTitle":"Residencial"
-                    },
-                    { 
-                        "mDataProp": "edificio",
-                        "sTitle":"Edificio" 
-                    },
-                    { 
-                        "mDataProp": "apartamento",
-                        "sTitle":"Apartamento" 
-                    },
-                    { 
-                        "mDataProp": "casoRecibido",
-                        "sTitle":"Ingresado" 
-                    },
-                    { 
-                        "mDataProp": "presentacion",
-                        "sTitle":"Fecha Presentacion" 
-                    }
-                ],
-                "oLanguage": {
-                    "sSearch": "Buscar"
-                },
-                "aaData": data
-            };
+            var options = {};
+            ContainerCasosTableView.prototype.loadTable.call(this, data, options);
 
-            this.oTable = $('#actualizar-table').dataTable(opts);
-            
-            $('#actualizar-table_filter').after('<button class="edit btn-primary btn disabled">Editar</button>');
-            
-            $('#actualizar-table_wrapper').addClass('active');
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
-            
-            $('table').on('click', 'tr', this.selectRow);
-
-            $('.dataTables_wrapper .edit').click(this.editRow);
+            $('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            $('.dataTables_wrapper .action').click(this.editRow);
         },
         render: function(){
-            $(this.el).html(this.template());
-  
-            this.collection = new Models.Casos();
-            
-            this.collection.url = '/casos-datatable/actualizar';
-            
-            this.collection.fetch({
-                success: this.loadTable,
-                error: function(error){
-                    console.log(error);
-                }
-            });
+            ContainerCasosTableView.prototype.render.call(this, 'actualizar')
             
             var modalFilter = $(this.el).find('#actualizar-modal');
             var modalBulk = $(this.el).find('#actualizar-bulk-modal');
@@ -935,21 +872,8 @@ $(document).ready(function(){
                 $(modalBulk).find('.modal-footer .label').hide();
             });
             
-            var datepickers = $(this.el).find(".datepicker");
-            
-            _.forEach(datepickers, function(datepicker){
-                $(datepicker).datepicker({
-                    beforeShow: function(input) {
-                        var field = $(input);
-                        var left = field.offset().left + 382;
-                        var top = field.offset().top + 142;
-                        setTimeout(function(){
-                            $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                        },1);                    
-                    },
-                    dateFormat: 'yy-mm-dd'
-                });
-            });
+            var datepickers = $(this.el).find(".datepicker");           
+            SetDatepickers(datepickers, 0, 28);
                             
             return this;
         }
@@ -1036,21 +960,7 @@ $(document).ready(function(){
                 $(modal).find('.print').click(that.print);
                 
                 var datepickers = $(that.el).find(".datepicker");
-                
-                _.forEach(datepickers, function(datepicker){
-                    $(datepicker).datepicker({
-                        beforeShow: function(input) {
-                            var field = $(input);
-                            var left = field.offset().left + 382;
-                            var top = field.offset().top + 142;
-                            setTimeout(function(){
-                                $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
-                            },1);                    
-                        },
-                        dateFormat: 'yy-mm-dd'
-                    });
-                });
-
+                SetDatepickers(datepickers, 0, 28);
             });
             
             return this;                
