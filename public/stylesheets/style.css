@@ -1,11 +1,11 @@
 html {
-	background-color: whiteSmoke;
+    background-color: whiteSmoke;
 }
 
 body {
-	background-color: whiteSmoke;
-	padding-top: 40px;
-	font-size: 15px;
+    background-color: whiteSmoke;
+    padding-top: 40px;
+    font-size: 15px;
 }
 
 body.login {
@@ -39,9 +39,13 @@ body.login {
     margin-bottom: 0px;
 }
 
-.login .spinner {
+.login-form .submit-btns {
+    position: relative;
+}
+
+.login-form .submit-btns .spinner {
     position: absolute;
-    left: 135px;
+    left: 125px;
     top: 14px;
 }
 
@@ -53,11 +57,11 @@ body.login {
 }
 
 .main-form {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 hr {
-	border: 1px solid #919191;
+    border: 1px solid #919191;
 }
 
 .search {
@@ -69,8 +73,8 @@ hr {
 }
 
 .form-row .form-cell {
-	display: inline-block;
-	margin-right: 5px;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 .input {
@@ -85,8 +89,8 @@ hr {
 
 .submit-btns .spinner {
     position: absolute;
-    left: 515px;
-    top: 14px;
+    left: 465px;
+    top: 19px;
 }
 
 .check {

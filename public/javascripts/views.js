@@ -24,7 +24,7 @@ $(document).ready(function(){
             _.bindAll(this, 'render');
         },
         render: function() {
-            $(this.el).html(this.template());
+            this.$el.html(this.template());
             return this;
         }
     });
@@ -86,7 +86,7 @@ $(document).ready(function(){
             }, 3000);
         },
         render: function() {
-            $(this.el).html(this.template());
+            this.$el.html(this.template());
             
             return this;
         }
@@ -103,7 +103,7 @@ $(document).ready(function(){
             var residenciales = new Models.Residenciales();
             
             var residencialSpinner = this.getSpinner();
-            residencialSpinner.spin($(this.el).find('.residenciales .spinner')[0]);
+            residencialSpinner.spin(this.$el.find('.residencial.spinner')[0]);
             
             residenciales.fetch({
                 success: function(collection){
@@ -135,7 +135,7 @@ $(document).ready(function(){
             var causales = new Models.Causales();
             
             var causalesSpinner = this.getSpinner();
-            causalesSpinner.spin($(this.el).find('.causales .spinner')[0]);
+            causalesSpinner.spin(this.$el.find('.causal.spinner')[0]);
             
             causales.fetch({
                 success: function(collection){
@@ -161,9 +161,9 @@ $(document).ready(function(){
             });
         },
         render: function(){
-            $(this.el).html(this.template({isEdit: this.isEdit}));
+            this.$el.html(this.template({isEdit: this.isEdit}));
             
-            var datepickers = $(this.el).find(".datepicker");
+            var datepickers = this.$el.find(".datepicker");
             
             SetDatepickers(datepickers, 0, 28);
                
@@ -222,6 +222,7 @@ $(document).ready(function(){
                 observaciones: $('#observaciones').val()
             },{
                 success: function(model){
+                    $('.main-form')[0].reset();
                     viewObj.successMessage('Caso guardado');
                     submitSpinner.stop();
                 },
@@ -244,7 +245,7 @@ $(document).ready(function(){
             var residenciales = new Models.Residenciales();
         
             var residencialSpinner = this.getSpinner();
-            residencialSpinner.spin($(this.el).find('.residenciales .spinner')[0]);
+            residencialSpinner.spin(this.$el.find('.residenciales .spinner')[0]);
         
             residenciales.fetch({
                 success: function(collection){
@@ -394,7 +395,7 @@ $(document).ready(function(){
             
             this.loadResidenciales();
             
-            var modal = $(this.el).find('#results-modal');
+            var modal = this.$el.find('#results-modal');
             
             modal.modal({
                 backdrop: true,
@@ -576,10 +577,12 @@ $(document).ready(function(){
             $(nRow).addClass(aData.id.toString());
         },
         filterTable:function(data){
-            this.oTable.fnClearTable();
-            this.oTable.fnAddData(data);
-            this.oTable.fnAdjustColumnSizing();
-            this.oTable.fnDraw();
+            if(this.oTable){
+                this.oTable.fnClearTable();
+                this.oTable.fnAddData(data);
+                this.oTable.fnAdjustColumnSizing();
+                this.oTable.fnDraw();
+            }
         },
         loadTable: function(data, options){
             var opts = {
@@ -629,7 +632,7 @@ $(document).ready(function(){
             $('#casos-table').on('click', 'tr', this.selectRow);
         },
         render: function(type){
-            $(this.el).html(this.template());
+            this.$el.html(this.template());
   
             this.collection = new Models.Casos();
             
@@ -841,8 +844,8 @@ $(document).ready(function(){
         render: function(){
             ContainerCasosTableView.prototype.render.call(this, 'actualizar')
             
-            var modalFilter = $(this.el).find('#actualizar-modal');
-            var modalBulk = $(this.el).find('#actualizar-bulk-modal');
+            var modalFilter = this.$el.find('#actualizar-modal');
+            var modalBulk = this.$el.find('#actualizar-bulk-modal');
             
             modalFilter.modal({
                 backdrop: true,
@@ -872,7 +875,7 @@ $(document).ready(function(){
                 $(modalBulk).find('.modal-footer .label').hide();
             });
             
-            var datepickers = $(this.el).find(".datepicker");           
+            var datepickers = this.$el.find(".datepicker");           
             SetDatepickers(datepickers, 0, 28);
                             
             return this;
@@ -942,11 +945,11 @@ $(document).ready(function(){
             }
         },
         render: function(){
-            $(this.el).html(this.template());
+            this.$el.html(this.template());
 
             var that = this;
             
-            $(this.el).find('.modal').each(function(i, modal){
+            this.$el.find('.modal').each(function(i, modal){
                 $(modal).modal({
                     backdrop: true,
                     keyboard: true,
