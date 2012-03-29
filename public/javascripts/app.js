@@ -80,12 +80,14 @@ $(document).ready(function(){
                 this.containerDemandasSeleccionarView = new ContainerDemandasSeleccionarView();
                 $('#content').empty();
                 $('#content').append(this.containerDemandasSeleccionarView.render().el);
+                this.addedToDOM('demandas');
                 this.addedToDOM('demandas-seleccionar'); 
             }
             else if(listName === 'actualizar'){
                 this.containerDemandasActualizarView = new ContainerDemandasActualizarView();
                 $('#content').empty();
                 $('#content').append(this.containerDemandasActualizarView.render().el);
+                this.addedToDOM('demandas');
                 this.addedToDOM('demandas-actualizar'); 
             }
         },

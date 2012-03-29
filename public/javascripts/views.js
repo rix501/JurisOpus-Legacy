@@ -108,6 +108,8 @@ $(document).ready(function(){
             }           
         },
         addResidenciales: function(){
+            dispatcher.off('loaded:residenciales');
+
             var that = this;
             App.residenciales.each(function(model){
                 var elOptNew = document.createElement('option');
@@ -136,6 +138,8 @@ $(document).ready(function(){
             }    
         },
         addCausales: function(){
+            dispatcher.off('loaded:causales');
+
             var that = this;
             App.causales.each(function(model){
                 var elOptNew = document.createElement('option');
@@ -246,6 +250,8 @@ $(document).ready(function(){
             }           
         },
         addResidenciales: function(){
+            dispatcher.off('loaded:residenciales');
+
             var that = this;
             App.residenciales.each(function(model){
                 var elOptNew = document.createElement('option');
@@ -420,6 +426,8 @@ $(document).ready(function(){
             this.errorMessage('Error buscando caso');
         },
         fillResidenciales: function(){
+            dispatcher.off('added:residenciales');
+
             var model = this.model;
             
             if(this.model.get('residencial')){
@@ -431,6 +439,8 @@ $(document).ready(function(){
             }
         },
         fillCausales: function(){
+            dispatcher.off('added:causales');
+
             var model = this.model;
             
             if(this.model.get('causal')){
@@ -625,26 +635,30 @@ $(document).ready(function(){
                 "aaData": data
             };
 
-            this.oTable = this.$el.find('#' + type + '-table').dataTable(opts);
+            this.oTable = this.$el.find('#casos-table').dataTable(opts);
             
-            this.$el.find('#' + type + '-table_wrapper').addClass('active');
+            this.$el.find('#casos-table_wrapper').addClass('active');
             
             this.oTable.fnAdjustColumnSizing();
             this.oTable.fnDraw();
             
-            this.$el.find('#' + type + '-table').on('click', 'tr', this.selectRow);
+            this.$el.find('#casos-table').on('click', 'tr', this.selectRow);
         },
         render: function(){
             this.$el.html(this.template());
   
-            this.collection = App.casos;
+            this.collection = App.casos;    
 
-            if(this.collection.length == 0){
-                dispatcher.on('loaded:casos', _.bind(this.loadTable, this));
-            }
-            else{
-                this.loadTable();
-            }
+            dispatcher.on('render:demandas', _.bind(function(){
+                dispatcher.off('render:demandas');
+
+                if(this.collection.length == 0){
+                    dispatcher.on('loaded:casos', _.bind(this.loadTable, this));
+                }
+                else{
+                    this.loadTable();
+                }
+            }, this));
 
             return this;
         }
@@ -657,10 +671,6 @@ $(document).ready(function(){
             _.bindAll(this, 'render', 'selectRow', 'loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
-
-            dispatcher.on('render:demandas-seleccionar', _.bind(function(){
-                this.oTable.fnAdjustColumnSizing();
-            },this));
         },
         selectNav: function(event){
             var demandaType = ContainerCasosTableView.prototype.selectNav.call(this, event);
@@ -668,7 +678,7 @@ $(document).ready(function(){
             this.filterTable(this.collection.filterCausal(demandaType));
         },
         print: function(){
-            if($('.dataTables_wrapper .print').hasClass('disabled'))
+            if($('.dataTables_wrapper .action').hasClass('disabled'))
                 return;
 
             var casosString = "";
@@ -699,7 +709,7 @@ $(document).ready(function(){
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, 'seleccionar', data, options);
                    
-            this.$el.find('#seleccionar-table_filter').after('<button class="action btn disabled">Imprimir</button>');
+            this.$el.find('#casos-table_filter').after('<button class="action btn disabled">Imprimir</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.print);
         },
         render: function(){
@@ -713,13 +723,9 @@ $(document).ready(function(){
             _.bindAll(this, 'render', 'selectNav', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
-
-            dispatcher.on('render:demandas-actualizar', _.bind(function(){
-                this.oTable.fnAdjustColumnSizing();
-            },this));
         },
         editRow: function(event){
-            if($('.dataTables_wrapper .edit').hasClass('disabled'))
+            if($('.dataTables_wrapper .action').hasClass('disabled'))
                 return;
             
             var $selectRow = $('#casos-table .row_selected');
@@ -803,7 +809,7 @@ $(document).ready(function(){
             
             var url = "/casos/";
             
-            $("#actualizar-table .row_selected").each(function(){
+            $("#casos-table .row_selected").each(function(){
                 var id = $(this)
                 .attr('class')
                 .replace(/row_selected/i, '')
@@ -847,7 +853,7 @@ $(document).ready(function(){
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
-            this.$el.find('#actualizar-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
         },
         render: function(){
