@@ -1,4 +1,37 @@
     var Models = {};
+
+    Backbone.Model.prototype.toDatatableArray = function(){
+        var fields = [ 'residencial', 'edificio', 'apartamento', 'casoRecibido', 'seleccionado', 'causal', 'deudaTotal', 'incumplimiento', 'caso', 'presentacion', 'observaciones' ];
+        
+        var data = this.toJSON();
+            
+        _.each(data, function(attribute, key){
+           if(attribute === null){
+               data[key] = "";
+           }
+           
+           if(_.isDate(attribute)){
+               if(isNaN( attribute.getTime() )){
+                   data[key] = "";
+               }
+               else{
+                   data[key] = utils.dateToString(attribute);
+               }
+           }
+                 
+           return  attribute;
+        });
+        
+        return data;
+    };
+
+    Backbone.Collection.prototype.toDatatableArray = function(){  
+        _.each(this.models, function(model, key, models){
+            models[key] = model.toDatatableArray();
+        });
+                
+        return this.models;
+    };
     
     Models.Caso = Backbone.Model.extend({
         urlRoot: '/casos'

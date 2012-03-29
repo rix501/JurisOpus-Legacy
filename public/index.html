@@ -32,7 +32,8 @@
                     <ul class="nav">
                         <li class="entrar"><a href="/#/">Entrar</a></li>
                         <li class="buscar"><a href="/#/buscar">Buscar</a></li>
-                        <li class="dropdown demandas">
+                        <li class="demandas"><a href="/#/demandas">Demandas</a></li>
+                        <!-- <li class="dropdown demandas">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Demandas <span class="caret"></span></a>                          
                             <ul class="dropdown-menu">
                                 <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
@@ -40,7 +41,7 @@
 								<li class="divider"></li>
 								<li><a href="/#/">Ver Todos</a></li>
                             </ul>
-                        </li>                        
+                        </li> -->                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
                     </ul>
                     <!--
@@ -287,6 +288,49 @@
             </fieldset>
         </form>
     </script>
+    <script type="text/template" id="container-demandas-template">
+        <div class="page-header"><h1>Demandas</h1></div>
+        <div class="span3 well">
+            <h3>Seleccionar</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/seleccionar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Fecha presentacion</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Sala/hora/comparecencia</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Informacion de Vista</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Notificacion de Sentencia</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Sentencia Ha Lugar</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Lanzamiento</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+        <div class="span3 well">
+            <h3>Completado</h3>
+            <p>Esto es una descripcion básica del informe</p>
+            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+        </div>
+    </script>
     <script type="text/template" id="container-demandas-seleccionar-template">
         <div class="alert alert-error fade in" id="info-msg" data-alert="alert">
             <a class="close" data-dismiss="alert">×</a>
@@ -295,7 +339,7 @@
 		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
-                <h3>¿Marcar demanadas completadas?</h3>
+                <h3>¿Marcar demandas completadas?</h3>
             </div>
             <div class="modal-body">
                 <table id='results'></table>

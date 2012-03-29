@@ -98,67 +98,60 @@ $(document).ready(function(){
         },
         template: _.template($("#container-form-template").html()),
         loadResidenciales: function(){
+            this.residencialSpinner = this.getSpinner();
+            if(App.residenciales.length == 0){
+                this.residencialSpinner.spin(this.$el.find('.residencial.spinner')[0]);
+                dispatcher.on('loaded:residenciales', _.bind(this.addResidenciales,this));
+            }
+            else{
+                this.addResidenciales();
+            }           
+        },
+        addResidenciales: function(){
             var that = this;
-            
-            var residenciales = new Models.Residenciales();
-            
-            var residencialSpinner = this.getSpinner();
-            residencialSpinner.spin(this.$el.find('.residencial.spinner')[0]);
-            
-            residenciales.fetch({
-                success: function(collection){
-                    collection.each(function(model){
-                        var elOptNew = document.createElement('option');
-                        elOptNew.text = model.get('residencial');
-                        elOptNew.value = model.get('id');
-                        var elSel = document.getElementById('residencial');
+            App.residenciales.each(function(model){
+                var elOptNew = document.createElement('option');
+                elOptNew.text = model.get('residencial');
+                elOptNew.value = model.get('id');
+                var elSel = that.$el.find('#residencial')[0];
 
-                        try {
-                          elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
-                        }
-                        catch(ex) {
-                          elSel.add(elOptNew); // IE only
-                        } 
-                    });
-                    that.trigger('loaded:residenciales');
-                    residencialSpinner.stop();
-                },
-                error:function(err){
-                    // console.log(err);
-                    residencialSpinner.stop();
+                try {
+                  elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
                 }
+                catch(ex) {
+                  elSel.add(elOptNew); // IE only
+                } 
             });
+            this.residencialSpinner.stop();
+            dispatcher.trigger('added:residenciales');
         },
         loadCausales: function(){
+            this.causalesSpinner = this.getSpinner();
+            if(App.causales.length == 0){
+                this.causalesSpinner.spin(this.$el.find('.causal.spinner')[0]);
+                dispatcher.on('loaded:causales', _.bind(this.addCausales,this));
+            }
+            else{
+                this.addCausales();
+            }    
+        },
+        addCausales: function(){
             var that = this;
-            
-            var causales = new Models.Causales();
-            
-            var causalesSpinner = this.getSpinner();
-            causalesSpinner.spin(this.$el.find('.causal.spinner')[0]);
-            
-            causales.fetch({
-                success: function(collection){
-                    collection.each(function(model){
-                        var elOptNew = document.createElement('option');
-                        elOptNew.text = model.get('causal');
-                        elOptNew.value = model.get('id');
-                        var elSel = document.getElementById('causal');
+            App.causales.each(function(model){
+                var elOptNew = document.createElement('option');
+                elOptNew.text = model.get('causal');
+                elOptNew.value = model.get('id');
+                var elSel = that.$el.find('#causal')[0];
 
-                        try {
-                          elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
-                        }
-                        catch(ex) {
-                          elSel.add(elOptNew); // IE only
-                        } 
-                    });
-                    causalesSpinner.stop();
-                    that.trigger('loaded:causales');
-                },
-                error: function(){
-                    causalesSpinner.stop();
+                try {
+                  elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
                 }
+                catch(ex) {
+                  elSel.add(elOptNew); // IE only
+                } 
             });
+            this.causalesSpinner.stop();
+            dispatcher.trigger('added:causales');
         },
         render: function(){
             this.$el.html(this.template({isEdit: this.isEdit}));
@@ -187,10 +180,9 @@ $(document).ready(function(){
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.submit-btns .spinner')[0]);
             
-            var caso = new Models.Caso();
             var viewObj = this;
         
-            caso.save({
+            App.casos.create({
                 residencial: $('#residencial').val(),
                 edificio: $('#edificio').val(),
                 apartamento: $('#apartamento').val(),
@@ -200,6 +192,7 @@ $(document).ready(function(){
                 seleccionado: $('#seleccionado:checked').length,
                 completado: $('#completado:checked').length,
                 causal: $('#causal').val(),
+                causalIniciales: App.causales.get($('#causal').val()).get('siglas').toLowerCase(),
                 rentaMensual: $('#rentaMensual').val(),
                 mesesAdeudados: $('#mesesAdeudados').val(),
                 deudaRenta: $('#deudaRenta').val(),
@@ -221,6 +214,7 @@ $(document).ready(function(){
                 lanzamiento: $('#lanzamiento').val(),
                 observaciones: $('#observaciones').val()
             },{
+                wait: true,
                 success: function(model){
                     $('.main-form')[0].reset();
                     viewObj.successMessage('Caso guardado');
@@ -242,34 +236,31 @@ $(document).ready(function(){
         },
         template:  _.template($("#container-buscar-template").html()),
         loadResidenciales: function(){
-            var residenciales = new Models.Residenciales();
-        
-            var residencialSpinner = this.getSpinner();
-            residencialSpinner.spin(this.$el.find('.residenciales .spinner')[0]);
-        
-            residenciales.fetch({
-                success: function(collection){
-                    collection.each(function(model){
-                        var elOptNew = document.createElement('option');
-                        elOptNew.text = model.get('residencial');
-                        elOptNew.value = model.get('id');
-                        var elSel = document.getElementById('residencial');
+            this.residencialSpinner = this.getSpinner();
+            if(App.residenciales.length == 0){
+                this.residencialSpinner.spin(this.$el.find('.residencial.spinner')[0]);
+                dispatcher.on('loaded:residenciales', _.bind(this.addResidenciales,this));
+            }
+            else{
+                this.addResidenciales();
+            }           
+        },
+        addResidenciales: function(){
+            var that = this;
+            App.residenciales.each(function(model){
+                var elOptNew = document.createElement('option');
+                elOptNew.text = model.get('residencial');
+                elOptNew.value = model.get('id');
+                var elSel = that.$el.find('#residencial')[0];
 
-                        try {
-                          elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
-                        }
-                        catch(ex) {
-                          elSel.add(elOptNew); // IE only
-                        } 
-                    });
-                
-                    residencialSpinner.stop();
-                },
-                error:function(err){
-                    // console.log(err);
-                    residencialSpinner.stop();
+                try {
+                  elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
                 }
+                catch(ex) {
+                  elSel.add(elOptNew); // IE only
+                } 
             });
+            this.residencialSpinner.stop();
         },
         initialize: function() {
             _.bindAll(this, 'render', 'selectRow', 'edit');
@@ -452,14 +443,14 @@ $(document).ready(function(){
         },
         fillForm: function(){
             if($('#residencial option').length === 0){
-                this.bind('loaded:residenciales', this.fillResidenciales);
+                dispatcher.on('added:residenciales', _.bind(this.fillResidenciales,this));
             }
             else{
                 this.fillResidenciales();
             }
             
             if($('#causal option').length === 0){
-                this.bind('loaded:causales', this.fillCausales);
+                dispatcher.on('added:causales', _.bind(this.fillCausales,this));
             }
             else{
                 this.fillCausales();
@@ -545,6 +536,16 @@ $(document).ready(function(){
         }
     });
     
+    window.ContainerDemandasView = ContainerView.extend({
+        template: _.template($("#container-demandas-template").html()),
+        //add event to collection for when a model is removed       
+        initialize: function(){
+            _.bindAll(this, 'render');
+            $('li.active').removeClass('active');
+            $('li.demandas').addClass('active');
+        }
+    });
+
     window.ContainerCasosTableView = ContainerView.extend({
         events: {
             'click .nav li a': 'selectNav'
@@ -622,28 +623,26 @@ $(document).ready(function(){
                 "aaData": data
             };
 
-            this.oTable = $('#casos-table').dataTable(opts);
+            this.oTable = this.$el.find('#casos-table').dataTable(opts);
             
-            $('#casos-table_wrapper').addClass('active');
+            this.$el.find('#casos-table_wrapper').addClass('active');
             
             this.oTable.fnAdjustColumnSizing();
             this.oTable.fnDraw();
             
-            $('#casos-table').on('click', 'tr', this.selectRow);
+            this.$el.find('#casos-table').on('click', 'tr', this.selectRow);
         },
         render: function(type){
             this.$el.html(this.template());
   
-            this.collection = new Models.Casos();
-            
-            this.collection.url = '/casos-datatable/' + type;
-            
-            this.collection.fetch({
-                success: this.loadTable,
-                error: function(error){
-                    console.log(error);
-                }
-            });
+            this.collection = App.casos;
+
+            if(this.collection.length == 0){
+                dispatcher.on('loaded:casos', _.bind(this.loadTable, this));
+            }
+            else{
+                this.loadTable();
+            }
 
             return this;
         }
@@ -656,6 +655,10 @@ $(document).ready(function(){
             _.bindAll(this, 'render', 'selectRow', 'loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
+
+            dispatcher.on('render:demandas-seleccionar', _.bind(function(){
+                this.oTable.fnAdjustColumnSizing();
+            },this));
         },
         selectNav: function(event){
             var demandaType = ContainerCasosTableView.prototype.selectNav.call(this, event);
@@ -694,8 +697,8 @@ $(document).ready(function(){
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, data, options);
                    
-            $('#casos-table_filter').after('<button class="action btn disabled">Imprimir</button>');
-            $('.dataTables_wrapper .action').click(this.print);
+            this.$el.find('#casos-table_filter').after('<button class="action btn disabled">Imprimir</button>');
+            this.$el.find('.dataTables_wrapper .action').click(this.print);
         },
         render: function(){
             return ContainerCasosTableView.prototype.render.call(this, 'seleccionar');
@@ -708,6 +711,10 @@ $(document).ready(function(){
             _.bindAll(this, 'render', 'selectNav', 'selectRow','loadTable', 'modalFilter', 'modalEdit');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
+
+            dispatcher.on('render:demandas-actualizar', _.bind(function(){
+                this.oTable.fnAdjustColumnSizing();
+            },this));
         },
         editRow: function(event){
             if($('.dataTables_wrapper .edit').hasClass('disabled'))
@@ -838,8 +845,8 @@ $(document).ready(function(){
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, data, options);
 
-            $('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
-            $('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('.dataTables_wrapper .action').click(this.editRow);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this, 'actualizar')

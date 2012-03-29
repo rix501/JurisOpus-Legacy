@@ -22,6 +22,11 @@ module.exports = {
                    FROM Causales cau\
                    WHERE cau.id = ca.causal\
                )  AS 'causal', \
+                ( SELECT \
+                        `siglas`\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causalIniciales', \
                renta_mensual AS 'rentaMensual', \
                meses_adeudados AS 'mesesAdeudados', \
                deuda_renta AS 'deudaRenta', \

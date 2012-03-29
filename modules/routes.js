@@ -142,6 +142,7 @@ exports.setup = function(app, Models){
          
         caso.save(req.body,{
             success: function(model, fields){
+                console.log(model);
                 res.send(model);
             },
             error: function(err){

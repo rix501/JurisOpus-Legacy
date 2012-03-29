@@ -83,17 +83,24 @@ module.exports = function(Backbone, Models) {
             _.extend(resp,queries.getCaso(this.id));
         },
         parse: function(results){
-            _.each(results, function(attribute, key){
-                if(_.isDate(attribute)){
-                    if(isNaN( attribute.getTime() )){
+            _.each(results, function(result, key){
+                if(_.isDate(result)){
+                    if(isNaN( result.getTime() )){
                         results[key] = "";
                     }
                     else{
-                        results[key] = utils.dateToString(attribute);
+                        results[key] = utils.dateToString(result);
                     }
                 }
+                if(key === 'insertId'){
+                    results['id'] = result;
+                    delete results['insertId'];
+                }
+                if(_.isFunction(result) || key === 'affectedRows' || key === 'serverStatus' || key === 'warningCount' || key === 'message'){
+                    delete results[key];
+                }
             });
-            
+
             return results;
         },
         pdf: function(){

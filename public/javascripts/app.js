@@ -1,16 +1,57 @@
 $(document).ready(function(){
+
+    window.dispatcher = object = {};
+    _.extend(object, Backbone.Events);
+
     window.JurisOpus = Backbone.Router.extend({
         routes: {
             '': 'entrar',
             'entrar': 'entrar',
             'buscar': 'buscar',
             'editar/:caseId': 'editar',
+            'demandas': 'demandas',
             'demandas/:listName': 'demandas',
             'informes': 'informes'
         },
         initialize: function() {
             this.pageView = new PageView();
             this.pageView.render();
+
+            this.residenciales = new Models.Residenciales();;
+            this.causales = new Models.Causales();
+            this.casos = new Models.Casos();
+
+            this.residenciales.fetch({
+                success: function(collection){
+                    dispatcher.trigger('loaded:residenciales');
+                },
+                error:function(err){
+                    dispatcher.trigger('error:residenciales');
+                    console.log(err);
+                }
+            });
+
+            this.causales.fetch({
+                success: function(collection){
+                    dispatcher.trigger('loaded:causales');
+                },
+                error:function(err){
+                    dispatcher.trigger('error:causales');
+                    console.log(err);
+                }
+            });
+
+            this.casos.fetch({
+                success: function(collection){
+                    dispatcher.trigger('loaded:casos');
+                },
+                error:function(err){
+                    dispatcher.trigger('error:casos');
+                    console.log(err);
+                }
+            });
+
+            this.currentView = null;
         },
         entrar: function() {
             this.containerEntrarView = new ContainerEntrarView();
@@ -30,21 +71,33 @@ $(document).ready(function(){
             $('#content').append(this.containerEditarView.render().el);
         },
         demandas: function(listName){
-            if(listName === 'seleccionar'){
+            if(!listName){
+                this.containerDemandasView = new ContainerDemandasView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasView.render().el);
+            }
+            else if(listName === 'seleccionar'){
                 this.containerDemandasSeleccionarView = new ContainerDemandasSeleccionarView();
                 $('#content').empty();
                 $('#content').append(this.containerDemandasSeleccionarView.render().el);
+                this.addedToDOM('demandas-seleccionar'); 
             }
             else if(listName === 'actualizar'){
                 this.containerDemandasActualizarView = new ContainerDemandasActualizarView();
                 $('#content').empty();
                 $('#content').append(this.containerDemandasActualizarView.render().el);
+                this.addedToDOM('demandas-actualizar'); 
             }
         },
         informes: function(){
             this.containerInformesView = new ContainerInformesView();
             $('#content').empty();
             $('#content').append(this.containerInformesView.render().el); 
+        },
+        addedToDOM: function(view){
+            _.defer(function(){
+                dispatcher.trigger('render:' + view)
+            });
         }
     });
 
