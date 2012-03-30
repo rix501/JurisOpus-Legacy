@@ -508,7 +508,7 @@ $(document).ready(function(){
             
             this.model.save({
                 residencialId: $('#residencial').val(),
-                residencial: App.causales.get($('#residencial').val()).get('residencial'),
+                residencial: App.residenciales.get($('#residencial').val()).get('residencial'),
                 edificio: $('#edificio').val(),
                 apartamento: $('#apartamento').val(),
                 area: $('#area').val(),
