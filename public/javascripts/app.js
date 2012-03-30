@@ -22,7 +22,7 @@ $(document).ready(function(){
             this.casos = new Models.Casos();
 
             this.residenciales.fetch({
-                success: function(collection){
+                success: function(){
                     dispatcher.trigger('loaded:residenciales');
                 },
                 error:function(err){
@@ -32,7 +32,7 @@ $(document).ready(function(){
             });
 
             this.causales.fetch({
-                success: function(collection){
+                success: function(){
                     dispatcher.trigger('loaded:causales');
                 },
                 error:function(err){
@@ -42,7 +42,7 @@ $(document).ready(function(){
             });
 
             this.casos.fetch({
-                success: function(collection){
+                success: function(){
                     dispatcher.trigger('loaded:casos');
                 },
                 error:function(err){
