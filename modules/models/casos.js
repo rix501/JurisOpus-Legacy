@@ -94,7 +94,7 @@ module.exports = function(Backbone, Models) {
                         results[key] = utils.dateToString(result);
                     }
                 }
-                if(key === 'insertId'){
+                if(key === 'insertId' && result != 0){
                     results['id'] = result;
                     delete results['insertId'];
                 }
