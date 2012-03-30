@@ -11,7 +11,8 @@ module.exports = function(Backbone, Models) {
     Models.Caso = Backbone.Model.extend({
         create: function(resp){
             _.extend(resp,queries.createCaso(
-                this.get('residencial'),
+                //this.get('residencial'),
+                this.get('residencialId'),
                 this.get('edificio'),
                 this.get('apartamento'),
                 this.get('area'),
@@ -19,7 +20,8 @@ module.exports = function(Backbone, Models) {
                 this.get('casoRecibido'),
                 this.get('seleccionado'),
                 this.get('completado'),
-                this.get('causal'),
+                //this.get('causal'),
+                this.get('causalId'),
                 this.get('rentaMensual'),
                 this.get('mesesAdeudados'),
                 this.get('deudaRenta'),

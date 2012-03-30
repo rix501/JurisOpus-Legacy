@@ -187,7 +187,8 @@ $(document).ready(function(){
             var viewObj = this;
         
             App.casos.create({
-                residencial: $('#residencial').val(),
+                residencial: App.causales.get($('#residencial').val()).get('residencial'),
+                residencialId: $('#residencial').val(),
                 edificio: $('#edificio').val(),
                 apartamento: $('#apartamento').val(),
                 area: $('#area').val(),
@@ -195,7 +196,8 @@ $(document).ready(function(){
                 casoRecibido: $('#casoRecibido').val(),
                 seleccionado: $('#seleccionado:checked').length,
                 completado: $('#completado:checked').length,
-                causal: $('#causal').val(),
+                causal: App.causales.get($('#causal').val()).get('causal');
+                causalId: $('#causal').val(),
                 causalIniciales: App.causales.get($('#causal').val()).get('siglas').toLowerCase(),
                 rentaMensual: $('#rentaMensual').val(),
                 mesesAdeudados: $('#mesesAdeudados').val(),
@@ -286,106 +288,118 @@ $(document).ready(function(){
                 
             var aTrs = this.oTable.fnGetNodes();
             var selectedRow;
-            
+            var casoId;
+
             _.each(aTrs, function(attribute){
                 if($(attribute).hasClass('row_selected'))
-                    selectedRow = attribute;
+                    casoId = $(attribute).attr('class').replace(/row_selected/i, '').replace(/odd/i, '').replace(/even/i, '').trim();
+                    //selectedRow = attribute;
             });
         
-            if(selectedRow){
-                this.collection.each(function(model){
-                    if(model.get('caso') === $(selectedRow).children('.caso').text()){
-                        $('#results-modal').modal('hide');
-                        App.navigate('/editar/' + model.id ,true);
-                    }
-                });
-            }    
+            if(casoId){
+                $('#results-modal').modal('hide');
+                App.navigate('/editar/' + casoId ,true);
+            }  
         },
         submitForm: function(event){
             event.preventDefault();
         
-            var searchType = $(event.currentTarget).attr('id');
-            var resultCasos = new Models.Casos();
             var viewObj = this;
-            var query = {};
 
-            switch(searchType) {
-                case 'search-direccion':
-                    query.residencial = $('#residencial').val();
-                    query.edificio = $('#edificio').val();
-                    query.apartamento = $('#apartamento').val();
-                    break;
-                case 'search-caso':
-                    query.caso = $('#caso').val();
-                    break;
-                case 'search-nombre':
-                    query.nombre = $('#nombre').val();
-                    break;
-                default:
-            }
-        
+            var searchType = $(event.currentTarget).attr('id');
+            var data = this.search(searchType);
+
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.submit-btns .spinner')[0]);
         
-            resultCasos.search(query, {
-                success:function(collection, resp){
-                    if(collection.length === 1){
-                        App.navigate('/editar/' + collection.at(0).id ,true);
-                    }
-                    else{
-                        viewObj.collection = collection;
-                                                    
-                        submitSpinner.stop();
-                    
-                        $('#results').show();
-                        $('.results.btn').show();
-                    
-                        viewObj.oTable = $('#results').dataTable({
-                            "bDestroy": true,
-                            "sDom": 'tp',                      
-                            "aoColumns": [                         
-                                { 
-                                    "mDataProp": "apartamento",
-                                    "sTitle":"Apartamento" 
-                                },
-                                { 
-                                    "mDataProp": "area",
-                                    "sTitle":"Area" 
-                                },
-                                {
-                                    "mDataProp": "caso",
-                                    "sTitle":"Caso",
-                                    "sClass":"caso"
-                                    },
-                                {   
-                                    "mDataProp": "causal",
-                                    "sTitle":"Causal" 
-                                },
-                                { 
-                                    "mDataProp": "edificio",
-                                    "sTitle":"Edificio" 
-                                } 
-                            ],
-                            "aaData":collection.toJSON()
-                        });
-                        
-                        $(viewObj.oTable).find('tbody').click(viewObj.selectRow);
-                        
-                        $('#results-modal').removeClass('hide');
-                        
-                        if(!$('#results-modal').hasClass('in'))
-                            $('#results-modal').addClass('in');
-                        
-                        $('#results-modal').modal('show');
-                    }    
-                },
-                error: function(collection, resp){
-                    submitSpinner.stop();
-                    viewObj.errorMessage('<strong>No hubo resultados</strong>');
-                }
-            });
+            if(data.length === 1){
+                App.navigate('/editar/' + data[0].id ,true);
+            }
+            else{                           
+                submitSpinner.stop();
+            
+                $('#results').show();
+                $('.results.btn').show();
+            
+                this.oTable = $('#results').dataTable({
+                    "bDestroy": true,
+                    "sDom": 'tp',
+                    "fnRowCallback": this.assignRow,                      
+                    "aoColumns": [                         
+                        { 
+                            "mDataProp": "apartamento",
+                            "sTitle":"Apartamento" 
+                        },
+                        { 
+                            "mDataProp": "area",
+                            "sTitle":"Area" 
+                        },
+                        {
+                            "mDataProp": "caso",
+                            "sTitle":"Caso"
+                            },
+                        {   
+                            "mDataProp": "causal",
+                            "sTitle":"Causal" 
+                        },
+                        { 
+                            "mDataProp": "edificio",
+                            "sTitle":"Edificio" 
+                        } 
+                    ],
+                    "aaData": data
+                });
+                
+                $(this.oTable).find('tbody').click(this.selectRow);
+                
+                $('#results-modal').removeClass('hide');
+                
+                if(!$('#results-modal').hasClass('in'))
+                    $('#results-modal').addClass('in');
+                
+                $('#results-modal').modal('show');
+            }    
             
             return false;
+        },
+        search: function(searchType){
+            var data = null;
+
+            var namePattern = new RegExp('.*' + $('#nombre').val() + '.*', 'gi');
+            var casePattern = new RegExp('.*' + $('#caso').val() + '.*', 'gi');
+            var residencialPattern = new RegExp('.*' + $('#residencial').val() + '.*', 'gi');
+            var edificioPattern = new RegExp('.*' + $('#edificio').val() + '.*', 'gi');
+            var apartamentoPattern = new RegExp('.*' + $('#apartamento').val() + '.*', 'gi');
+
+            switch(searchType) {
+                case 'search-direccion':
+                    data = App.casos.select(function(model){
+                        return model.get('residencial').match(residencialPattern) || model.get('edificio').match(edificioPattern) || model.get('apartamento').match(apartamentoPattern);
+                    }).map(function(model){
+                        return model.toJSON();
+                    });
+                    break;
+                case 'search-caso':
+                    data = App.casos.select(function(model){
+                        return model.get('caso').match(casePattern);
+                    }).map(function(model){
+                        return model.toJSON();
+                    });
+                    break;
+                case 'search-nombre':
+                    data = App.casos.select(function(model){
+                        return model.get('nombre').match(namePattern);
+                    }).map(function(model){
+                        return model.toJSON();
+                    });
+                    break;
+                default:
+            }
+
+            return data;
+        },
+        assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+            $(nRow).addClass(aData.id.toString());
         },
         render: function(){
             var that = window.ContainerView.prototype.render.call(this);

@@ -636,7 +636,7 @@ module.exports = {
             	?\
             );",
             args: [
-                residencial,
+                residencialId,
             	edificio, 
             	apartamento, 
             	area, 
@@ -644,7 +644,7 @@ module.exports = {
             	casoRecibido, 
             	seleccionado, 
             	completado, 
-            	causal, 
+            	causalId, 
             	rentaMensual, 
             	mesesAdeudados, 
             	deudaRenta, 
