@@ -90,6 +90,13 @@ $(document).ready(function(){
                 this.addedToDOM('demandas');
                 this.addedToDOM('demandas-actualizar'); 
             }
+            else if(listName === 'actualizar-salahoracomparecencia'){
+                this.containerDemandasActualizarSalaHoraComparecenciaView = new ContainerDemandasActualizarSalaHoraComparecenciaView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarSalaHoraComparecenciaView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
         },
         informes: function(){
             this.containerInformesView = new ContainerInformesView();
