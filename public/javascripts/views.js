@@ -196,7 +196,7 @@ $(document).ready(function(){
                 casoRecibido: $('#casoRecibido').val(),
                 seleccionado: $('#seleccionado:checked').length,
                 completado: $('#completado:checked').length,
-                causal: App.causales.get($('#causal').val()).get('causal');
+                causal: App.causales.get($('#causal').val()).get('causal'),
                 causalId: $('#causal').val(),
                 causalIniciales: App.causales.get($('#causal').val()).get('siglas').toLowerCase(),
                 rentaMensual: $('#rentaMensual').val(),
