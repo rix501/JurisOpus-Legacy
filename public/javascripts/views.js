@@ -923,6 +923,137 @@ $(document).ready(function(){
         }
     });
     
+    window.ContainerDemandasActualizarFechaPresentacionView = ContainerCasosTableView.extend({
+        template:  _.template($("#container-demandas-actualizar-fechapresentacion-template").html()),
+        initialize: function() {
+            _.bindAll(this, 'render', 'selectRow','loadTable', 'modalEdit');
+            $('li.active').removeClass('active');
+            $('li.demandas').addClass('active');
+        },
+        editRow: function(event){
+            if($('.dataTables_wrapper .action').hasClass('disabled'))
+                return;
+            
+            var $selectRow = $('#casos-table .row_selected');
+            
+            if($selectRow.length === 1){
+                var id = $($selectRow[0])
+                        .attr('class')
+                        .replace(/row_selected/i, '')
+                        .replace(/odd/i, '')
+                        .replace(/even/i, '')
+                        .trim(); 
+                App.navigate('/editar/' + id ,true);
+            }
+            else{
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show');
+            }
+        },
+        modalEdit: function(event){
+            var modal = $(event.target.parentNode.parentNode);
+            
+            var args;
+            
+            args = {
+                hora: $('#hora').val(),
+                sala: $('#sala').val(),
+                fecha: $('#fecha').val()
+            };
+            
+            var url = "/casos/";
+            
+            $("#casos-table .row_selected").each(function(){
+                var id = $(this)
+                .attr('class')
+                .replace(/row_selected/i, '')
+                .replace(/odd/i, '')
+                .replace(/even/i, '')
+                .trim();
+                url += id + ",";
+            });
+            
+            url = url.substring(0, url.length - 1);
+            
+            var submitSpinner = this.getSpinner();
+            submitSpinner.spin($('.modal-footer .spinner')[0]);
+            
+            $.ajax({
+                type: "put",
+                url: url,
+                data: args,
+                success: function(data){
+                    submitSpinner.stop(); 
+                    $(modal).find('.modal-footer .label')
+                     .attr('class','label success')
+                     .html('Guardado')
+                     .show();
+                    window.setTimeout(function(){
+                        $(modal).modal('hide');
+                    }.bind(this), 2000);
+                },
+                error: function(err){
+                    console.log(err);
+                    $(modal).find('.modal-footer .label')
+                    .attr('class','label important')
+                    .html('Hubo error guardando')
+                    .show();
+                    submitSpinner.stop();
+                }
+            });
+        },
+        loadTable: function(collection, resp){
+            var data = this.collection.filterFechaPresentacion();
+            var options = {};
+            ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
+
+            this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+        },
+        render: function(){
+            ContainerCasosTableView.prototype.render.call(this)
+            
+            var modalBulk = this.$el.find('#actualizar-bulk-modal');
+            
+            modalFilter.modal({
+                backdrop: true,
+                keyboard: true,
+                show: false
+            });
+            
+            modalBulk.modal({
+                backdrop: true,
+                keyboard: true,
+                show: false
+            });
+            
+            $(modalFilter).find('.filter').click(this.modalFilter);
+            
+            $(modalFilter).find('.secondary').click(function(e){
+                $(modalFilter).modal('hide');
+            });
+            
+            $(modalBulk).find('.edit').click(this.modalEdit);
+            
+            $(modalBulk).find('.secondary').click(function(e){
+                $(modalBulk).modal('hide');
+            });
+            
+            $(modalBulk).bind('hidden', function () {
+                $(modalBulk).find('.modal-footer .label').hide();
+            });
+            
+            var datepickers = this.$el.find(".datepicker");           
+            SetDatepickers(datepickers, 0, 28);
+                            
+            return this;
+        }
+    });
+
     window.ContainerInformesView = ContainerView.extend({
         template:  _.template($("#container-informes-template").html()),
         events: {

@@ -298,7 +298,7 @@
         <div class="span3 well">
             <h3>Fecha presentacion</h3>
             <p>Esto es una descripcion básica del informe</p>
-            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+            <p><a class="btn" href="#/demandas/actualizar-fechapresentacion">Continuar &raquo;</a></p>
         </div>
         <div class="span3 well">
             <h3>Sala/hora/comparecencia</h3>
@@ -417,6 +417,46 @@
             <li class="primeravista"><a href="#">Información de 1ra Vista</a></li>
             <li class="rediligenciar"><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
         </ul>
+        <table id="casos-table" class="active table table-bordered table-striped"></table>
+    </script>
+    <script type="text/template" id="container-demandas-actualizar-fechapresentacion-template">
+        <div class="alert alert-error fade in" id="info-msg">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Hacer cambios en grupo:</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                    <div class="clearfix">
+                        <label for="sala">Sala:</label>
+                        <input class="span3" id="sala" name="sala" size="30" type="text">
+                    </div>
+                    <div class="clearfix">                
+                        <label for="fecha">Fecha:</label>
+                        <div class="input">
+                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="hora">Hora:</label>
+                        <input class="span3" id="hora" name="hora" size="30" type="text">
+                    </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="label" style="display: none;"></span>
+                <div class="spinner"></div>
+                <button class="btn btn-primary edit">Editar</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        <div class="page-header"><h1>Actualizar Demandas: Fecha Presentación</h1></div>
         <table id="casos-table" class="active table table-bordered table-striped"></table>
     </script>
     <script type="text/template" id="container-informes-template">
