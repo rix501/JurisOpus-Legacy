@@ -424,19 +424,7 @@ $(document).ready(function(){
         initialize: function() {
             _.bindAll(this, 'render', 'submitForm' ,'fillForm', 'error', 'fillResidenciales', 'fillCausales');
             $('li.active').removeClass('active');
-            $('li.buscar').addClass('active');
-            
-            if(App.casos.length == 0){
-                dispatcher.on('loaded:casos', _.bind(function(){
-                    dispatcher.off('loaded:casos');
-                    this.model = App.casos.get(this.options.casoId);
-                    this.fillForm();
-                },this));
-            }
-            else{
-                this.model = App.casos.get(this.options.casoId);
-                this.fillForm();
-            }                         
+            $('li.buscar').addClass('active');                         
         },
         isEdit: true,
         error: function(err){
@@ -448,11 +436,11 @@ $(document).ready(function(){
             var model = this.model;
             
             if(this.model.get('residencial')){
-                $('#residencial option').each(function(index, element){
+                this.$el.find('#residencial option').each(_.bind(function(index, element){
                     if($(element).text() === model.get('residencial')){
-                        $('#residencial').val(index + 1);
+                        this.$el.find('#residencial').val(index + 1);
                     }
-                });
+                },this));
             }
         },
         fillCausales: function(){
@@ -461,57 +449,57 @@ $(document).ready(function(){
             var model = this.model;
             
             if(this.model.get('causal')){
-                $('#causal option').each(function(index, element){
+                this.$el.find('#causal option').each(_.bind(function(index, element){
                     if($(element).text() === model.get('causal')){
-                        $('#causal').val(index + 1);
+                        this.$el.find('#causal').val(index + 1);
                     }
-                });
+                },this));
             }
         },
         fillForm: function(){
-            if($('#residencial option').length === 0){
+            if(this.$el.find('#residencial option').length === 0){
                 dispatcher.on('added:residenciales', _.bind(this.fillResidenciales,this));
             }
             else{
                 this.fillResidenciales();
             }
             
-            if($('#causal option').length === 0){
+            if(this.$el.find('#causal option').length === 0){
                 dispatcher.on('added:causales', _.bind(this.fillCausales,this));
             }
             else{
                 this.fillCausales();
             }
             
-            $('#edificio').val(this.model.get('edificio') ? this.model.get('edificio') : '');
-            $('#apartamento').val(this.model.get('apartamento') ? this.model.get('apartamento') : '');
-            $('#area').val(this.model.get('area') ? this.model.get('area') : '');
-            $('#nombre').val(this.model.get('nombre') ? this.model.get('nombre') : '');
-            $('#casoRecibido').val(this.model.get('casoRecibido') ? this.model.get('casoRecibido') : '');
-            if(this.model.get('seleccionado')) $('#seleccionado').prop("checked", true);
-            if(this.model.get('completado')) $('#completado').prop("checked", true);
-            $('#rentaMensual').val(this.model.get('rentaMensual') ? this.model.get('rentaMensual') : '');
-            $('#mesesAdeudados').val(this.model.get('mesesAdeudados') ? this.model.get('mesesAdeudados') : '');
-            $('#deudaRenta').val(this.model.get('deudaRenta') ? this.model.get('deudaRenta') : '');
-            $('#deudaRentaNegativa').val(this.model.get('deudaRentaNegativa') ? this.model.get('deudaRentaNegativa') : '');
-            $('#deudaRecibida').val(this.model.get('deudaRecibida') ? this.model.get('deudaRecibida') : '');
-            $('#deudaTotal').val(this.model.get('deudaTotal') ? this.model.get('deudaTotal') : '');
-            $('#ultimoReexamen').val(this.model.get('ultimoReexamen') ? this.model.get('ultimoReexamen') : '');
-            $('#incumplimiento').val(this.model.get('incumplimiento') ? this.model.get('incumplimiento') : '');
-            $('#caso').val(this.model.get('caso') ? this.model.get('caso') : '');
-            $('#presentacion').val(this.model.get('presentacion') ? this.model.get('presentacion') : '');
-            if(this.model.get('diligenciado')) $('#diligenciado').prop("checked", true);                
-            $('#diligenciadoEn').val(this.model.get('diligenciadoEn') ? this.model.get('diligenciadoEn') : '');
-            $('#sala').val(this.model.get('sala') ? this.model.get('sala') : '');
-            $('#hora').val(this.model.get('hora') ? this.model.get('hora') : '');
-            $('#primeraComparecencia').val(this.model.get('primeraComparecencia') ? this.model.get('primeraComparecencia') : '');
-            $('#segundaComparecencia').val(this.model.get('segundaComparecencia') ? this.model.get('segundaComparecencia') : '');
-            $('#vistaSegundo').val(this.model.get('vistaSegundo') ? this.model.get('vistaSegundo') : '');
-            $('#sentencia').val(this.model.get('sentencia') ? this.model.get('sentencia') : '');
-            $('#lanzamiento').val(this.model.get('lanzamiento') ? this.model.get('lanzamiento') : '');
-            $('#observaciones').val(this.model.get('observaciones') ? this.model.get('observaciones') : ''); 
-            if(this.model.get('rediligenciar')) $('#rediligenciar').prop("checked", true);
-            if(this.model.get('ejecutar')) $('#ejecutar').prop("checked", true);
+            this.$el.find('#edificio').val(this.model.get('edificio') ? this.model.get('edificio') : '');
+            this.$el.find('#apartamento').val(this.model.get('apartamento') ? this.model.get('apartamento') : '');
+            this.$el.find('#area').val(this.model.get('area') ? this.model.get('area') : '');
+            this.$el.find('#nombre').val(this.model.get('nombre') ? this.model.get('nombre') : '');
+            this.$el.find('#casoRecibido').val(this.model.get('casoRecibido') ? this.model.get('casoRecibido') : '');
+            if(this.model.get('seleccionado')) this.$el.find('#seleccionado').prop("checked", true);
+            if(this.model.get('completado')) this.$el.find('#completado').prop("checked", true);
+            this.$el.find('#rentaMensual').val(this.model.get('rentaMensual') ? this.model.get('rentaMensual') : '');
+            this.$el.find('#mesesAdeudados').val(this.model.get('mesesAdeudados') ? this.model.get('mesesAdeudados') : '');
+            this.$el.find('#deudaRenta').val(this.model.get('deudaRenta') ? this.model.get('deudaRenta') : '');
+            this.$el.find('#deudaRentaNegativa').val(this.model.get('deudaRentaNegativa') ? this.model.get('deudaRentaNegativa') : '');
+            this.$el.find('#deudaRecibida').val(this.model.get('deudaRecibida') ? this.model.get('deudaRecibida') : '');
+            this.$el.find('#deudaTotal').val(this.model.get('deudaTotal') ? this.model.get('deudaTotal') : '');
+            this.$el.find('#ultimoReexamen').val(this.model.get('ultimoReexamen') ? this.model.get('ultimoReexamen') : '');
+            this.$el.find('#incumplimiento').val(this.model.get('incumplimiento') ? this.model.get('incumplimiento') : '');
+            this.$el.find('#caso').val(this.model.get('caso') ? this.model.get('caso') : '');
+            this.$el.find('#presentacion').val(this.model.get('presentacion') ? this.model.get('presentacion') : '');
+            if(this.model.get('diligenciado')) this.$el.find('#diligenciado').prop("checked", true);                
+            this.$el.find('#diligenciadoEn').val(this.model.get('diligenciadoEn') ? this.model.get('diligenciadoEn') : '');
+            this.$el.find('#sala').val(this.model.get('sala') ? this.model.get('sala') : '');
+            this.$el.find('#hora').val(this.model.get('hora') ? this.model.get('hora') : '');
+            this.$el.find('#primeraComparecencia').val(this.model.get('primeraComparecencia') ? this.model.get('primeraComparecencia') : '');
+            this.$el.find('#segundaComparecencia').val(this.model.get('segundaComparecencia') ? this.model.get('segundaComparecencia') : '');
+            this.$el.find('#vistaSegundo').val(this.model.get('vistaSegundo') ? this.model.get('vistaSegundo') : '');
+            this.$el.find('#sentencia').val(this.model.get('sentencia') ? this.model.get('sentencia') : '');
+            this.$el.find('#lanzamiento').val(this.model.get('lanzamiento') ? this.model.get('lanzamiento') : '');
+            this.$el.find('#observaciones').val(this.model.get('observaciones') ? this.model.get('observaciones') : ''); 
+            if(this.model.get('rediligenciar')) this.$el.find('#rediligenciar').prop("checked", true);
+            if(this.model.get('ejecutar')) this.$el.find('#ejecutar').prop("checked", true);
         },
         submitForm: function(event){
             event.preventDefault();
@@ -564,6 +552,23 @@ $(document).ready(function(){
             });
             
             return false;
+        },
+        render: function(){
+            ContainerMainFormView.prototype.render.call(this);
+            
+            if(App.casos.length == 0){
+                dispatcher.on('loaded:casos', _.bind(function(){
+                    dispatcher.off('loaded:casos');
+                    this.model = App.casos.get(this.options.casoId);
+                    this.fillForm();
+                },this));
+            }
+            else{
+                this.model = App.casos.get(this.options.casoId);
+                this.fillForm();
+            }
+                        
+            return this;
         }
     });
     
