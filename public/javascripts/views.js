@@ -516,7 +516,8 @@ $(document).ready(function(){
             var viewObj = this;
             
             this.model.save({
-                residencial: $('#residencial').val(),
+                residencialId: $('#residencial').val(),
+                residencial: App.causales.get($('#residencial').val()).get('residencial'),
                 edificio: $('#edificio').val(),
                 apartamento: $('#apartamento').val(),
                 area: $('#area').val(),
@@ -524,7 +525,10 @@ $(document).ready(function(){
                 casoRecibido: $('#casoRecibido').val(),
                 seleccionado: $('#seleccionado:checked').length,
                 completado: $('#completado:checked').length,
-                causal: $('#causal').val(),
+                causalId: $('#causal').val(),
+                causal: App.causales.get($('#causal').val()).get('causal'),
+                causalId: $('#causal').val(),
+                causalIniciales: App.causales.get($('#causal').val()).get('siglas').toLowerCase(),
                 rentaMensual: $('#rentaMensual').val(),
                 mesesAdeudados: $('#mesesAdeudados').val(),
                 deudaRenta: $('#deudaRenta').val(),

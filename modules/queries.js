@@ -5,6 +5,7 @@ module.exports = {
        return { 
            query: "SELECT \
                ca.id, \
+               ca.residencial AS 'residencialId', \
                ( SELECT \
                        `residencial` \
                    FROM Residenciales re \
@@ -17,6 +18,7 @@ module.exports = {
                caso_recibido AS 'casoRecibido', \
                seleccionado AS 'seleccionado', \
                completado AS 'completado', \
+               ca.causal AS 'causalId', \
                ( SELECT \
                        `causal`\
                    FROM Causales cau\
@@ -636,7 +638,7 @@ module.exports = {
             	?\
             );",
             args: [
-                residencialId,
+                residencial,
             	edificio, 
             	apartamento, 
             	area, 
@@ -644,7 +646,7 @@ module.exports = {
             	casoRecibido, 
             	seleccionado, 
             	completado, 
-            	causalId, 
+            	causal, 
             	rentaMensual, 
             	mesesAdeudados, 
             	deudaRenta, 

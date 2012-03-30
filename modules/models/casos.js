@@ -47,7 +47,7 @@ module.exports = function(Backbone, Models) {
         upd: function(resp){
             _.extend(resp,queries.updateCaso(
                     this.id,
-                    this.get('residencial'),
+                    this.get('residencialId'),
                     this.get('edificio'),
                     this.get('apartamento'),
                     this.get('area'),
@@ -55,7 +55,7 @@ module.exports = function(Backbone, Models) {
                     this.get('casoRecibido'),
                     this.get('seleccionado'),
                     this.get('completado'),
-                    this.get('causal'),
+                    this.get('causalId'),
                     this.get('rentaMensual'),
                     this.get('mesesAdeudados'),
                     this.get('deudaRenta'),
