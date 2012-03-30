@@ -38,14 +38,14 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
                                 <li><a href="/#/demandas/actualizar">Actualizar</a></li>
-								<li class="divider"></li>
-								<li><a href="/#/">Ver Todos</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/#/">Ver Todos</a></li>
                             </ul>
                         </li> -->                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
                     </ul>
                     <!--
-					<ul class="nav secondary-nav">
+                    <ul class="nav secondary-nav">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle">Username</a>
                             <ul class="dropdown-menu">
@@ -62,11 +62,18 @@
         <div id="content"></div>
     </script>
     <script type="text/template" id="container-form-template">
+        <div id="subnav" class="subnav subnav-fixed">
+            <ul class="nav nav-pills">
+                <li>
+                    Test
+                </li>
+            </ul>
+        </div>
         <div class="alert alert-error fade in" id="info-msg" >
             <a class="close" data-dismiss="alert">×</a>
             <span></span>
         </div>
-        <div class="page-header"><h1>Editar Casos</h1></div>
+        <div class="page-header"><h1><% if(isEdit) {%>Editar Casos<% } else {%> Entrar Caso<% } %></h1></div>
         <form class="main-form form-stacked form-horizontal">
             <fieldset>
                 <div class="clearfix form-row">
@@ -336,7 +343,7 @@
             <a class="close" data-dismiss="alert">×</a>
             <p></p>
         </div>
-		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
+        <div id="seleccion-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Marcar demandas completadas?</h3>
@@ -359,12 +366,12 @@
         </ul>
         <table id="casos-table" class="demanda table table-bordered table-striped"></table>
     </script>
-	<script type="text/template" id="container-demandas-actualizar-template">
+    <script type="text/template" id="container-demandas-actualizar-template">
         <div class="alert alert-error fade in" id="info-msg">
             <a class="close" data-dismiss="alert">×</a>
             <span></span>
         </div>
-		<div id="actualizar-modal" class="modal hide fade" style="display: none; ">
+        <div id="actualizar-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Que día de 1ra comparecencia?</h3>
@@ -418,7 +425,7 @@
             <li class="rediligenciar"><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
         </ul>
         <table id="casos-table" class="active table table-bordered table-striped"></table>
-	</script>
+    </script>
     <script type="text/template" id="container-informes-template">
         <div class="page-header"><h1>Informes</h1></div>
         <div id="informedevistas-modal" class="modal hide fade in" style="display: none; ">
