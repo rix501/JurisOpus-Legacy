@@ -1019,22 +1019,10 @@ $(document).ready(function(){
             
             var modalBulk = this.$el.find('#actualizar-bulk-modal');
             
-            modalFilter.modal({
-                backdrop: true,
-                keyboard: true,
-                show: false
-            });
-            
             modalBulk.modal({
                 backdrop: true,
                 keyboard: true,
                 show: false
-            });
-            
-            $(modalFilter).find('.filter').click(this.modalFilter);
-            
-            $(modalFilter).find('.secondary').click(function(e){
-                $(modalFilter).modal('hide');
             });
             
             $(modalBulk).find('.edit').click(this.modalEdit);
