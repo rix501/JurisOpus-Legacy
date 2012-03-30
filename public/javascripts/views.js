@@ -287,13 +287,11 @@ $(document).ready(function(){
                 return false;
                 
             var aTrs = this.oTable.fnGetNodes();
-            var selectedRow;
             var casoId;
 
             _.each(aTrs, function(attribute){
                 if($(attribute).hasClass('row_selected'))
                     casoId = $(attribute).attr('class').replace(/row_selected/i, '').replace(/odd/i, '').replace(/even/i, '').trim();
-                    //selectedRow = attribute;
             });
         
             if(casoId){
@@ -304,8 +302,6 @@ $(document).ready(function(){
         submitForm: function(event){
             event.preventDefault();
         
-            var viewObj = this;
-
             var searchType = $(event.currentTarget).attr('id');
             var data = this.search(searchType);
 
@@ -430,10 +426,17 @@ $(document).ready(function(){
             $('li.active').removeClass('active');
             $('li.buscar').addClass('active');
             
-            this.model = new Models.Caso({id: this.options.casoId});
-            this.model.bind('change', this.fillForm);
-            this.model.bind('error', this.error);
-            this.model.fetch();                         
+            if(App.casos.length == 0){
+                dispatcher.on('loaded:casos', _.bind(function(){
+                    dispatcher.off('loaded:casos');
+                    this.model = App.casos.get(this.options.casoId);
+                    this.fillForm();
+                },this));
+            }
+            else{
+                this.model = App.casos.get(this.options.casoId);
+                this.fillForm();
+            }                         
         },
         isEdit: true,
         error: function(err){
