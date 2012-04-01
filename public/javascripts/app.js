@@ -83,10 +83,17 @@ $(document).ready(function(){
                 this.addedToDOM('demandas');
                 this.addedToDOM('demandas-seleccionar'); 
             }
-            else if(listName === 'actualizar'){
-                this.containerDemandasActualizarView = new ContainerDemandasActualizarView();
+            else if(listName === 'actualizar-fechapresentacion'){
+                this.containerDemandasActualizarFechaPresentacionView = new ContainerDemandasActualizarFechaPresentacionView();
                 $('#content').empty();
-                $('#content').append(this.containerDemandasActualizarView.render().el);
+                $('#content').append(this.containerDemandasActualizarFechaPresentacionView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-salahoracomparecencia'){
+                this.containerDemandasActualizarSalaHoraComparecenciaView = new ContainerDemandasActualizarSalaHoraComparecenciaView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarSalaHoraComparecenciaView.render().el);
                 this.addedToDOM('demandas');
                 this.addedToDOM('demandas-actualizar'); 
             }

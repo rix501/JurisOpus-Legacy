@@ -38,14 +38,14 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/#/demandas/seleccionar">Seleccionar</a></li>
                                 <li><a href="/#/demandas/actualizar">Actualizar</a></li>
-								<li class="divider"></li>
-								<li><a href="/#/">Ver Todos</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/#/">Ver Todos</a></li>
                             </ul>
                         </li> -->                        
                         <li class="informes"><a href="/#/informes">Informes</a></li>
                     </ul>
                     <!--
-					<ul class="nav secondary-nav">
+                    <ul class="nav secondary-nav">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle">Username</a>
                             <ul class="dropdown-menu">
@@ -305,12 +305,12 @@
         <div class="span3 well">
             <h3>Fecha presentacion</h3>
             <p>Esto es una descripcion básica del informe</p>
-            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+            <p><a class="btn" href="#/demandas/actualizar-fechapresentacion">Continuar &raquo;</a></p>
         </div>
         <div class="span3 well">
             <h3>Sala/hora/comparecencia</h3>
             <p>Esto es una descripcion básica del informe</p>
-            <p><a class="btn" href="#/demandas/actualizar">Continuar &raquo;</a></p>
+            <p><a class="btn" href="#/demandas/actualizar-salahoracomparecencia">Continuar &raquo;</a></p>
         </div>
         <div class="span3 well">
             <h3>Informacion de Vista</h3>
@@ -343,7 +343,7 @@
             <a class="close" data-dismiss="alert">×</a>
             <p></p>
         </div>
-		<div id="seleccion-modal" class="modal hide fade" style="display: none; ">
+        <div id="seleccion-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Marcar demandas completadas?</h3>
@@ -366,12 +366,12 @@
         </ul>
         <table id="casos-table" class="demanda table table-bordered table-striped"></table>
     </script>
-	<script type="text/template" id="container-demandas-actualizar-template">
+    <script type="text/template" id="container-demandas-actualizar-template">
         <div class="alert alert-error fade in" id="info-msg">
             <a class="close" data-dismiss="alert">×</a>
             <span></span>
         </div>
-		<div id="actualizar-modal" class="modal hide fade" style="display: none; ">
+        <div id="actualizar-modal" class="modal hide fade" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>¿Que día de 1ra comparecencia?</h3>
@@ -425,7 +425,75 @@
             <li class="rediligenciar"><a href="#">Re-Diligenciar (Sin Demanda)</a></li>
         </ul>
         <table id="casos-table" class="active table table-bordered table-striped"></table>
-	</script>
+    </script>
+    <script type="text/template" id="container-demandas-actualizar-fechapresentacion-template">
+        <div class="alert alert-error fade in" id="info-msg">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Hacer cambios en grupo:</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-vertical">
+                    <fieldset>
+                        <label for="fecha">Fecha:</label>
+                        <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="label" style="display: none;"></span>
+                <div class="spinner"></div>
+                <button class="btn btn-primary edit">Editar</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        <div class="page-header"><h1>Actualizar Demandas: Fecha Presentación</h1></div>
+        <table id="casos-table" class="active table table-bordered table-striped"></table>
+    </script>
+    <script type="text/template" id="container-demandas-actualizar-salahoracomparecencia-template">
+        <div class="alert alert-error fade in" id="info-msg">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div id="actualizar-bulk-modal" class="modal hide fade" style="display: none; ">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Hacer cambios en grupo:</h3>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <fieldset>
+                    <div class="clearfix">
+                        <label for="sala">Sala:</label>
+                        <input class="span3" id="sala" name="sala" size="30" type="text">
+                    </div>
+                    <div class="clearfix">                
+                        <label for="fecha">Fecha:</label>
+                        <div class="input">
+                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="clearfix">                
+                        <label for="hora">Hora:</label>
+                        <input class="span3" id="hora" name="hora" size="30" type="text">
+                    </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span class="label" style="display: none;"></span>
+                <div class="spinner"></div>
+                <button class="btn btn-primary edit">Editar</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        <div class="page-header"><h1>Actualizar Demandas: Sala, Hora, Comparecencia</h1></div>
+        <table id="casos-table" class="active table table-bordered table-striped"></table>
+    </script>
     <script type="text/template" id="container-informes-template">
         <div class="page-header"><h1>Informes</h1></div>
         <div id="informedevistas-modal" class="modal hide fade in" style="display: none; ">
