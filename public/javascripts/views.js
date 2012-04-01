@@ -62,7 +62,7 @@ $(document).ready(function(){
                                  
             $infoMsg.css('display','block');
             window.setTimeout(function(){
-                $('.alert .close').trigger('click');
+                $('.alert .close').trigger('click'); 
             }, 1500);
         },
         errorMessage: function(msg){
