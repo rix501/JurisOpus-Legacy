@@ -582,6 +582,94 @@ $(document).ready(function(){
         }
     });
 
+    window.ContainerInformesView = ContainerView.extend({
+        template:  _.template($("#container-informes-template").html()),
+        events: {
+            'click .print':'print',
+            'click .mod' : 'modal',
+            'click .redirect':'redirect'
+        },
+        redirect: function(event){
+              App.navigate('/informes/'+event.target.id ,true);
+        },
+        initialize: function() {
+            _.bindAll(this, 'render');
+            $('li.active').removeClass('active');
+            $('li.informes').addClass('active');
+        },
+        modal: function(event){
+            var classList = $(event.target).attr('class');
+            
+            var template = $.trim(classList.replace(/mod/i,'').replace(/primary/i,'').replace(/btn/i,''));
+
+            $('#' + template + '-modal').modal('show');
+        },
+        print: function(event){ 
+            var informesString = "";
+            
+            var isModal = false;
+            var modal = null;
+            
+            var classList = $(event.target).attr('class');
+            
+            var template = $.trim(classList.replace(/print/i,'').replace(/primary/i,'').replace(/btn/i,''));
+            
+            var url = "/pdf?type=informes&pdfTemplate=" + template;         
+            
+            //It's a modal
+            if(event.target.parentNode.className.search(/modal/i) >= 0  ){
+                isModal = true;
+                modal = $(event.target.parentNode.parentNode);
+                
+                var args = "";
+                
+                modal.find('input').each(function(i, elem){
+                    args += $(elem).val() + ",";
+                });
+                
+                args = args.substring(0, args.length - 1);
+                
+                //Input values go here
+                url += "&args=" + args; 
+            }
+                            
+            var iframe = document.createElement("iframe");
+            
+            iframe.src = url;
+                            
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+            
+            if(isModal){
+                modal.modal('hide');
+            }
+        },
+        render: function(){
+            this.$el.html(this.template());
+
+            var that = this;
+            
+            this.$el.find('.modal').each(function(i, modal){
+                $(modal).modal({
+                    backdrop: true,
+                    keyboard: true,
+                    show: false
+                });
+                
+                $(modal).find('.secondary').click(function(e){
+                    $(modal).modal('hide');
+                });
+                
+                $(modal).find('.print').click(that.print);
+                
+                var datepickers = $(that.el).find(".datepicker");
+                SetDatepickers(datepickers, 0, 28);
+            });
+            
+            return this;                
+        }
+    });
+
     window.ContainerCasosTableView = ContainerView.extend({
         events: {
             'click .nav li a': 'selectNav'
@@ -1169,91 +1257,125 @@ $(document).ready(function(){
         }
     });
 
-    window.ContainerInformesView = ContainerView.extend({
-        template:  _.template($("#container-informes-template").html()),
-        events: {
-            'click .print':'print',
-            'click .mod' : 'modal',
-            'click .redirect':'redirect'
-        },
-        redirect: function(event){
-              App.navigate('/informes/'+event.target.id ,true);
-        },
+    window.ContainerDemandasActualizarInformacionVistaView = ContainerCasosTableView.extend({
+        template:  _.template($("#container-demandas-actualizar-informacionvista-template").html()),
         initialize: function() {
-            _.bindAll(this, 'render');
+            _.bindAll(this, 'render', 'selectRow','loadTable', 'modalEdit');
             $('li.active').removeClass('active');
-            $('li.informes').addClass('active');
+            $('li.demandas').addClass('active');
         },
-        modal: function(event){
-            var classList = $(event.target).attr('class');
+        editRow: function(event){
+            if($('.dataTables_wrapper .action').hasClass('disabled'))
+                return;
             
-            var template = $.trim(classList.replace(/mod/i,'').replace(/primary/i,'').replace(/btn/i,''));
-
-            $('#' + template + '-modal').modal('show');
-        },
-        print: function(event){ 
-            var informesString = "";
+            var $selectRow = $('#casos-table .row_selected');
             
-            var isModal = false;
-            var modal = null;
-            
-            var classList = $(event.target).attr('class');
-            
-            var template = $.trim(classList.replace(/print/i,'').replace(/primary/i,'').replace(/btn/i,''));
-            
-            var url = "/pdf?type=informes&pdfTemplate=" + template;         
-            
-            //It's a modal
-            if(event.target.parentNode.className.search(/modal/i) >= 0  ){
-                isModal = true;
-                modal = $(event.target.parentNode.parentNode);
-                
-                var args = "";
-                
-                modal.find('input').each(function(i, elem){
-                    args += $(elem).val() + ",";
-                });
-                
-                args = args.substring(0, args.length - 1);
-                
-                //Input values go here
-                url += "&args=" + args; 
+            if($selectRow.length === 1){
+                var id = $($selectRow[0])
+                        .attr('class')
+                        .replace(/row_selected/i, '')
+                        .replace(/odd/i, '')
+                        .replace(/even/i, '')
+                        .trim(); 
+                App.navigate('/editar/' + id ,true);
             }
-                            
-            var iframe = document.createElement("iframe");
+            else{
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
             
-            iframe.src = url;
-                            
-            iframe.style.display = "none";
-            document.body.appendChild(iframe);
-            
-            if(isModal){
-                modal.modal('hide');
+                $('#actualizar-bulk-modal').modal('show');
             }
         },
-        render: function(){
-            this.$el.html(this.template());
-
-            var that = this;
+        modalEdit: function(event){
+            var modal = $(event.target.parentNode.parentNode);
             
-            this.$el.find('.modal').each(function(i, modal){
-                $(modal).modal({
-                    backdrop: true,
-                    keyboard: true,
-                    show: false
-                });
-                
-                $(modal).find('.secondary').click(function(e){
-                    $(modal).modal('hide');
-                });
-                
-                $(modal).find('.print').click(that.print);
-                
-                var datepickers = $(that.el).find(".datepicker");
-                SetDatepickers(datepickers, 0, 28);
+            var args;
+            
+            args = {
+                hora: $('#hora').val(),
+                sala: $('#sala').val(),
+                fecha: $('#fecha').val()
+            };
+            
+            var url = "/casos/";
+            
+            $("#casos-table .row_selected").each(function(){
+                var id = $(this)
+                .attr('class')
+                .replace(/row_selected/i, '')
+                .replace(/odd/i, '')
+                .replace(/even/i, '')
+                .trim();
+                url += id + ",";
             });
             
-            return this;                
+            url = url.substring(0, url.length - 1);
+            
+            var submitSpinner = this.getSpinner();
+            submitSpinner.spin($('.modal-footer .spinner')[0]);
+            
+            $.ajax({
+                type: "put",
+                url: url,
+                data: args,
+                success: function(data){
+                    submitSpinner.stop(); 
+                    $(modal).find('.modal-footer .label')
+                     .attr('class','label success')
+                     .html('Guardado')
+                     .show();
+                    window.setTimeout(function(){
+                        $(modal).modal('hide');
+                    }.bind(this), 2000);
+                },
+                error: function(err){
+                    console.log(err);
+                    $(modal).find('.modal-footer .label')
+                    .attr('class','label important')
+                    .html('Hubo error guardando')
+                    .show();
+                    submitSpinner.stop();
+                }
+            });
+        },
+        filterData: function(){
+            return this.collection.filterInfoPrimeraVista();
+        },
+        loadTable: function(collection, resp){
+            var data = this.filterData();
+            var options = {};
+            ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
+
+            this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+        },
+        render: function(){
+            ContainerCasosTableView.prototype.render.call(this)
+            
+            var modalBulk = this.$el.find('#actualizar-bulk-modal');
+            
+            modalBulk.modal({
+                backdrop: true,
+                keyboard: true,
+                show: false
+            });
+            
+            $(modalBulk).find('.edit').click(this.modalEdit);
+            
+            $(modalBulk).find('.secondary').click(function(e){
+                $(modalBulk).modal('hide');
+            });
+            
+            $(modalBulk).bind('hidden', function () {
+                $(modalBulk).find('.modal-footer .label').hide();
+            });
+            
+            var datepickers = this.$el.find(".datepicker");           
+            SetDatepickers(datepickers, 0, 28);
+                            
+            return this;
         }
     });
 });

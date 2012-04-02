@@ -97,6 +97,13 @@ $(document).ready(function(){
                 this.addedToDOM('demandas');
                 this.addedToDOM('demandas-actualizar'); 
             }
+            else if(listName === 'actualizar-informacionvista'){
+                this.containerDemandasActualizarInformacionVistaView = new ContainerDemandasActualizarInformacionVistaView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarInformacionVistaView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
         },
         informes: function(){
             this.containerInformesView = new ContainerInformesView();
