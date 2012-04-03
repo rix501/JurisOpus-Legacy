@@ -1,37 +1,4 @@
     var Models = {};
-
-    Backbone.Model.prototype.toDatatableArray = function(){
-        var fields = [ 'residencial', 'edificio', 'apartamento', 'casoRecibido', 'seleccionado', 'causal', 'deudaTotal', 'incumplimiento', 'caso', 'presentacion', 'observaciones' ];
-        
-        var data = this.toJSON();
-            
-        _.each(data, function(attribute, key){
-           if(attribute === null){
-               data[key] = "";
-           }
-           
-           if(_.isDate(attribute)){
-               if(isNaN( attribute.getTime() )){
-                   data[key] = "";
-               }
-               else{
-                   data[key] = utils.dateToString(attribute);
-               }
-           }
-                 
-           return  attribute;
-        });
-        
-        return data;
-    };
-
-    Backbone.Collection.prototype.toDatatableArray = function(){  
-        _.each(this.models, function(model, key, models){
-            models[key] = model.toDatatableArray();
-        });
-                
-        return this.models;
-    };
     
     Models.Caso = Backbone.Model.extend({
         urlRoot: '/casos'
@@ -40,6 +7,7 @@
     Models.Casos = Backbone.Collection.extend({
         model: Models.Caso,
         url: '/casos',
+        constLanzamiento: 26,
         search: function(query, options){
             options.data = query;
             
@@ -75,7 +43,7 @@
         filterInfoPrimeraVista: function(date){
             return this.chain()
             .select(function(model){
-                return (model.get('primeraComparecencia') === date);
+                return (!_.isEmpty(model.get('primeraComparecencia')));
             })
             .map(function(model){
                 return model.toJSON();
@@ -86,6 +54,57 @@
             return this.chain()
             .select(function(model){
                 return (model.get('rediligenciar') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterSentencia: function(){
+            return this.chain()
+            .select(function(model){
+                return (model.get('desistido') === 1 || model.get('haLugar') === 1);
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterHaLugar: function(){
+            var lanzamiento = this.constLanzamiento;
+            var ms2days = (1000 * 60 * 60 * 24);
+
+            return this.chain()
+            .select(function(model){
+                return (
+                        model.get('haLugar') === 1 && 
+                        !_.isEmpty(model.get('sentencia')) &&  
+                        ((new Date(model.get('sentencia')) - new Date())/ms2days) < lanzamiento
+                    );
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterLanzamiento: function(){
+            return this.chain()
+            .select(function(model){
+                return (
+                        model.get('haLugar') === 1 && 
+                        !_.isEmpty(model.get('sentencia')) &&  
+                        ((new Date(model.get('sentencia')) - new Date())/ms2days) >= lanzamiento
+                    );
+            })
+            .map(function(model){
+                return model.toJSON();
+            })
+            .value();
+        },
+        filterCompletado: function(){
+            return this.chain()
+            .select(function(model){
+                return (model.get('completado') === 1);
             })
             .map(function(model){
                 return model.toJSON();

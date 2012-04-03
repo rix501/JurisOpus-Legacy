@@ -50,6 +50,8 @@ module.exports = {
                lanzamiento AS 'lanzamiento', \
                observaciones AS 'observaciones',\
                rediligenciar AS 'rediligenciar', \
+               desistido AS 'desistido', \
+               ha_lugar AS 'haLugar', \
                ejecutar AS 'ejecutar'\
            FROM Casos ca;",
            args: []

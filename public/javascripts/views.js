@@ -1463,7 +1463,7 @@ $(document).ready(function(){
             });
         },
         filterData: function(){
-            return this.collection.filterInfoPrimeraVista();
+            return this.collection.filterSentencia();
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
@@ -1585,7 +1585,7 @@ $(document).ready(function(){
             });
         },
         filterData: function(){
-            return this.collection.filterInfoPrimeraVista();
+            return this.collection.filterHaLugar();
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
@@ -1707,7 +1707,7 @@ $(document).ready(function(){
             });
         },
         filterData: function(){
-            return this.collection.filterInfoPrimeraVista();
+            return this.collection.filterLanzamiento();
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
@@ -1829,7 +1829,7 @@ $(document).ready(function(){
             });
         },
         filterData: function(){
-            return this.collection.filterInfoPrimeraVista();
+            return this.collection.filterCompletado();
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
