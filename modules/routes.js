@@ -237,7 +237,7 @@ exports.setup = function(app, Models){
             observaciones:'123',
             primeraComparecencia:'123',
             sala:'123',
-            data'123'
+            hora: '123'
         }];
 
         var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'}, data);
