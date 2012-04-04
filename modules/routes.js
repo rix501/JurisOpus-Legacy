@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV == 'development')
+//if(process.env.NODE_ENV == 'development')
     var pdfFactory = require('./pdf/PDFFactory');
 
 exports.setup = function(app, Models){    
@@ -205,8 +205,8 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdf', checkAuth, function(req, res){
-        if(process.env.NODE_ENV == 'production')
-            return;
+        //if(process.env.NODE_ENV == 'production')
+        //    return;
 
         var cases = new Models.Casos();
         
