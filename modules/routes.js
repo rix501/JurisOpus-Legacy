@@ -227,6 +227,19 @@ exports.setup = function(app, Models){
         //if(process.env.NODE_ENV == 'production')
         //    return;
 
+        var data = [{ 
+            caso: '123',
+            residencial: '123',
+            nombre: '123',
+            edificio:'123',
+            apartamento:'123',
+            causalIniciales:'123',
+            observaciones:'123',
+            primeraComparecencia:'123',
+            sala:'123',
+            data'123'
+        }];
+
         var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
         res.header('Content-type','application/pdf');
