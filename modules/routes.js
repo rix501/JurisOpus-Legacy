@@ -224,8 +224,8 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        if(process.env.NODE_ENV == 'production')
-            return;
+        //if(process.env.NODE_ENV == 'production')
+        //    return;
 
         var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
              
