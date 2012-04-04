@@ -240,7 +240,7 @@ exports.setup = function(app, Models){
             data'123'
         }];
 
-        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
+        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'}, data);
              
         res.header('Content-type','application/pdf');
         res.end(pdf, 'binary');
