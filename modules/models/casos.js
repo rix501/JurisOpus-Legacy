@@ -3,8 +3,7 @@ var _ = require('underscore');
 var client = require('../db');
 var queries = require('../queries');
 var utils = require('../utils');
-//if(process.env.NODE_ENV == 'development')
-    var pdfFactory = require('../pdf/PDFFactory');
+var pdfFactory = require('../pdf/PDFFactory');
 
 module.exports = function(Backbone, Models) {
 

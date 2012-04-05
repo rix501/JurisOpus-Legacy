@@ -12,7 +12,7 @@ $(document).ready(function(){
                         $('#ui-datepicker-div').css({'top': top +'px', 'left': left + 'px'});      
                     },1);                    
                 },
-                dateFormat: 'yy-mm-dd'
+                dateFormat: 'mm-dd-yy'
             });
         });
     };
@@ -1888,14 +1888,6 @@ $(document).ready(function(){
                         .replace(/even/i, '')
                         .trim(); 
                 App.navigate('/editar/' + id ,true);
-            }
-            else{
-                $('#actualizar-bulk-modal').removeClass('hide');
-                                    
-                if(!$('#actualizar-bulk-modal').hasClass('in'))
-                    $('#actualizar-bulk-modal').addClass('in');
-            
-                $('#actualizar-bulk-modal').modal('show');
             }
         },
         modalEdit: function(event){

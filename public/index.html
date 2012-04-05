@@ -66,7 +66,7 @@
             <a class="close" data-dismiss="alert">×</a>
             <span></span>
         </div>
-        <div class="page-header"><h1><% if(isEdit) {%>Editar Casos<% } else {%> Entrar Caso<% } %></h1></div>
+        <div class="page-header"><h1><% if(isEdit) {%>Editar Caso<% } else {%> Entrar Caso<% } %></h1></div>
         <form class="main-form form-stacked form-horizontal">
             <fieldset>
                 <div class="clearfix form-row">
@@ -463,22 +463,16 @@
                 <h3>Hacer cambios en grupo:</h3>
             </div>
             <div class="modal-body">
-                <form>
+                <form class="form-vertical">
                     <fieldset>
-                    <div class="clearfix">
+                        <label for="caso">Caso:</label>
+                        <input class="span3" id="caso" name="caso" size="30" type="text">
                         <label for="sala">Sala:</label>
                         <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
                         <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
+                        <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
                         <label for="hora">Hora:</label>
                         <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
                     </fieldset>
                 </form>
             </div>
@@ -503,22 +497,20 @@
                 <h3>Hacer cambios en grupo:</h3>
             </div>
             <div class="modal-body">
-                <form>
+                <form class="form-vertical">
                     <fieldset>
-                    <div class="clearfix">
-                        <label for="sala">Sala:</label>
-                        <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
-                        <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
-                        <label for="hora">Hora:</label>
-                        <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
+                        <label class="radio inline">
+                            <input type="radio" name="tipoSentencia" id="haLugar" value="haLugar"> Ha Lugar
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="tipoSentencia" id="desistido" value="desistido"> Desistido
+                        </label>
+                        <br />
+                        <br />
+                        <label for="segundaComparecencia">Segunda Comparecencia:</label>
+                        <input class="span3 datepicker" id="segundaComparecencia" name="segundaComparecencia" size="30" type="text">
+                        <label for="observaciones">Observaciones:</label>
+                        <textarea class="span6" rows="6" id="observaciones" name="observaciones"></textarea>
                     </fieldset>
                 </form>
             </div>
@@ -543,22 +535,10 @@
                 <h3>Hacer cambios en grupo:</h3>
             </div>
             <div class="modal-body">
-                <form>
+                <form class="form-vertical">
                     <fieldset>
-                    <div class="clearfix">
-                        <label for="sala">Sala:</label>
-                        <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
                         <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
-                        <label for="hora">Hora:</label>
-                        <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
+                        <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">          
                     </fieldset>
                 </form>
             </div>
@@ -584,21 +564,11 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <fieldset>
-                    <div class="clearfix">
-                        <label for="sala">Sala:</label>
-                        <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
-                        <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
-                        <label for="hora">Hora:</label>
-                        <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
+                    <fieldset>            
+                        <label for="radicar">Radicar:</label>
+                        <input class="span3 datepicker" id="radicar" name="radicar" size="30" type="text">             
+                        <label for="recibido">Recibido:</label>
+                        <input class="span3" id="recibido" name="recibido" size="30" type="text">
                     </fieldset>
                 </form>
             </div>
@@ -625,20 +595,10 @@
             <div class="modal-body">
                 <form>
                     <fieldset>
-                    <div class="clearfix">
-                        <label for="sala">Sala:</label>
-                        <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
-                        <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
-                        <label for="hora">Hora:</label>
-                        <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
+                        <label for="radicar">Radicar:</label>
+                        <input class="span3 datepicker" id="radicar" name="radicar" size="30" type="text">             
+                        <label for="recibido">Recibido:</label>
+                        <input class="span3" id="recibido" name="recibido" size="30" type="text">
                     </fieldset>
                 </form>
             </div>
@@ -665,20 +625,9 @@
             <div class="modal-body">
                 <form>
                     <fieldset>
-                    <div class="clearfix">
-                        <label for="sala">Sala:</label>
-                        <input class="span3" id="sala" name="sala" size="30" type="text">
-                    </div>
-                    <div class="clearfix">                
-                        <label for="fecha">Fecha:</label>
-                        <div class="input">
-                            <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
-                        </div>
-                    </div>
-                    <div class="clearfix">                
-                        <label for="hora">Hora:</label>
-                        <input class="span3" id="hora" name="hora" size="30" type="text">
-                    </div>
+                        <label class="checkbox">
+                            <input type="checkbox" id="completado" value="completado"> Completado
+                        </label>
                     </fieldset>
                 </form>
             </div>
