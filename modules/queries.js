@@ -168,7 +168,7 @@ module.exports = {
             	diligenciado AS 'diligenciado', \
             	DATE_FORMAT(diligenciado_en, '%d-%m-%Y') AS 'diligenciadoEn', \
             	sala AS 'sala', \
-            	DATE_FORMAT(hora, '%l:%i %p') AS 'hora, \
+            	DATE_FORMAT(hora, '%l:%i %p') AS 'hora', \
             	DATE_FORMAT(primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia', \
             	DATE_FORMAT(segunda_comparecencia, '%d-%m-%Y') AS 'segundaComparecencia', \
             	DATE_FORMAT(vista_en_su_fondo, '%d-%m-%Y') AS 'vistaEnSuFondo', \
