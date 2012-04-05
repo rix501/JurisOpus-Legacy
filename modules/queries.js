@@ -176,7 +176,7 @@ module.exports = {
             	DATE_FORMAT(lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
             	observaciones AS 'observaciones'\
             FROM Casos ca\
-            WHERE primera_comparecencia = ?;",
+            WHERE primera_comparecencia = STR_TO_DATE(?, '%m-%d-%Y');",
             args: [fecha]
         }
     },
