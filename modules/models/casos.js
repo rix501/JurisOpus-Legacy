@@ -203,9 +203,9 @@ module.exports = function(Backbone, Models) {
                     return;
                 }
                 
-                var pdf = pdfFactory(query.type, query.pdfTemplate, data);
+                var pdf = pdfFactory(query.type, query.pdfTemplate, data, resSuccess);
                 
-                if(resSuccess) resSuccess(pdf); 
+                //if(resSuccess) resSuccess(pdf); 
             };
             
             var q;
@@ -262,9 +262,7 @@ module.exports = function(Backbone, Models) {
                              
                 var data = collection.toJSON();
                 
-                var pdf = pdfFactory(query.type, '', data);
-                
-                if(resSuccess) resSuccess(pdf); 
+                var pdf = pdfFactory(query.type, '', data, resSuccess);
             };
            
     	    var q = queries.getCasosPdf(query.casos); 

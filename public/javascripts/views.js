@@ -784,7 +784,7 @@ $(document).ready(function(){
         template: _.template($("#container-demandas-seleccionar-template").html()),
         //add event to collection for when a model is removed       
         initialize: function(){
-            _.bindAll(this, 'render', 'selectRow', 'loadTable');
+            _.bindAll(this, 'render', 'selectRow', 'loadTable', 'print');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
         },

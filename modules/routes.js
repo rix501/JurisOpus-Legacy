@@ -240,9 +240,9 @@ exports.setup = function(app, Models){
             hora: '123'
         }];
 
-        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'}, data);
-             
-        res.header('Content-type','application/pdf');
-        res.end(pdf, 'binary');
+        var pdf = pdfFactory('informes', 'informedevistas', data, function(output){
+            res.header('Content-type','application/pdf');
+            res.end(output, 'binary');
+        });     
     });
 };
