@@ -600,7 +600,7 @@ $(document).ready(function(){
         modal: function(event){
             var classList = $(event.target).attr('class');
             
-            var template = $.trim(classList.replace(/mod/i,'').replace(/primary/i,'').replace(/btn/i,''));
+            var template = $.trim(classList.replace(/mod/i,'').replace(/btn-primary/i,'').replace(/btn/i,''));
 
             $('#' + template + '-modal').modal('show');
         },
@@ -612,7 +612,7 @@ $(document).ready(function(){
             
             var classList = $(event.target).attr('class');
             
-            var template = $.trim(classList.replace(/print/i,'').replace(/primary/i,'').replace(/btn/i,''));
+            var template = $.trim(classList.replace(/print/i,'').replace(/btn-primary/i,'').replace(/btn/i,''));
             
             var url = "/pdf?type=informes&pdfTemplate=" + template;         
             

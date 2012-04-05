@@ -142,7 +142,7 @@ module.exports = {
             	apartamento AS 'apartamento', \
             	area AS 'area', \
             	nombre AS 'nombre', \
-            	caso_recibido AS 'casoRecibido', \
+            	caso_recibido, '%d-%m-%Y') AS 'casoRecibido', \
             	seleccionado AS 'seleccionado', \
             	completado AS 'completado', \
             	( SELECT \
@@ -159,21 +159,21 @@ module.exports = {
             	meses_adeudados AS 'mesesAdeudados', \
             	deuda_renta AS 'deudaRenta', \
             	deuda_renta_negativa AS 'deudaRentaNegativa', \
-            	deuda_recibida AS 'deudaRecibida', \
+            	DATE_FORMAT(deuda_recibida, '%d-%m-%Y') AS 'deudaRecibida', \
             	deuda_total AS 'deudaTotal', \
-            	ultimo_reexamen AS 'ultimoReexamen', \
+            	DATE_FORMAT(ultimo_reexamen, '%d-%m-%Y') AS 'ultimoReexamen', \
             	incumplimiento AS 'incumplimiento', \
             	caso AS 'caso', \
-            	presentacion AS 'presentacion', \
+            	DATE_FORMAT(presentacion, '%d-%m-%Y') AS 'presentacion', \
             	diligenciado AS 'diligenciado', \
-            	diligenciado_en AS 'diligenciadoEn', \
+            	DATE_FORMAT(diligenciado_en, '%d-%m-%Y') AS 'diligenciadoEn', \
             	sala AS 'sala', \
-            	hora AS 'hora', \
-            	primera_comparecencia AS 'primeraComparecencia', \
-            	segunda_comparecencia AS 'segundaComparecencia', \
-            	vista_en_su_fondo AS 'vistaEnSuFondo', \
-            	sentencia AS 'sentencia', \
-            	lanzamiento AS 'lanzamiento', \
+            	DATE_FORMAT(hora, '%l:%i %p') AS 'hora, \
+            	DATE_FORMAT(primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia', \
+            	DATE_FORMAT(segunda_comparecencia, '%d-%m-%Y') AS 'segundaComparecencia', \
+            	DATE_FORMAT(vista_en_su_fondo, '%d-%m-%Y') AS 'vistaEnSuFondo', \
+            	DATE_FORMAT(sentencia, '%d-%m-%Y') AS 'sentencia', \
+            	DATE_FORMAT(lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
             	observaciones AS 'observaciones'\
             FROM Casos ca\
             WHERE primera_comparecencia = ?;",
