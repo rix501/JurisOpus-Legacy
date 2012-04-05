@@ -142,7 +142,7 @@ module.exports = {
             	apartamento AS 'apartamento', \
             	area AS 'area', \
             	nombre AS 'nombre', \
-            	caso_recibido, '%d-%m-%Y') AS 'casoRecibido', \
+            	DATE_FORMAT(caso_recibido, '%d-%m-%Y') AS 'casoRecibido', \
             	seleccionado AS 'seleccionado', \
             	completado AS 'completado', \
             	( SELECT \
