@@ -25,16 +25,6 @@ app.configure('production', function(){
 //My Libs
 var routes = require('./modules/routes');
 var Models = require('./modules/models');
-
-/*
-"dependencies": {
-  "express":">=2.5.8",
-  "mysql":">=0.9.5",
-  "pdfkit":">=0.1.7",
-  "underscore":">=1.3.1",
-  "backbone":">=0.9.2"
-},
-*/
  
 // Routes
 routes.setup(app, Models);

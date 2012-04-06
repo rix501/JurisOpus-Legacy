@@ -363,14 +363,14 @@ $(document).ready(function(){
 
             var namePattern = new RegExp('.*' + $('#nombre').val() + '.*', 'gi');
             var casePattern = new RegExp('.*' + $('#caso').val() + '.*', 'gi');
-            var residencialPattern = new RegExp('.*' + $('#residencial').val() + '.*', 'gi');
+            var residencialPattern = new RegExp('.*' + $('#residencial option:selected').text() + '.*', 'gi');
             var edificioPattern = new RegExp('.*' + $('#edificio').val() + '.*', 'gi');
             var apartamentoPattern = new RegExp('.*' + $('#apartamento').val() + '.*', 'gi');
 
             switch(searchType) {
                 case 'search-direccion':
                     data = App.casos.select(function(model){
-                        return model.get('residencial').match(residencialPattern) || model.get('edificio').match(edificioPattern) || model.get('apartamento').match(apartamentoPattern);
+                        return model.get('residencial').match(residencialPattern) && model.get('edificio').match(edificioPattern) && model.get('apartamento').match(apartamentoPattern);
                     }).map(function(model){
                         return model.toJSON();
                     });
@@ -698,6 +698,16 @@ $(document).ready(function(){
                 $('.dataTables_wrapper .action').removeClass('disabled');
             }
         },
+        deselectRows: function(){
+            $('.dataTables_wrapper .action').addClass('disabled');
+            $('tr').removeClass('row_selected');
+        },
+        selectRows: function(){
+            if(!$('td').hasClass('dataTables_empty')){
+                $('.dataTables_wrapper .action').removeClass('disabled');
+                $('tr').addClass('row_selected');
+            }
+        },
         assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
             $(nRow).addClass(aData.id.toString());
         },
@@ -790,8 +800,8 @@ $(document).ready(function(){
         },
         selectNav: function(event){
             var demandaType = ContainerCasosTableView.prototype.selectNav.call(this, event);
-            
             this.filterTable(this.collection.filterCausal(demandaType));
+            $('.dataTables_wrapper .action').addClass('disabled');
         },
         print: function(){
             if($('.dataTables_wrapper .action').hasClass('disabled'))
@@ -825,8 +835,12 @@ $(document).ready(function(){
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, 'seleccionar', data, options);
                    
-            this.$el.find('#casos-table_filter').after('<button class="action btn disabled">Imprimir</button>');
+            this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled print">Imprimir</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.print);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             return ContainerCasosTableView.prototype.render.call(this);
@@ -847,13 +861,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -970,7 +983,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1027,13 +1044,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1101,11 +1117,42 @@ $(document).ready(function(){
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
-            var options = {};
+            var options = {
+                "aoColumns": [                 
+                    {   
+                        "mDataProp": "nombre",
+                        "sTitle":"Nombre" 
+                    },
+                    { 
+                        "mDataProp": "causal",
+                        "sTitle":"Causal" 
+                    },
+                    {
+                        "mDataProp": "residencial",
+                        "sTitle":"Residencial"
+                    },
+                    { 
+                        "mDataProp": "edificio",
+                        "sTitle":"Edificio" 
+                    },
+                    { 
+                        "mDataProp": "apartamento",
+                        "sTitle":"Apartamento" 
+                    },
+                    { 
+                        "mDataProp": "casoRecibido",
+                        "sTitle":"Ingresado" 
+                    }
+                ]
+            };
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1149,13 +1196,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1227,7 +1273,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1271,13 +1321,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1345,11 +1394,38 @@ $(document).ready(function(){
         },
         loadTable: function(collection, resp){
             var data = this.filterData();
-            var options = {};
+            var options = {
+                "aoColumns": [                 
+                    {   
+                        "mDataProp": "caso",
+                        "sTitle":"Caso" 
+                    },
+                    { 
+                        "mDataProp": "nombre",
+                        "sTitle":"Nombre" 
+                    },
+                    { 
+                        "mDataProp": "sala",
+                        "sTitle":"Sala" 
+                    },
+                    {
+                        "mDataProp": "hora",
+                        "sTitle":"Hora"
+                    },
+                    { 
+                        "mDataProp": "primeraComparecencia",
+                        "sTitle":"Primera Comparecencia" 
+                    }
+                ]
+            };
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1393,13 +1469,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1471,7 +1546,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1515,13 +1594,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1593,7 +1671,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1637,13 +1719,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1715,7 +1796,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1759,13 +1844,12 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
-                var id = $($selectRow[0])
-                        .attr('class')
-                        .replace(/row_selected/i, '')
-                        .replace(/odd/i, '')
-                        .replace(/even/i, '')
-                        .trim(); 
-                App.navigate('/editar/' + id ,true);
+                $('#actualizar-bulk-modal').removeClass('hide');
+                                    
+                if(!$('#actualizar-bulk-modal').hasClass('in'))
+                    $('#actualizar-bulk-modal').addClass('in');
+            
+                $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
                 $('#actualizar-bulk-modal').removeClass('hide');
@@ -1837,7 +1921,11 @@ $(document).ready(function(){
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
             this.$el.find('#casos-table_filter').after('<button class="action btn-primary btn disabled">Editar</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn deselect">Deseleccionar Todos</button>');
+            this.$el.find('#casos-table_filter').after('<button class="btn select">Seleccionar Todos</button>');
             this.$el.find('.dataTables_wrapper .action').click(this.editRow);
+            this.$el.find('.dataTables_wrapper .deselect').click(this.deselectRows);
+            this.$el.find('.dataTables_wrapper .select').click(this.selectRows);
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
@@ -1870,9 +1958,20 @@ $(document).ready(function(){
     window.ContainerDemandasActualizarTodosView = ContainerCasosTableView.extend({
         template:  _.template($("#container-demandas-actualizar-todos-template").html()),
         initialize: function() {
-            _.bindAll(this, 'render', 'selectRow','loadTable', 'modalEdit');
+            _.bindAll(this, 'render', 'selectRow','loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
+        },
+        selectRow: function(event){
+            if ( $(event.currentTarget).hasClass('row_selected') ){
+                $(event.currentTarget).removeClass('row_selected');
+                $('.dataTables_wrapper .action').addClass('disabled');
+            }
+            else if(!$(event.currentTarget).children('td').hasClass('dataTables_empty')){
+                $('tr').removeClass('row_selected');
+                $(event.currentTarget).addClass('row_selected');
+                $('.dataTables_wrapper .action').removeClass('disabled');
+            }
         },
         editRow: function(event){
             if($('.dataTables_wrapper .action').hasClass('disabled'))
@@ -1890,58 +1989,6 @@ $(document).ready(function(){
                 App.navigate('/editar/' + id ,true);
             }
         },
-        modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
-            
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
-                sala: $('#sala').val(),
-                fecha: $('#fecha').val()
-            };
-            
-            var url = "/casos/";
-            
-            $("#casos-table .row_selected").each(function(){
-                var id = $(this)
-                .attr('class')
-                .replace(/row_selected/i, '')
-                .replace(/odd/i, '')
-                .replace(/even/i, '')
-                .trim();
-                url += id + ",";
-            });
-            
-            url = url.substring(0, url.length - 1);
-            
-            var submitSpinner = this.getSpinner();
-            submitSpinner.spin($('.modal-footer .spinner')[0]);
-            
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
-                    submitSpinner.stop(); 
-                    $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
-                        $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
-                    console.log(err);
-                    $(modal).find('.modal-footer .label')
-                    .attr('class','label important')
-                    .html('Hubo error guardando')
-                    .show();
-                    submitSpinner.stop();
-                }
-            });
-        },
         filterData: function(){
             return this.collection.toJSON();
         },
@@ -1955,24 +2002,6 @@ $(document).ready(function(){
         },
         render: function(){
             ContainerCasosTableView.prototype.render.call(this)
-            
-            var modalBulk = this.$el.find('#actualizar-bulk-modal');
-            
-            modalBulk.modal({
-                backdrop: true,
-                keyboard: true,
-                show: false
-            });
-            
-            $(modalBulk).find('.edit').click(this.modalEdit);
-            
-            $(modalBulk).find('.secondary').click(function(e){
-                $(modalBulk).modal('hide');
-            });
-            
-            $(modalBulk).bind('hidden', function () {
-                $(modalBulk).find('.modal-footer .label').hide();
-            });
             
             var datepickers = this.$el.find(".datepicker");           
             SetDatepickers(datepickers, 0, 28);

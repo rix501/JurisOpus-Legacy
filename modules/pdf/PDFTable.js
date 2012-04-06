@@ -61,8 +61,15 @@ PDFTable.prototype.addRow = function(row){
             doc.text(element.title);
         }
         else{
-            doc.moveUp()
-            .text(element.title, doc.x + that.columns[index-1].width);
+            if(that.columns[index].width !== 0){
+                doc.moveUp()
+                .text(element.title, doc.x + that.columns[index-1].width, doc.y, { width: that.columns[index].width, align: 'left' });
+            }
+            else{
+                doc.moveUp()
+                .text(element.title, doc.x + that.columns[index-1].width, doc.y);
+            }
+
         }
     });
     
