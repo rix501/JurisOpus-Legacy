@@ -241,8 +241,8 @@ exports.setup = function(app, Models){
         cases.pdf(req.query, {
            success: function(pdf){
                 res.header('Content-type','application/pdf');
-                //res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
-                //res.header('Content-Length', pdf.length);
+                res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
+                res.header('Content-Length', pdf.length);
                 res.end(pdf, 'binary');
 
                 if(process.env.NODE_ENV == 'development'){
