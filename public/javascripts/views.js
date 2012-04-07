@@ -187,7 +187,7 @@ $(document).ready(function(){
             var viewObj = this;
         
             App.casos.create({
-                residencial: App.causales.get($('#residencial').val()).get('residencial'),
+                residencial: App.residenciales.get($('#residencial').val()).get('residencial'),
                 residencialId: $('#residencial').val(),
                 edificio: $('#edificio').val(),
                 apartamento: $('#apartamento').val(),
