@@ -253,6 +253,19 @@ $(document).ready(function(){
         },
         addResidenciales: function(){
             dispatcher.off('loaded:residenciales');
+            
+            //Load blank
+            var elOptNew = document.createElement('option');
+            elOptNew.text = '';
+            elOptNew.value = '';
+            var elSel = this.$el.find('#residencial')[0];
+
+            try {
+              elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+            }
+            catch(ex) {
+              elSel.add(elOptNew); // IE only
+            } 
 
             var that = this;
             App.residenciales.each(function(model){

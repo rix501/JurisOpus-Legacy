@@ -48,6 +48,14 @@ PDFTable.prototype.addHeaders = function(){
 PDFTable.prototype.addRow = function(row){
     var doc = this.doc;
     var that = this;
+    
+    /*
+    - Get y at start
+    -- Get y after insert
+    -- If different (greater) save it
+    -- Set y to original 
+    - When done set next y to be greatest y achieved
+    */
 
     var nextY = this.doc.y + this.doc.currentLineHeight(true);
 
@@ -56,7 +64,7 @@ PDFTable.prototype.addRow = function(row){
         this.addHeaders();
     }
 
-    _.each(row, function(element, index, list){
+    _.each(row, function(element, index){
         if(index === 0){
             doc.text(element.title);
         }
