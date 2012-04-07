@@ -116,8 +116,12 @@ hr {
     margin-bottom: 2px;
 }
 
+.dataTables_length {
+    width: 20%;
+}
+
 .dataTables_filter {
-    width: 55%;
+    width: 72%;
 }
 
 .dataTables_wrapper {
@@ -139,8 +143,23 @@ hr {
 
 .dataTables_wrapper .action {
     position: absolute;
-    top: 23px;
-    left: 865px;
+    top: 18px;
+    left: 885px;
+}
+.dataTables_wrapper .action.print {
+    left: 870px;
+}
+
+.dataTables_wrapper .btn.select {
+    position: absolute;
+    top: 18px;
+    left: 703px;
+}
+
+.dataTables_wrapper .btn.deselect {
+    position: absolute;
+    top: 18px;
+    left: 537px;
 }
 
 #results-modal {

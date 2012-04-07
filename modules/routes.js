@@ -1,5 +1,4 @@
-if(process.env.NODE_ENV == 'development')
-    var pdfFactory = require('./pdf/PDFFactory');
+var pdfFactory = require('./pdf/PDFFactory');
 
 exports.setup = function(app, Models){    
     // Dummy users
@@ -46,6 +45,38 @@ exports.setup = function(app, Models){
         });
         
         if(!auth) cb(auth);
+    };
+
+    var sendEmail = function(pdf){
+        var mailer = require('nodemailer');
+        var transport = mailer.createTransport("SMTP",{
+            host: 'smtp.sendgrid.net', 
+            port:587,
+            auth: {
+                user: 'app2924161@heroku.com', 
+                pass: 'fk4934gl'
+            }
+        });
+
+        transport.sendMail({
+            from: "rix501@gmail.com",
+            to: "rix501@gmail.com",
+            subject: "Hello world!",
+            attachments: [
+                {
+                    fileName: "jo.pdf",
+                    contents: new Buffer(pdf, "binary"),
+                    contentType: "application/pdf"
+                }
+            ]
+        }, function(error, responseStatus){
+            if(!error){
+                console.log(responseStatus.message); // response from the server
+            }
+            else {
+                console.log(error);
+            }
+        });
     };
     
     app.get('/', checkAuth, function(req,res){
@@ -205,17 +236,19 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdf', checkAuth, function(req, res){
-        if(process.env.NODE_ENV == 'production')
-            return;
-
         var cases = new Models.Casos();
         
         cases.pdf(req.query, {
            success: function(pdf){
-               res.header('Content-type','application/pdf');
-               res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
-               res.header('Content-Length', pdf.length);
-               res.end(pdf, 'binary');
+                res.header('Content-type','application/pdf');
+                res.header('Content-disposition','attachment; filename=jurisopus-'+ req.query.type +'.pdf');
+                res.header('Content-Length', pdf.length);
+                res.end(pdf, 'binary');
+
+                if(process.env.NODE_ENV == 'development'){
+                    //sendEmail(pdf);
+                }
+
            },
            error: function(err){
                res.send(err, 404);
@@ -225,11 +258,24 @@ exports.setup = function(app, Models){
     
     app.get('/pdfTest', function(req,res){
         if(process.env.NODE_ENV == 'production')
-            return;
+            res.send('Nothing to report');
 
-        var pdf = pdfFactory('informes', {pdfTemplate: 'informedevistas'});
-             
-        res.header('Content-type','application/pdf');
-        res.end(pdf, 'binary');
+        var data = [{ 
+            caso: '123',
+            residencial: '123',
+            nombre: '123',
+            edificio:'123',
+            apartamento:'123',
+            causalIniciales:'123',
+            observaciones:'123',
+            primeraComparecencia:'123',
+            sala:'123',
+            hora: '123'
+        }];
+
+        var pdf = pdfFactory('informes', 'informedevistas', data, function(output){
+            res.header('Content-type','application/pdf');
+            res.end(output, 'binary');
+        });     
     });
 };

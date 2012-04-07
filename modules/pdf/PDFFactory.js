@@ -3,7 +3,7 @@ var _ = require('underscore');
 var demandas = require('./demandas');
 var informes = require('./informes');
 
-var PDFFactory = module.exports = function(type, template, data){
+var PDFFactory = module.exports = function(type, template, data, cb){
     var doc, pdf;
         
     if(type === "demandas"){
@@ -24,5 +24,5 @@ var PDFFactory = module.exports = function(type, template, data){
         doc = pdf.templates[template].draw(doc, data);
     }
     
-    return doc.output();
+    return doc.output(cb);
 };

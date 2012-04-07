@@ -97,6 +97,48 @@ $(document).ready(function(){
                 this.addedToDOM('demandas');
                 this.addedToDOM('demandas-actualizar'); 
             }
+            else if(listName === 'actualizar-informacionvista'){
+                this.containerDemandasActualizarInformacionVistaView = new ContainerDemandasActualizarInformacionVistaView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarInformacionVistaView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-fechasentencia'){
+                this.containerDemandasActualizarFechaSentenciaView = new ContainerDemandasActualizarFechaSentenciaView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarFechaSentenciaView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-sentenciahalugar'){
+                this.containerDemandasActualizarSentenciaHaLugarView = new ContainerDemandasActualizarSentenciaHaLugarView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarSentenciaHaLugarView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-lanzamiento'){
+                this.containerDemandasActualizarLanzamientoView = new ContainerDemandasActualizarLanzamientoView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarLanzamientoView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-completado'){
+                this.containerDemandasActualizarCompletadoView = new ContainerDemandasActualizarCompletadoView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarCompletadoView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
+            else if(listName === 'actualizar-todos'){
+                this.containerDemandasActualizarTodosView = new ContainerDemandasActualizarTodosView();
+                $('#content').empty();
+                $('#content').append(this.containerDemandasActualizarTodosView.render().el);
+                this.addedToDOM('demandas');
+                this.addedToDOM('demandas-actualizar'); 
+            }
         },
         informes: function(){
             this.containerInformesView = new ContainerInformesView();
