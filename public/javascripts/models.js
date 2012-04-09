@@ -14,18 +14,33 @@
             options.url = '/search/casos';
             this.fetch(options);
         },
-        updateBulk: function(ids, args, options){
-            //Make changes to models so they reflect con objects
+        saveBulk: function(ids, args, options){
+            var oldSuccess = options.success;
+
+            options.success = _.bind(function(){
+                //Make changes to models so they reflect on objects
+                var idsArray = ids.split(',');
+
+                _.each(idsArray, _.bind(function(id, index){
+                    var model = this.get(id);
+
+                    _.each(args, function(arg, value){
+                        model.set(value, arg);
+                    });
+                }, this));
+
+                oldSuccess();
+            }, this);
 
             var url = "/casos/" + ids;
 
             $.ajax({
-                type: "put",
+                type: "PUT",
                 url: url,
                 data: args,
                 success: options.success,
                 error: options.error
-            );
+            });
         },
         markComplete: function(query, options){
             options.data = query;

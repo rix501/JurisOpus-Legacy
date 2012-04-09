@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
 var variableToColumn = {
-    fechaPresentacion: 'presentacion'
+    presentacion: 'presentacion'
 };
 
 
@@ -611,7 +611,7 @@ module.exports = {
             ]
         }
     },
-    updateBulk: function(ids, sala, dia, hora){
+    updateBulk: function(ids, args){
         var idsRegex = '^(';
         
         _.each(ids, function(id){

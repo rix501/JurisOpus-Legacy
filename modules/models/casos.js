@@ -203,8 +203,6 @@ module.exports = function(Backbone, Models) {
                 }
                 
                 var pdf = pdfFactory(query.type, query.pdfTemplate, data, resSuccess);
-                
-                //if(resSuccess) resSuccess(pdf); 
             };
             
             var q;
@@ -233,7 +231,6 @@ module.exports = function(Backbone, Models) {
             options.args = q.args;
 
             this.fetch(options);
-            //options.success();
         },
         pdfDemanda: function(query, options){
             var resSuccess = options.success;

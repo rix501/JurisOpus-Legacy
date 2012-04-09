@@ -1077,7 +1077,7 @@ $(document).ready(function(){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args = {
-                fechaPresentacion: $('#fecha').val()
+                presentacion: $('#fecha').val()
             };
             
             var ids = '';
@@ -1097,7 +1097,7 @@ $(document).ready(function(){
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            this.updateBulk(ids, args, {
+            this.saveBulk(ids, args, {
                 success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
