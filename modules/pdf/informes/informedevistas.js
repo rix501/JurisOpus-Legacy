@@ -98,7 +98,6 @@ module.exports = function(informe){
 	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
 
 	    return doc;
-
 	};
 	informedevistas.prototype.addCases = function(doc, data){
 	    // caso - residencial - nombre - edificio - apto - causal - observaciones

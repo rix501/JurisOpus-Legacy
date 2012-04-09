@@ -14,6 +14,19 @@
             options.url = '/search/casos';
             this.fetch(options);
         },
+        updateBulk: function(ids, args, options){
+            //Make changes to models so they reflect con objects
+
+            var url = "/casos/" + ids;
+
+            $.ajax({
+                type: "put",
+                url: url,
+                data: args,
+                success: options.success,
+                error: options.error
+            );
+        },
         markComplete: function(query, options){
             options.data = query;
             

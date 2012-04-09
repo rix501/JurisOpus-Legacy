@@ -632,7 +632,7 @@ $(document).ready(function(){
             //It's a modal
             if(event.target.parentNode.className.search(/modal/i) >= 0  ){
                 isModal = true;
-                modal = $(event.target.parentNode.parentNode);
+                modal = this.$el.find('#actualizar-bulk-modal');
                 
                 var args = "";
                 
@@ -918,7 +918,7 @@ $(document).ready(function(){
             
             var filterType = liNode.attr('class').replace(/active/i, "").trim();
             
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args = "";
             
@@ -939,7 +939,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1074,17 +1074,13 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
-                sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+            var args = {
+                fechaPresentacion: $('#fecha').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1093,36 +1089,33 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.updateBulk(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1226,7 +1219,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1351,7 +1344,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1499,7 +1492,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1624,7 +1617,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1749,7 +1742,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             
@@ -1874,7 +1867,7 @@ $(document).ready(function(){
             }
         },
         modalEdit: function(event){
-            var modal = $(event.target.parentNode.parentNode);
+            var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args;
             

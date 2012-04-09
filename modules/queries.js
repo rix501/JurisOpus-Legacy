@@ -1,5 +1,10 @@
 var _ = require('underscore');
 
+var variableToColumn = {
+    fechaPresentacion: 'presentacion'
+};
+
+
 module.exports = {
     getCasos: function(){
        return { 
