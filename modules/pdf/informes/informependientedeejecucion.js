@@ -134,8 +134,6 @@ module.exports = function(informe){
 	            {title: single.lanzamiento},
 	            {title: single.completado}
 	        ];
-
-	        that.table.addRow(row);
 	    });
 	};
 

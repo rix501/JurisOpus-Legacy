@@ -80,7 +80,7 @@ module.exports = function(informe){
 	        },
 	        {
 	            title: "Observaciones",
-	            width: 0
+	            width: 310
 	        }
 	    ];
 
