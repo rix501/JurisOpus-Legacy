@@ -83,7 +83,8 @@ module.exports = function(informe){
 	        },
 	        {
 	            title: "Ejecutar",
-	            width: 40
+	            width: 40,
+	            type: 'checkbox'
 	        }, 
 	        {
 	            title: "Lanzamiento",
@@ -91,7 +92,8 @@ module.exports = function(informe){
 	        },
 	        {
 	            title: "Complt",
-	            width: 30
+	            width: 30,
+	            type: 'checkbox'
 	        }
 	    ];
 
@@ -134,6 +136,8 @@ module.exports = function(informe){
 	            {title: single.lanzamiento},
 	            {title: single.completado}
 	        ];
+
+	        that.table.addRow(row);
 	    });
 	};
 

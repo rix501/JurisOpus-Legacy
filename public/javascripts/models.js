@@ -14,6 +14,26 @@
             options.url = '/search/casos';
             this.fetch(options);
         },
+        saveModal: function(ids, args, options){
+            //Remove blank args
+            var realArgs = {};
+            _.each(args, function(value, arg){
+                if(_.isString(value) && _.isEmpty(value)){
+                    //Do nothing
+                }
+                else{
+                    realArgs[arg] = value;
+                }
+            });
+            args = realArgs;
+
+            if(ids.indexOf(',') === -1){
+                this.get(ids).save(args, options);
+            }
+            else{
+                this.saveBulk(ids, args, options);
+            }
+        },
         saveBulk: function(ids, args, options){
             var oldSuccess = options.success;
 
@@ -51,7 +71,7 @@
         filterFechaPresentacion: function(){
             return this.chain()
             .select(function(model){
-                return (_.isEmpty(model.get('presentacion')) && model.get('seleccionado') === 1);
+                return ((_.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000') && model.get('seleccionado') === 1);
             })
             .map(function(model){
                 return model.toJSON();

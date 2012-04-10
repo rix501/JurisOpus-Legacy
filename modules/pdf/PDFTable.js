@@ -27,11 +27,11 @@ PDFTable.prototype.addHeaders = function(){
     
     _.each(this.columns, function(element, index, list){
         if(index === 0){
-            doc.text(element.title, doc.x, doc.y + 4);
+            doc.text(element.title, doc.x, doc.y + 4, { width: list[index].width, align: 'center' });
         }
         else{
             doc.moveUp()
-            .text(element.title, doc.x + list[index-1].width);
+            .text(element.title, doc.x + list[index-1].width, doc.y, { width: list[index].width, align: 'center' });
         }
     });
 
@@ -43,6 +43,46 @@ PDFTable.prototype.addHeaders = function(){
     .stroke();
 
     this.doc.moveDown();
+};
+
+PDFTable.prototype.addCheckbox = function(element, index){
+    var delta = this.doc.currentLineHeight(false);
+
+    var x;
+
+    if(index === 0)
+        x = this.doc.x;
+    else
+        x = this.doc.x + this.columns[index-1].width;
+    
+    var y = this.doc.y;
+    var margin = (this.columns[index].width - delta)/2;
+
+    console.log(x, y, delta, margin);
+
+    this.doc.moveTo(x + margin, y)
+    .lineWidth(1)
+    .lineTo(x + margin + delta , y)
+    .lineTo(x + margin + delta , y + delta)
+    .lineTo(x + margin, y + delta)
+    .lineTo(x + margin, y)
+    .stroke();
+
+    //Check it
+    if(element.title === '1'){
+        this.doc.moveTo(x + margin ,y)
+        .lineWidth(1)
+        .lineTo(x + margin + delta , y + delta)
+        .stroke();
+
+        this.doc.moveTo(x + margin + delta, y)
+        .lineWidth(1)
+        .lineTo(x + margin, y + delta)
+        .stroke();
+    }
+
+    this.doc.x = x;
+    this.doc.y = y;
 };
 
 PDFTable.prototype.addRow = function(row){
@@ -59,25 +99,37 @@ PDFTable.prototype.addRow = function(row){
 
     _.each(row, _.bind(function(element, index){
         if(index === 0){
-            this.doc.y = currentY;
-            this.doc.text(element.title, this.doc.x, this.doc.y, { width: this.columns[index].width, align: 'left' });
-            if(this.doc.y > greatestY){
-                greatestY = this.doc.y;
-            }
-        }
-        else{
-            if(this.columns[index].width !== 0){
+            if(!_.isUndefined(this.columns[index].type) && this.columns[index].type == 'checkbox'){
                 this.doc.y = currentY;
-                this.doc.text(element.title, this.doc.x + this.columns[index-1].width, this.doc.y, { width: this.columns[index].width, align: 'left' });
+                this.addCheckbox(element, index);
+            }
+            else{
+                this.doc.y = currentY;
+                this.doc.text(element.title, this.doc.x, this.doc.y, { width: this.columns[index].width, align: 'center' });
                 if(this.doc.y > greatestY){
                     greatestY = this.doc.y;
                 }
             }
-            else{
+        }
+        else{
+            if(!_.isUndefined(this.columns[index].type) && this.columns[index].type == 'checkbox'){
                 this.doc.y = currentY;
-                this.doc.text(element.title, this.doc.x + this.columns[index-1].width, this.doc.y);
-                if(this.doc.y > greatestY){
-                    greatestY = this.doc.y;
+                this.addCheckbox(element, index);
+            }
+            else{
+                if(this.columns[index].width !== 0){
+                    this.doc.y = currentY;
+                    this.doc.text(element.title, this.doc.x + this.columns[index-1].width, this.doc.y, { width: this.columns[index].width, align: 'center' });
+                    if(this.doc.y > greatestY){
+                        greatestY = this.doc.y;
+                    }
+                }
+                else{
+                    this.doc.y = currentY;
+                    this.doc.text(element.title, this.doc.x + this.columns[index-1].width, this.doc.y);
+                    if(this.doc.y > greatestY){
+                        greatestY = this.doc.y;
+                    }
                 }
             }
 

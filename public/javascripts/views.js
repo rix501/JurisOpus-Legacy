@@ -1,6 +1,5 @@
 //Views and Router
 $(document).ready(function(){
-
     function SetDatepickers(datepickers, leftCoordinate, topCoordinate){
         _.forEach(datepickers, function(datepicker){
             $(datepicker).datepicker({
@@ -598,7 +597,6 @@ $(document).ready(function(){
     window.ContainerInformesView = ContainerView.extend({
         template:  _.template($("#container-informes-template").html()),
         events: {
-            'click .print':'print',
             'click .mod' : 'modal',
             'click .redirect':'redirect'
         },
@@ -606,7 +604,7 @@ $(document).ready(function(){
               App.navigate('/informes/'+event.target.id ,true);
         },
         initialize: function() {
-            _.bindAll(this, 'render');
+            _.bindAll(this, 'render', 'modal', 'print');
             $('li.active').removeClass('active');
             $('li.informes').addClass('active');
         },
@@ -615,7 +613,7 @@ $(document).ready(function(){
             
             var template = $.trim(classList.replace(/mod/i,'').replace(/btn-primary/i,'').replace(/btn/i,''));
 
-            $('#' + template + '-modal').modal('show');
+            this.$el.find('#' + template + '-modal').modal('show');
         },
         print: function(event){ 
             var informesString = "";
@@ -632,7 +630,7 @@ $(document).ready(function(){
             //It's a modal
             if(event.target.parentNode.className.search(/modal/i) >= 0  ){
                 isModal = true;
-                modal = this.$el.find('#actualizar-bulk-modal');
+                modal = this.$el.find('#' + template + '-modal');
                 
                 var args = "";
                 
@@ -675,7 +673,7 @@ $(document).ready(function(){
                 
                 $(modal).find('.print').click(that.print);
                 
-                var datepickers = $(that.el).find(".datepicker");
+                var datepickers = that.$el.find(".datepicker");
                 SetDatepickers(datepickers, 0, 28);
             });
             
@@ -730,6 +728,7 @@ $(document).ready(function(){
                 this.oTable.fnAddData(data);
                 this.oTable.fnAdjustColumnSizing();
                 this.oTable.fnDraw();
+                $('.dataTables_wrapper .action').addClass('disabled');
             }
         },
         loadTable: function(type, data, options){
@@ -1097,7 +1096,7 @@ $(document).ready(function(){
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            this.saveBulk(ids, args, {
+            this.collection.saveModal(ids, args, {
                 success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
@@ -1106,6 +1105,7 @@ $(document).ready(function(){
                     .show();
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
+                        this.filterTable(this.filterData());
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1221,15 +1221,14 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
+            var args = {
+                caso: $('#caso').val(),
                 sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+                primeraComparecencia: $('#fecha').val(),
+                hora: $('#hora').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1238,36 +1237,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1346,15 +1343,13 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
-                sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+            var args = {
+                //haLugar - desistido
+                segundaComparecencia: $('#segundaComparecencia').val(),
+                observaciones: $('#observaciones').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1363,36 +1358,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1494,15 +1487,11 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
-                sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+            var args = {
+                sentencia: $('#fecha').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1511,36 +1500,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1619,15 +1606,14 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
+            var args = {
+                //caso: $('#caso').val(),
                 sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+                primeraComparecencia: $('#fecha').val(),
+                hora: $('#hora').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1636,36 +1622,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1744,15 +1728,14 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
+            var args = {
+                //caso: $('#caso').val(),
                 sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+                primeraComparecencia: $('#fecha').val(),
+                hora: $('#hora').val()
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1761,36 +1744,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
             
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){
@@ -1869,15 +1850,11 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
-            var args;
-            
-            args = {
-                hora: $('#hora').val(),
-                sala: $('#sala').val(),
-                fecha: $('#fecha').val()
+            var args = {
+                completado: $('#completado:checked').length
             };
             
-            var url = "/casos/";
+            var ids = '';
             
             $("#casos-table .row_selected").each(function(){
                 var id = $(this)
@@ -1886,36 +1863,34 @@ $(document).ready(function(){
                 .replace(/odd/i, '')
                 .replace(/even/i, '')
                 .trim();
-                url += id + ",";
+                ids += id + ",";
             });
             
-            url = url.substring(0, url.length - 1);
+            ids = ids.substring(0, ids.length - 1);
             
             var submitSpinner = this.getSpinner();
             submitSpinner.spin($('.modal-footer .spinner')[0]);
-            
-            $.ajax({
-                type: "put",
-                url: url,
-                data: args,
-                success: function(data){
+
+            this.collection.saveModal(ids, args, {
+                success: _.bind(function(data){
                     submitSpinner.stop(); 
                     $(modal).find('.modal-footer .label')
-                     .attr('class','label success')
-                     .html('Guardado')
-                     .show();
-                    window.setTimeout(function(){
+                    .attr('class','label success')
+                    .html('Guardado')
+                    .show();
+                    window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
-                    }.bind(this), 2000);
-                },
-                error: function(err){
+                        this.filterTable(this.filterData());
+                    }, this), 2000);
+                }, this),
+                error: _.bind(function(err){
                     console.log(err);
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
                     .show();
                     submitSpinner.stop();
-                }
+                }, this)
             });
         },
         filterData: function(){

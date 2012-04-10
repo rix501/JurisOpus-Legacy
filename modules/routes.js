@@ -270,10 +270,28 @@ exports.setup = function(app, Models){
             observaciones:'123',
             primeraComparecencia:'123',
             sala:'123',
-            hora: '123'
+            hora: '123',
+            completado: '0',
+            lanzamiento: '0000-00-00',
+            fechaEjecutar: '0000-00-00'
+        },
+        { 
+            caso: '123',
+            residencial: '123',
+            nombre: '123',
+            edificio:'123',
+            apartamento:'123',
+            causalIniciales:'123',
+            observaciones:'123',
+            primeraComparecencia:'123',
+            sala:'123',
+            hora: '123',
+            completado: '1',
+            lanzamiento: '0000-00-00',
+            fechaEjecutar: '0000-00-00'
         }];
 
-        var pdf = pdfFactory('informes', 'informedevistas', data, function(output){
+        var pdf = pdfFactory('informes', 'informependientedeejecucion', data, function(output){
             res.header('Content-type','application/pdf');
             res.end(output, 'binary');
         });     

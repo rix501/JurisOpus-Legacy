@@ -1,9 +1,26 @@
 var _ = require('underscore');
 
-var variableToColumn = {
-    presentacion: 'presentacion'
-};
+var dateFormatEN = '%m-%d-%Y';
+var dateFormatSP = '%d-%m-%Y';
+var hourFormat = '%l:%i %p';
 
+var variableToColumn = {
+    presentacion: "presentacion = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    completado: "completado = ?",
+    ultimoReexamen: "ultimo_reexamen = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    incumplimiento: "incumplimiento = ?",
+    caso: "caso = ?",
+    sala: "sala = ?",
+    hora: "hora = STR_TO_DATE(?, '" + hourFormat + "')",
+    primeraComparecencia: "primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    segundaComparecencia: "segunda_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    vistaEnSuFondo: "vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    sentencia: "sentencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    lanzamiento: "lanzamiento = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    observaciones: "observaciones = ?",
+    rediligenciar: "rediligenciar = ?",
+    ejecutar: "ejecutar = ?"
+};
 
 module.exports = {
     getCasos: function(){
@@ -20,7 +37,7 @@ module.exports = {
                apartamento AS 'apartamento', \
                area AS 'area', \
                nombre AS 'nombre', \
-               DATE_FORMAT(caso_recibido, '%m-%d-%Y') AS 'casoRecibido', \
+               DATE_FORMAT(caso_recibido, '" + dateFormatEN + "') AS 'casoRecibido', \
                seleccionado AS 'seleccionado', \
                completado AS 'completado', \
                ca.causal AS 'causalId', \
@@ -38,21 +55,21 @@ module.exports = {
                meses_adeudados AS 'mesesAdeudados', \
                deuda_renta AS 'deudaRenta', \
                deuda_renta_negativa AS 'deudaRentaNegativa', \
-               DATE_FORMAT(deuda_recibida, '%m-%d-%Y') AS 'deudaRecibida', \
+               DATE_FORMAT(deuda_recibida, '" + dateFormatEN + "') AS 'deudaRecibida', \
                deuda_total AS 'deudaTotal', \
-               DATE_FORMAT(ultimo_reexamen, '%m-%d-%Y') AS 'ultimoReexamen', \
+               DATE_FORMAT(ultimo_reexamen, '" + dateFormatEN + "') AS 'ultimoReexamen', \
                incumplimiento AS 'incumplimiento', \
                caso AS 'caso', \
-               DATE_FORMAT(presentacion, '%m-%d-%Y') AS 'presentacion', \
+               DATE_FORMAT(presentacion, '" + dateFormatEN + "') AS 'presentacion', \
                diligenciado AS 'diligenciado', \
                diligenciado_en AS 'diligenciadoEn', \
                sala AS 'sala', \
-               DATE_FORMAT(hora, '%l:%i %p') AS 'hora', \
-               DATE_FORMAT(primera_comparecencia, '%m-%d-%Y') AS 'primeraComparecencia', \
-               DATE_FORMAT(segunda_comparecencia, '%m-%d-%Y') AS 'segundaComparecencia', \
-               DATE_FORMAT(vista_en_su_fondo, '%m-%d-%Y') AS 'vistaEnSuFondo', \
-               DATE_FORMAT(sentencia, '%m-%d-%Y') AS 'sentencia', \
-               DATE_FORMAT(lanzamiento, '%m-%d-%Y') AS 'lanzamiento', \
+               DATE_FORMAT(hora, '" + hourFormat + "') AS 'hora', \
+               DATE_FORMAT(primera_comparecencia, '" + dateFormatEN + "') AS 'primeraComparecencia', \
+               DATE_FORMAT(segunda_comparecencia, '" + dateFormatEN + "') AS 'segundaComparecencia', \
+               DATE_FORMAT(vista_en_su_fondo, '" + dateFormatEN + "') AS 'vistaEnSuFondo', \
+               DATE_FORMAT(sentencia, '" + dateFormatEN + "') AS 'sentencia', \
+               DATE_FORMAT(lanzamiento, '" + dateFormatEN + "') AS 'lanzamiento', \
                observaciones AS 'observaciones',\
                rediligenciar AS 'rediligenciar', \
                desistido AS 'desistido', \
@@ -96,7 +113,7 @@ module.exports = {
             	apartamento AS 'apartamento', \
             	area AS 'area', \
             	nombre AS 'nombre', \
-            	DATE_FORMAT(caso_recibido, '%d-%m-%Y') AS 'casoRecibido', \
+            	DATE_FORMAT(caso_recibido, '" + dateFormatSP + "') AS 'casoRecibido', \
             	seleccionado AS 'seleccionado', \
             	completado AS 'completado', \
             	( SELECT \
@@ -108,21 +125,21 @@ module.exports = {
             	meses_adeudados AS 'mesesAdeudados', \
             	deuda_renta AS 'deudaRenta', \
             	deuda_renta_negativa AS 'deudaRentaNegativa', \
-            	DATE_FORMAT(deuda_recibida, '%d-%m-%Y') AS 'deudaRecibida', \
+            	DATE_FORMAT(deuda_recibida, '" + dateFormatSP + "') AS 'deudaRecibida', \
             	deuda_total AS 'deudaTotal', \
-            	DATE_FORMAT(ultimo_reexamen, '%d-%m-%Y') AS 'ultimoReexamen', \
+            	DATE_FORMAT(ultimo_reexamen, '" + dateFormatSP + "') AS 'ultimoReexamen', \
             	incumplimiento AS 'incumplimiento', \
             	caso AS 'caso', \
-            	DATE_FORMAT(presentacion, '%d-%m-%Y') AS 'presentacion', \
+            	DATE_FORMAT(presentacion, '" + dateFormatSP + "') AS 'presentacion', \
             	diligenciado AS 'diligenciado', \
-            	DATE_FORMAT(diligenciado_en, '%d-%m-%Y') AS 'diligenciadoEn', \
+            	DATE_FORMAT(diligenciado_en, '" + dateFormatSP + "') AS 'diligenciadoEn', \
             	sala AS 'sala', \
-            	DATE_FORMAT(hora, '%l:%i %p') AS 'hora', \
-            	DATE_FORMAT(primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia', \
-            	DATE_FORMAT(segunda_comparecencia, '%d-%m-%Y') AS 'segundaComparecencia', \
-            	DATE_FORMAT(vista_en_su_fondo, '%d-%m-%Y') AS 'vistaEnSuFondo', \
-            	DATE_FORMAT(sentencia, '%d-%m-%Y') AS 'sentencia', \
-            	DATE_FORMAT(lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
+            	DATE_FORMAT(hora, '" + hourFormat + "') AS 'hora', \
+            	DATE_FORMAT(primera_comparecencia, '" + dateFormatSP + "') AS 'primeraComparecencia', \
+            	DATE_FORMAT(segunda_comparecencia, '" + dateFormatSP + "') AS 'segundaComparecencia', \
+            	DATE_FORMAT(vista_en_su_fondo, '" + dateFormatSP + "') AS 'vistaEnSuFondo', \
+            	DATE_FORMAT(sentencia, '" + dateFormatSP + "') AS 'sentencia', \
+            	DATE_FORMAT(lanzamiento, '" + dateFormatSP + "') AS 'lanzamiento', \
             	observaciones AS 'observaciones'\
             FROM Casos ca\
             WHERE ca.id REGEXP ?;",
@@ -147,7 +164,7 @@ module.exports = {
             	apartamento AS 'apartamento', \
             	area AS 'area', \
             	nombre AS 'nombre', \
-            	DATE_FORMAT(caso_recibido, '%d-%m-%Y') AS 'casoRecibido', \
+            	DATE_FORMAT(caso_recibido, '" + dateFormatSP + "') AS 'casoRecibido', \
             	seleccionado AS 'seleccionado', \
             	completado AS 'completado', \
             	( SELECT \
@@ -164,24 +181,24 @@ module.exports = {
             	meses_adeudados AS 'mesesAdeudados', \
             	deuda_renta AS 'deudaRenta', \
             	deuda_renta_negativa AS 'deudaRentaNegativa', \
-            	DATE_FORMAT(deuda_recibida, '%d-%m-%Y') AS 'deudaRecibida', \
+            	DATE_FORMAT(deuda_recibida, '" + dateFormatSP + "') AS 'deudaRecibida', \
             	deuda_total AS 'deudaTotal', \
-            	DATE_FORMAT(ultimo_reexamen, '%d-%m-%Y') AS 'ultimoReexamen', \
+            	DATE_FORMAT(ultimo_reexamen, '" + dateFormatSP + "') AS 'ultimoReexamen', \
             	incumplimiento AS 'incumplimiento', \
             	caso AS 'caso', \
-            	DATE_FORMAT(presentacion, '%d-%m-%Y') AS 'presentacion', \
+            	DATE_FORMAT(presentacion, '" + dateFormatSP + "') AS 'presentacion', \
             	diligenciado AS 'diligenciado', \
-            	DATE_FORMAT(diligenciado_en, '%d-%m-%Y') AS 'diligenciadoEn', \
+            	DATE_FORMAT(diligenciado_en, '" + dateFormatSP + "') AS 'diligenciadoEn', \
             	sala AS 'sala', \
-            	DATE_FORMAT(hora, '%l:%i %p') AS 'hora', \
-            	DATE_FORMAT(primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia', \
-            	DATE_FORMAT(segunda_comparecencia, '%d-%m-%Y') AS 'segundaComparecencia', \
-            	DATE_FORMAT(vista_en_su_fondo, '%d-%m-%Y') AS 'vistaEnSuFondo', \
-            	DATE_FORMAT(sentencia, '%d-%m-%Y') AS 'sentencia', \
-            	DATE_FORMAT(lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
+            	DATE_FORMAT(hora, '" + hourFormat + "') AS 'hora', \
+            	DATE_FORMAT(primera_comparecencia, '" + dateFormatSP + "') AS 'primeraComparecencia', \
+            	DATE_FORMAT(segunda_comparecencia, '" + dateFormatSP + "') AS 'segundaComparecencia', \
+            	DATE_FORMAT(vista_en_su_fondo, '" + dateFormatSP + "') AS 'vistaEnSuFondo', \
+            	DATE_FORMAT(sentencia, '" + dateFormatSP + "') AS 'sentencia', \
+            	DATE_FORMAT(lanzamiento, '" + dateFormatSP + "') AS 'lanzamiento', \
             	observaciones AS 'observaciones'\
             FROM Casos ca\
-            WHERE primera_comparecencia = STR_TO_DATE(?, '%m-%d-%Y');",
+            WHERE primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "');",
             args: [fecha]
         }
     },
@@ -203,17 +220,17 @@ module.exports = {
                     WHERE cau.id = ca.causal\
                 )  AS 'causal',  \
                 ca.sala, \
-                DATE_FORMAT(ca.presentacion, '%d-%m-%Y') AS 'presentacion', \
+                DATE_FORMAT(ca.presentacion, '" + dateFormatSP + "') AS 'presentacion', \
                 ca.caso, \
                 ca.diligenciado, \
-                DATE_FORMAT(ca.hora, '%l:%i %p') as 'hora', \
-                DATE_FORMAT(ca.primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia',  \
+                DATE_FORMAT(ca.hora, '" + hourFormat + "') as 'hora', \
+                DATE_FORMAT(ca.primera_comparecencia, '" + dateFormatSP + "') AS 'primeraComparecencia',  \
                 ca.completado\
             FROM Casos ca\
             WHERE ca.seleccionado = 1 \
             AND ca.caso IS NOT NULL\
             AND ca.diligenciado = 0\
-            AND ca.primera_comparecencia = STR_TO_DATE(?, '%m-%d-%Y') \
+            AND ca.primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "') \
             AND ca.completado = 0\
             ORDER BY ca.caso; ",
             args: [fecha]
@@ -233,10 +250,10 @@ module.exports = {
                 ca.nombre, \
                 ca.observaciones, \
                 ca.completado, \
-                DATE_FORMAT(ca.sentencia, '%d-%m-%Y') AS 'sentencia', \
+                DATE_FORMAT(ca.sentencia, '" + dateFormatSP + "') AS 'sentencia', \
                 ca.ejecutar, \
-                DATE_FORMAT(ca.lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
-                DATE_FORMAT(DATE_ADD(ca.sentencia, INTERVAL 50 DAY), '%d-%m-%Y') AS fechaEjecutar, \
+                DATE_FORMAT(ca.lanzamiento, '" + dateFormatSP + "') AS 'lanzamiento', \
+                DATE_FORMAT(DATE_ADD(ca.sentencia, INTERVAL 50 DAY), '" + dateFormatSP + "') AS fechaEjecutar, \
                 ca.desistido\
             FROM Casos ca\
             GROUP BY \
@@ -284,12 +301,12 @@ module.exports = {
                 )  AS 'causalIniciales', \
                 ca.incumplimiento, \
                 ca.sala, \
-                DATE_FORMAT(ca.presentacion, '%d-%m-%Y') AS 'presentacion', \
-                DATE_FORMAT(ca.primera_comparecencia, '%d-%m-%Y') AS 'primera_comparecencia', \
+                DATE_FORMAT(ca.presentacion, '" + dateFormatSP + "') AS 'presentacion', \
+                DATE_FORMAT(ca.primera_comparecencia, '" + dateFormatSP + "') AS 'primera_comparecencia', \
                 ca.caso, \
                 ca.Diligenciado, \
                 ca.completado, \
-                DATE_FORMAT(ca.ingresado, '%d-%m-%Y') AS 'ingresado'\
+                DATE_FORMAT(ca.ingresado, '" + dateFormatSP + "') AS 'ingresado'\
             FROM Casos ca\
             WHERE ca.seleccionado = 1\
             AND (ca.caso IS Null OR ca.caso = '')\
@@ -311,7 +328,7 @@ module.exports = {
                 ca.apartamento, \
                 ca.caso, \
                 ca.sala, \
-                DATE_FORMAT(ca.hora, '%l:%i %p') AS 'hora', \
+                DATE_FORMAT(ca.hora, '" + hourFormat + "') AS 'hora', \
                 ( SELECT \
                         cau.causal\
                     FROM Causales cau\
@@ -322,13 +339,13 @@ module.exports = {
                     FROM Causales cau\
                     WHERE cau.id = ca.causal\
                 )  AS 'causalIniciales', \
-                DATE_FORMAT(ca.presentacion, '%d-%m-%Y') AS 'presentacion', \
-                DATE_FORMAT(ca.primera_comparecencia, '%d-%m-%Y') AS 'primeraComparecencia',\
-                DATE_FORMAT(ca.segunda_comparecencia, '%d-%m-%Y') AS 'segundaComparecencia',\
-                DATE_FORMAT(ca.vista_en_su_fondo, '%d-%m-%Y') AS 'vistaEnSuFondo',\
-                DATE_FORMAT(ca.sentencia, '%d-%m-%Y') AS 'sentencia', \
+                DATE_FORMAT(ca.presentacion, '" + dateFormatSP + "') AS 'presentacion', \
+                DATE_FORMAT(ca.primera_comparecencia, '" + dateFormatSP + "') AS 'primeraComparecencia',\
+                DATE_FORMAT(ca.segunda_comparecencia, '" + dateFormatSP + "') AS 'segundaComparecencia',\
+                DATE_FORMAT(ca.vista_en_su_fondo, '" + dateFormatSP + "') AS 'vistaEnSuFondo',\
+                DATE_FORMAT(ca.sentencia, '" + dateFormatSP + "') AS 'sentencia', \
                 ca.completado, \
-                DATE_FORMAT(ca.lanzamiento, '%d-%m-%Y') AS 'lanzamiento', \
+                DATE_FORMAT(ca.lanzamiento, '" + dateFormatSP + "') AS 'lanzamiento', \
                 ca.observaciones, \
                 ca.desistido\
             FROM Casos ca\
@@ -480,7 +497,7 @@ module.exports = {
             	?, \
             	?, \
             	?,\
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
             	?, \
             	?, \
             	?, \
@@ -488,21 +505,21 @@ module.exports = {
             	?, \
             	?, \
             	?, \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
             	?, \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
-            	?, \
-            	?, \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
             	?, \
             	?, \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
             	?, \
-                STR_TO_DATE(?, '%l:%i %p'), \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
-            	STR_TO_DATE(?, '%m-%d-%Y'), \
+            	?, \
+            	?, \
+                STR_TO_DATE(?, '" + hourFormat + "'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
+            	STR_TO_DATE(?, '" + dateFormatEN + "'), \
             	?\
             );",
             args: [
@@ -547,7 +564,7 @@ module.exports = {
             	apartamento = ? , \
             	area = ? , \
             	nombre = ? , \
-            	caso_recibido = ? , \
+            	caso_recibido = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	seleccionado = ? , \
             	completado = ? , \
             	causal = ? , \
@@ -555,21 +572,21 @@ module.exports = {
             	meses_adeudados = ? , \
             	deuda_renta = ? , \
             	deuda_renta_negativa = ? , \
-            	deuda_recibida = ? , \
+            	deuda_recibida = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	deuda_total = ? , \
-            	ultimo_reexamen = ? , \
+            	ultimo_reexamen = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	incumplimiento = ? , \
             	caso = ? , \
-            	presentacion = ? , \
+            	presentacion = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	diligenciado = ? , \
-            	diligenciado_en = ? , \
+            	diligenciado_en = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	sala = ? , \
-            	hora = ? , \
-            	primera_comparecencia = ? , \
-            	segunda_comparecencia = ? , \
-            	vista_en_su_fondo = ? , \
-            	sentencia = ? , \
-            	lanzamiento = ? , \
+            	hora = STR_TO_DATE(?, '" + hourFormat + "') , \
+            	primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "') , \
+            	segunda_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "') , \
+            	vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "') , \
+            	sentencia = STR_TO_DATE(?, '" + dateFormatEN + "') , \
+            	lanzamiento = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	observaciones = ? ,\
             	rediligenciar = ? ,\
             	ejecutar = ? \
@@ -622,24 +639,26 @@ module.exports = {
         
         idsRegex += ')$';
         
-        var query = "UPDATE Casos\
-        SET ";
+        var updateArgsClause = '';
+        var argsArray = [];
+
+        _.each(args, function(value, arg){
+            updateArgsClause += ' ' + variableToColumn[arg] + ' ,';
+            argsArray.push(value);
+        });
+
+        updateArgsClause = updateArgsClause.substring(0, updateArgsClause.length - 1);
+        argsArray.push(idsRegex);
+
+        var query = 'UPDATE Casos SET ';
         
-        (_.isEmpty(dia)) ? " " : query += " presentacion = ? , ";
-        (_.isEmpty(sala)) ? " " : query += " sala = ? , "; 
-        (_.isEmpty(hora)) ? " " : query += " hora = ?  "; 
+        query += updateArgsClause;
         
-        query += "WHERE\
-        Casos.id REGEXP ?;";
+        query += ' WHERE Casos.id REGEXP ?;';
         
         return {
             query: query,
-            args: [
-            	dia, 
-            	sala, 
-            	hora, 
-            	idsRegex
-            ]
+            args: argsArray
         }
     },
     getSearchCasosNombre: function(nombre){

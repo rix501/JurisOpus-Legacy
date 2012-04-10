@@ -158,7 +158,7 @@ module.exports = function(Backbone, Models) {
             this.fetch(options);
         },
         bulkEdit: function(query, options){
-            var q = queries.updateBulk(query.ids, query.data.sala, query.data.fecha, query.data.hora);
+            var q = queries.updateBulk(query.ids, query.data);
             options.query = q.query;
             options.args = q.args;
                     
