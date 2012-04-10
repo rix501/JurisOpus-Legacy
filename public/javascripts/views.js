@@ -671,11 +671,11 @@ $(document).ready(function(){
                     $(modal).modal('hide');
                 });
                 
-                $(modal).find('.print').click(that.print);
-                
                 var datepickers = that.$el.find(".datepicker");
                 SetDatepickers(datepickers, 0, 28);
             });
+
+            this.$el.find('.print').click(this.print);
             
             return this;                
         }
