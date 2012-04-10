@@ -58,8 +58,6 @@ PDFTable.prototype.addCheckbox = function(element, index){
     var y = this.doc.y;
     var margin = (this.columns[index].width - delta)/2;
 
-    console.log(x, y, delta, margin);
-
     this.doc.moveTo(x + margin, y)
     .lineWidth(1)
     .lineTo(x + margin + delta , y)

@@ -257,8 +257,11 @@ exports.setup = function(app, Models){
     });
     
     app.get('/pdfTest', function(req,res){
-        if(process.env.NODE_ENV == 'production')
+        if(process.env.NODE_ENV == 'production'){
             res.send('Nothing to report');
+            return;
+        }
+            
 
         var data = [{ 
             caso: '123',
