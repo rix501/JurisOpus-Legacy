@@ -1979,7 +1979,7 @@ $(document).ready(function(){
     window.ContainerDemandasActualizarTodosView = ContainerCasosTableView.extend({
         template:  _.template($("#container-demandas-actualizar-todos-template").html()),
         initialize: function() {
-            _.bindAll(this, 'render', 'select', 'selectRow','loadTable');
+            _.bindAll(this, 'render', 'selectRow','loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
         },
