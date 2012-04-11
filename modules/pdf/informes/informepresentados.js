@@ -54,27 +54,33 @@ module.exports = function(informe){
         var columns = [
             {
                 title: "Residencial",
-                width: 140
+                width: 140,
+                align: 'center'
             },
             {
                 title: "Edif",
-                width: 30
+                width: 30,
+                align: 'center'
             },
             {
                 title: "Apto",
-                width: 30
+                width: 30,
+                align: 'center'
             },
             {
                 title: "Nombre",
-                width: 110
+                width: 110,
+                align: 'center'
             },
             {
                 title: "Causal",
-                width: 70
+                width: 70,
+                align: 'center'
             },
             {
                 title: "Presentacion",
-                width: 80
+                width: 80,
+                align: 'center'
             }
         ];
 

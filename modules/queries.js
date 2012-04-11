@@ -205,6 +205,8 @@ module.exports = {
         }
     },
     getCasosInformeParaDiligenciar: function(fecha){
+        // ca.seleccionado = 1 \
+
         return {
             query: "SELECT \
                 ca.seleccionado, \
@@ -221,6 +223,11 @@ module.exports = {
                     FROM Causales cau\
                     WHERE cau.id = ca.causal\
                 )  AS 'causal',  \
+                ( SELECT \
+                        `siglas`\
+                    FROM Causales cau\
+                    WHERE cau.id = ca.causal\
+                )  AS 'causalIniciales', \
                 ca.sala, \
                 DATE_FORMAT(ca.presentacion, '" + dateFormatSP + "') AS 'presentacion', \
                 ca.caso, \
@@ -229,8 +236,7 @@ module.exports = {
                 DATE_FORMAT(ca.primera_comparecencia, '" + dateFormatSP + "') AS 'primeraComparecencia',  \
                 ca.completado\
             FROM Casos ca\
-            WHERE ca.seleccionado = 1 \
-            AND ca.caso IS NOT NULL\
+            WHERE (ca.caso IS NOT NULL AND ca.caso <> '')\
             AND ca.diligenciado = 0\
             AND ca.primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "') \
             AND ca.completado = 0\
@@ -239,6 +245,8 @@ module.exports = {
         }
     },
     getCasosInformePendienteDeEjecucion: function(){
+        var fechaEjecutar = 50;
+
         return {
             query: "SELECT \
                 ca.caso, \
@@ -255,7 +263,7 @@ module.exports = {
                 DATE_FORMAT(ca.sentencia, '" + dateFormatSP + "') AS 'sentencia', \
                 ca.ejecutar, \
                 DATE_FORMAT(ca.lanzamiento, '" + dateFormatSP + "') AS 'lanzamiento', \
-                DATE_FORMAT(DATE_ADD(ca.sentencia, INTERVAL 50 DAY), '" + dateFormatSP + "') AS fechaEjecutar, \
+                DATE_FORMAT(DATE_ADD(ca.sentencia, INTERVAL " + fechaEjecutar + " DAY), '" + dateFormatSP + "') AS fechaEjecutar, \
                 ca.desistido\
             FROM Casos ca\
             GROUP BY \
@@ -269,17 +277,19 @@ module.exports = {
                 ca.sentencia, \
                 ca.ejecutar, \
                 ca.lanzamiento, \
-                DATE_ADD(ca.sentencia, INTERVAL 50 DAY), \
+                DATE_ADD(ca.sentencia, INTERVAL " + fechaEjecutar + " DAY), \
                 ca.Desistido\
             HAVING ca.completado = 0\
             AND ca.sentencia <> '0000-00-00'\
             AND ca.lanzamiento = '0000-00-00'\
             AND (ca.desistido = 0 OR ca.desistido IS NULL)\
-            ORDER BY DATE_ADD(ca.sentencia, INTERVAL 50 DAY);",
+            ORDER BY DATE_ADD(ca.sentencia, INTERVAL " + fechaEjecutar + " DAY);",
             args: []
         }
     },
     getCasosInformePresentados: function(){
+        //ca.seleccionado = 1\
+
         return {
             query: "SELECT \
                 ca.seleccionado, \
@@ -306,12 +316,11 @@ module.exports = {
                 DATE_FORMAT(ca.presentacion, '" + dateFormatSP + "') AS 'presentacion', \
                 DATE_FORMAT(ca.primera_comparecencia, '" + dateFormatSP + "') AS 'primera_comparecencia', \
                 ca.caso, \
-                ca.Diligenciado, \
+                ca.diligenciado, \
                 ca.completado, \
                 DATE_FORMAT(ca.ingresado, '" + dateFormatSP + "') AS 'ingresado'\
             FROM Casos ca\
-            WHERE ca.seleccionado = 1\
-            AND (ca.caso IS Null OR ca.caso = '')\
+            WHERE (ca.caso IS Null OR ca.caso = '')\
             AND ca.completado = 0;",
             args: []
         }

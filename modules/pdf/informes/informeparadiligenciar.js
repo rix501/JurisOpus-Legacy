@@ -54,39 +54,49 @@ module.exports = function(informe){
 	    var columns = [
 	        {
 	            title: "Residencial",
-	            width: 140
+	            width: 140,
+	            align: 'left'
 	        },
 	        {
 	            title: "Edificio",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },
 	        {
 	            title: "Apto",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },
 	        {
 	            title: "Nombre",
-	            width: 130
+	            width: 130,
+	            align: 'left'
 	        },
 	        {
 	            title: "Presentacion",
-	            width: 80
+	            width: 80,
+	            align: 'center'
 	        },
 	        {
 	            title: "Diligenciado",
-	            width: 80
+	            width: 80,
+	            align: 'center',
+	            type: 'checkbox'
 	        },
 	        {
 	            title: "Caso",
-	            width: 80
+	            width: 80,
+	            align: 'center'
 	        },
 	        {
 	            title: "1ra Comp.",
-	            width: 90
+	            width: 90,
+	            align: 'center'
 	        },
 	        {
 	            title: "Causal",
-	            width: 70
+	            width: 70,
+	            align: 'center'
 	        }
 	    ];
 
