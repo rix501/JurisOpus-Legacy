@@ -687,7 +687,7 @@ $(document).ready(function(){
         },
         selectNav: function(event){
             event.preventDefault();
-            $('.nav li.active').removeClass('active');
+            this.$el.find('.nav li.active').removeClass('active');
             
             var liNode = $(event.target).parent('li');
             
@@ -711,12 +711,12 @@ $(document).ready(function(){
         },
         deselectRows: function(){
             $('.dataTables_wrapper .action').addClass('disabled');
-            $('tr').removeClass('row_selected');
+            $('#casos-table tbody tr').removeClass('row_selected');
         },
         selectRows: function(){
             if(!$('td').hasClass('dataTables_empty')){
                 $('.dataTables_wrapper .action').removeClass('disabled');
-                $('tr').addClass('row_selected');
+                $('#casos-table tbody tr').addClass('row_selected');
             }
         },
         assignRow: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -1106,6 +1106,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1202,6 +1203,9 @@ $(document).ready(function(){
             var $selectRow = $('#casos-table .row_selected');
             
             if($selectRow.length === 1){
+                $('#caso-label').css('display','block');
+                $('#caso').css('display','block');
+
                 $('#actualizar-bulk-modal').removeClass('hide');
                                     
                 if(!$('#actualizar-bulk-modal').hasClass('in'))
@@ -1210,6 +1214,9 @@ $(document).ready(function(){
                 $('#actualizar-bulk-modal').modal('show'); 
             }
             else{
+                $('#caso-label').css('display','none');
+                $('#caso').css('display','none');
+
                 $('#actualizar-bulk-modal').removeClass('hide');
                                     
                 if(!$('#actualizar-bulk-modal').hasClass('in'))
@@ -1255,6 +1262,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1323,6 +1331,9 @@ $(document).ready(function(){
             
             var $selectRow = $('#casos-table .row_selected');
             
+            $('#haLugar').removeAttr('checked');
+            $('#desistido').removeAttr('checked');
+
             if($selectRow.length === 1){
                 $('#actualizar-bulk-modal').removeClass('hide');
                                     
@@ -1344,7 +1355,8 @@ $(document).ready(function(){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args = {
-                //haLugar - desistido
+                haLugar: $('#haLugar:checked').length,
+                desistido: $('#desistido:checked').length,
                 segundaComparecencia: $('#segundaComparecencia').val(),
                 observaciones: $('#observaciones').val()
             };
@@ -1376,6 +1388,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1518,6 +1531,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1586,6 +1600,9 @@ $(document).ready(function(){
             
             var $selectRow = $('#casos-table .row_selected');
             
+            //Always switch back to haLugar
+            $('#haLugar').attr('checked', 'checked')
+
             if($selectRow.length === 1){
                 $('#actualizar-bulk-modal').removeClass('hide');
                                     
@@ -1607,7 +1624,8 @@ $(document).ready(function(){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args = {
-                //caso: $('#caso').val(),
+                haLugar: $('#haLugar:checked').length,
+                desistido: $('#desistido:checked').length,
                 sala: $('#sala').val(),
                 primeraComparecencia: $('#fecha').val(),
                 hora: $('#hora').val()
@@ -1640,6 +1658,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1762,6 +1781,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1820,16 +1840,24 @@ $(document).ready(function(){
     window.ContainerDemandasActualizarCompletadoView = ContainerCasosTableView.extend({
         template:  _.template($("#container-demandas-actualizar-completado-template").html()),
         initialize: function() {
-            _.bindAll(this, 'render', 'selectRow','loadTable', 'modalEdit');
+            _.bindAll(this, 'render', 'selectRow','loadTable', 'modalEdit', 'editRow');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
         },
+        navType: 'compl',
         editRow: function(event){
             if($('.dataTables_wrapper .action').hasClass('disabled'))
                 return;
             
             var $selectRow = $('#casos-table .row_selected');
             
+            if(this.navType == 'compl'){
+                $('#completado').attr('checked', 'checked');
+            }
+            else{
+                $('#completado').removeAttr('checked');
+            }
+  
             if($selectRow.length === 1){
                 $('#actualizar-bulk-modal').removeClass('hide');
                                     
@@ -1846,6 +1874,17 @@ $(document).ready(function(){
             
                 $('#actualizar-bulk-modal').modal('show');
             }
+        },
+        selectNav: function(event){
+            this.navType = ContainerCasosTableView.prototype.selectNav.call(this, event);
+            var marked = false;
+
+            if(this.navType == 'compl'){
+                marked = true;
+            }
+
+            this.filterTable(this.filterData(marked));
+            $('.dataTables_wrapper .action').addClass('disabled');
         },
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
@@ -1881,6 +1920,7 @@ $(document).ready(function(){
                     window.setTimeout(_.bind(function(){
                         $(modal).modal('hide');
                         this.filterTable(this.filterData());
+                        this.$el.find('.form-vertical')[0].reset();
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
@@ -1893,11 +1933,11 @@ $(document).ready(function(){
                 }, this)
             });
         },
-        filterData: function(){
-            return this.collection.filterCompletado();
+        filterData: function(marked){
+            return this.collection.filterCompletado(marked);
         },
         loadTable: function(collection, resp){
-            var data = this.filterData();
+            var data = this.filterData(true);
             var options = {};
             ContainerCasosTableView.prototype.loadTable.call(this, 'actualizar', data, options);
 
@@ -1939,7 +1979,7 @@ $(document).ready(function(){
     window.ContainerDemandasActualizarTodosView = ContainerCasosTableView.extend({
         template:  _.template($("#container-demandas-actualizar-todos-template").html()),
         initialize: function() {
-            _.bindAll(this, 'render', 'selectRow','loadTable');
+            _.bindAll(this, 'render', 'select', 'selectRow','loadTable');
             $('li.active').removeClass('active');
             $('li.demandas').addClass('active');
         },

@@ -127,6 +127,7 @@
                 return (
                         model.get('haLugar') === 1 && 
                         !_.isEmpty(model.get('sentencia')) &&  
+                        model.get('sentencia')  !== '00-00-0000' &&
                         ((new Date(model.get('sentencia')) - new Date())/ms2days) < lanzamiento
                     );
             })
@@ -136,11 +137,15 @@
             .value();
         },
         filterLanzamiento: function(){
+            var lanzamiento = this.constLanzamiento;
+            var ms2days = (1000 * 60 * 60 * 24);
+
             return this.chain()
             .select(function(model){
                 return (
                         model.get('haLugar') === 1 && 
                         !_.isEmpty(model.get('sentencia')) &&  
+                        model.get('sentencia')  !== '00-00-0000' &&
                         ((new Date(model.get('sentencia')) - new Date())/ms2days) >= lanzamiento
                     );
             })
@@ -149,10 +154,14 @@
             })
             .value();
         },
-        filterCompletado: function(){
+        filterCompletado: function(marked){
             return this.chain()
             .select(function(model){
-                return (model.get('completado') === 1);
+                if(marked){
+                    return (model.get('completado') === 1);
+                }
+
+                return (model.get('completado') === 0);
             })
             .map(function(model){
                 return model.toJSON();

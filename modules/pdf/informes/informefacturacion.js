@@ -56,59 +56,73 @@ module.exports = function(informe){
 	    var columns = [
 	        {
 	            title: "Nombre",
-	            width: 110
+	            width: 110,
+	            align: 'left'
 	        },
 	        {
 	            title: "Edif",
-	            width: 30
+	            width: 30,
+	            align: 'center'
 	        },
 	        {
 	            title: "Apto",
-	            width: 30
+	            width: 30,
+	            align: 'center'
 	        },
 	        {
 	            title: "Caso",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },
 	        {
 	            title: "Sala",
-	            width: 30
+	            width: 30,
+	            align: 'center'
 	        },
 	        {
 	            title: "Hora",
-	            width: 50
+	            width: 50,
+	            align: 'center'
 	        },
 	        {
 	            title: "Causal",
-	            width: 40
+	            width: 40,
+	            align: 'center'
 	        },
 	        {
 	            title: "Presentacion",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },        
 	        {
 	            title: "Primera Comp.",
-	            width: 70
+	            width: 70,
+	            align: 'center'
 	        },        
 	        {
 	            title: "Segunda Comp.",
-	            width: 70
+	            width: 70,
+	            align: 'center'
 	        },        
 	        {
 	            title: "Vista Fondo",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },        
 	        {
 	            title: "Sentencia",
-	            width: 50
+	            width: 50,
+	            align: 'center'
 	        },        
 	        {
 	            title: "Lanzamiento",
-	            width: 60
+	            width: 60,
+	            align: 'center'
 	        },
 	        {
 	            title: "Observaciones",
-	            width: 150
+	            width: 150,
+	            align: 'left'
 	        }
 	    ];
 
@@ -122,13 +136,13 @@ module.exports = function(informe){
 	    this.addCases(doc, data);
 
 	    //Table footer
-	    doc.moveTo(doc.x,doc.y)
+	    doc.moveTo(doc.x,doc.y + 10)
 	    .lineWidth(2)
-	    .lineTo(936 , doc.y)
+	    .lineTo(936 , doc.y + 10)
 	    .stroke();
 	    
 	    doc.font('Helvetica-Bold', 14)
-	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
+	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 14);
 
 	    return doc;
 

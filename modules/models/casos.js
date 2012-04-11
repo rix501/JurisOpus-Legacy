@@ -76,7 +76,9 @@ module.exports = function(Backbone, Models) {
                     this.get('lanzamiento'),
                     this.get('observaciones'),
                     this.get('rediligenciar'),
-                    this.get('ejecutar')
+                    this.get('ejecutar'),
+                    this.get('desistido'),
+                    this.get('haLugar')
                 )
             );
         },
@@ -158,7 +160,7 @@ module.exports = function(Backbone, Models) {
             this.fetch(options);
         },
         bulkEdit: function(query, options){
-            var q = queries.updateBulk(query.ids, query.data);
+            var q = queries.updateCasos(query.ids, query.data);
             options.query = q.query;
             options.args = q.args;
                     

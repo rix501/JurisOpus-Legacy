@@ -89,7 +89,7 @@ module.exports = function(informe){
 	    this.addCases(doc, data);
 
 	    //Table footer
-	    doc.moveTo(doc.x,doc.y)
+	    doc.moveTo(doc.x,doc.y + 2)
 	    .lineWidth(2)
 	    .lineTo(936 , doc.y)
 	    .stroke();

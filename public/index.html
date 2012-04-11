@@ -465,7 +465,7 @@
             <div class="modal-body">
                 <form class="form-vertical">
                     <fieldset>
-                        <label for="caso">Caso:</label>
+                        <label id="caso-label" for="caso">Caso:</label>
                         <input class="span3" id="caso" name="caso" size="30" type="text">
                         <label for="sala">Sala:</label>
                         <input class="span3" id="sala" name="sala" size="30" type="text">
@@ -564,11 +564,19 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <fieldset>            
-                        <label for="radicar">Radicar:</label>
-                        <input class="span3 datepicker" id="radicar" name="radicar" size="30" type="text">             
-                        <label for="recibido">Recibido:</label>
-                        <input class="span3" id="recibido" name="recibido" size="30" type="text">
+                    <fieldset>      
+                        <label class="radio inline">
+                            <input type="radio" name="tipoSentencia" id="haLugar" value="haLugar" checked="checked"> Ha Lugar
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="tipoSentencia" id="desistido" value="desistido"> Desistido
+                        </label>
+                        <br />
+                        <br />      
+                        <label for="radicar">Rebeldia:</label>
+                        <input class="span3 datepicker" id="rebeldia" name="rebeldia" size="30" type="text">             
+                        <label for="recibido">Fecha Sentencia:</label>
+                        <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
                     </fieldset>
                 </form>
             </div>
@@ -595,10 +603,10 @@
             <div class="modal-body">
                 <form>
                     <fieldset>
-                        <label for="radicar">Radicar:</label>
-                        <input class="span3 datepicker" id="radicar" name="radicar" size="30" type="text">             
                         <label for="recibido">Recibido:</label>
                         <input class="span3" id="recibido" name="recibido" size="30" type="text">
+                        <label for="radicar">Radicar:</label>
+                        <input class="span3 datepicker" id="radicar" name="radicar" size="30" type="text">             
                     </fieldset>
                 </form>
             </div>
@@ -639,6 +647,10 @@
             </div>
         </div>
         <div class="page-header"><h1>Actualizar Demandas: Completado</h1></div>
+        <ul class="nav nav-tabs">
+            <li class="active compl"><a href="#">Completado</a></li>
+            <li class="icomp"><a href="#">No Completado</a></li>
+        </ul>
         <table id="casos-table" class="active table table-bordered table-striped"></table>
     </script>
     <script type="text/template" id="container-demandas-actualizar-todos-template">
