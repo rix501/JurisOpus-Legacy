@@ -37,7 +37,7 @@ module.exports = function(Backbone, Models) {
                 this.get('hora'),
                 this.get('primeraComparecencia'),
                 this.get('segundaComparecencia'),
-                this.get('vistaSegundo'),
+                this.get('vistaFondo'),
                 this.get('sentencia'),
                 this.get('lanzamiento'),
                 this.get('observaciones'))
@@ -71,7 +71,7 @@ module.exports = function(Backbone, Models) {
                     this.get('hora'),
                     this.get('primeraComparecencia'),
                     this.get('segundaComparecencia'),
-                    this.get('vistaSegundo'),
+                    this.get('vistaFondo'),
                     this.get('sentencia'),
                     this.get('lanzamiento'),
                     this.get('observaciones'),

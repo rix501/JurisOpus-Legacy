@@ -14,7 +14,7 @@ var variableToColumn = {
     hora: "hora = STR_TO_DATE(?, '" + hourFormat + "')",
     primeraComparecencia: "primera_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
     segundaComparecencia: "segunda_comparecencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
-    vistaEnSuFondo: "vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    vistaFondo: "vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "')",
     sentencia: "sentencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
     lanzamiento: "lanzamiento = STR_TO_DATE(?, '" + dateFormatEN + "')",
     observaciones: "observaciones = ?",
@@ -69,7 +69,7 @@ module.exports = {
                DATE_FORMAT(hora, '" + hourFormat + "') AS 'hora', \
                DATE_FORMAT(primera_comparecencia, '" + dateFormatEN + "') AS 'primeraComparecencia', \
                DATE_FORMAT(segunda_comparecencia, '" + dateFormatEN + "') AS 'segundaComparecencia', \
-               DATE_FORMAT(vista_en_su_fondo, '" + dateFormatEN + "') AS 'vistaEnSuFondo', \
+               DATE_FORMAT(vista_en_su_fondo, '" + dateFormatEN + "') AS 'vistaFondo', \
                DATE_FORMAT(sentencia, '" + dateFormatEN + "') AS 'sentencia', \
                DATE_FORMAT(lanzamiento, '" + dateFormatEN + "') AS 'lanzamiento', \
                observaciones AS 'observaciones',\
@@ -368,7 +368,7 @@ module.exports = {
             args: []
         }
     },
-    createCaso: function(residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaSegundo, sentencia, lanzamiento, observaciones){
+    createCaso: function(residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaFondo, sentencia, lanzamiento, observaciones){
         return {
             query:"INSERT INTO Casos\
             (\
@@ -460,14 +460,14 @@ module.exports = {
             	hora, 
             	primeraComparecencia, 
             	segundaComparecencia, 
-            	vistaSegundo, 
+            	vistaFondo, 
             	sentencia, 
             	lanzamiento, 
             	observaciones
         	]
         }
     },
-    updateCaso: function(id, residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaSegundo, sentencia, lanzamiento, observaciones, rediligenciar, ejecutar, desistido, haLugar){
+    updateCaso: function(id, residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaFondo, sentencia, lanzamiento, observaciones, rediligenciar, ejecutar, desistido, haLugar){
         return {
             query: "UPDATE Casos\
             SET\
@@ -532,7 +532,7 @@ module.exports = {
             	hora, 
             	primeraComparecencia, 
             	segundaComparecencia, 
-            	vistaSegundo, 
+            	vistaFondo, 
             	sentencia, 
             	lanzamiento, 
             	observaciones,

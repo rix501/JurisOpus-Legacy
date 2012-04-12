@@ -214,7 +214,7 @@ $(document).ready(function(){
                 hora: $('#hora').val(),
                 primeraComparecencia: $('#primeraComparecencia').val(),
                 segundaComparecencia: $('#segundaComparecencia').val(),
-                vistaSegundo: $('#vistaSegundo').val(),
+                vistaFondo: $('#vistaFondo').val(),
                 sentencia: $('#sentencia').val(),
                 lanzamiento: $('#lanzamiento').val(),
                 observaciones: $('#observaciones').val()
@@ -506,7 +506,7 @@ $(document).ready(function(){
             this.$el.find('#hora').val(this.model.get('hora') ? this.model.get('hora') : '');
             this.$el.find('#primeraComparecencia').val(this.model.get('primeraComparecencia') ? this.model.get('primeraComparecencia') : '');
             this.$el.find('#segundaComparecencia').val(this.model.get('segundaComparecencia') ? this.model.get('segundaComparecencia') : '');
-            this.$el.find('#vistaSegundo').val(this.model.get('vistaSegundo') ? this.model.get('vistaSegundo') : '');
+            this.$el.find('#vistaFondo').val(this.model.get('vistaFondo') ? this.model.get('vistaFondo') : '');
             this.$el.find('#sentencia').val(this.model.get('sentencia') ? this.model.get('sentencia') : '');
             this.$el.find('#lanzamiento').val(this.model.get('lanzamiento') ? this.model.get('lanzamiento') : '');
             this.$el.find('#observaciones').val(this.model.get('observaciones') ? this.model.get('observaciones') : ''); 
@@ -548,7 +548,7 @@ $(document).ready(function(){
                 hora: $('#hora').val(),
                 primeraComparecencia: $('#primeraComparecencia').val(),
                 segundaComparecencia: $('#segundaComparecencia').val(),
-                vistaSegundo: $('#vistaSegundo').val(),
+                vistaFondo: $('#vistaFondo').val(),
                 sentencia: $('#sentencia').val(),
                 lanzamiento: $('#lanzamiento').val(),
                 observaciones: $('#observaciones').val(),
