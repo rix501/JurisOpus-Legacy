@@ -19,8 +19,17 @@ module.exports = function(informe){
 	    }
 
 	    this.addHeader(doc, data);
+
+	    _(data)
+	    .chain()
+	    .groupBy(function(model){ 
+	    	return model.residencial; 
+	    })
+	    .each(_.bind(function(residencialCol, residencial){ 
+	    	this.drawTable(doc, residencialCol);
+	    }, this));
 	    
-	    this.drawTable(doc, data);
+	    //this.drawTable(doc, data);
 
 	    this.addFooter(doc);
 
@@ -53,6 +62,12 @@ module.exports = function(informe){
 	};
 
 	informefacturacion.prototype.drawTable = function(doc, data){
+	    var residencial = data[0].residencial;
+	    console.log('Residencial: ' + residencial);
+
+	    doc.font('Helvetica-Bold', 14)
+	    .text('Residencial: ' + residencial, doc.x, doc.y + 14);
+
 	    var columns = [
 	        {
 	            title: "Nombre",
@@ -142,7 +157,7 @@ module.exports = function(informe){
 	    .stroke();
 	    
 	    doc.font('Helvetica-Bold', 14)
-	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 14);
+	    .text('Total de Casos: ' + data.length, doc.x, doc.y + 14);
 
 	    return doc;
 
