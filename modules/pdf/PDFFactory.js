@@ -10,7 +10,7 @@ var PDFFactory = module.exports = function(type, template, data, cb){
         pdf = demandas;
         if(_.isArray(data)){
             //It's an array
-            _.each(data, function(single){
+            _.each(data, function(single, index){
                 doc = pdf.templates[single.pdfTemplate].draw(doc, single);
             });
         }

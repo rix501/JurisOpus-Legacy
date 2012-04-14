@@ -187,7 +187,10 @@
 
     Models.Residenciales = Backbone.Collection.extend({
         model: Models.Residencial,
-        url: '/residenciales'
+        url: '/residenciales',
+        comparator: function(residencial){
+            return residencial.get('residencial');
+        }
     });
 
     Models.Causal = Backbone.Model.extend({
@@ -195,5 +198,8 @@
 
     Models.Causales = Backbone.Collection.extend({
         model: Models.Causal,
-        url: '/causales'
+        url: '/causales',
+        comparator: function(causal){
+            return causal.get('causal');
+        }
     });

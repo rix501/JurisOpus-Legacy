@@ -15,10 +15,12 @@ demanda.prototype.draw = function(doc, data){
    var y, x, width, height;
    
    if(doc === undefined || doc === null){
+      console.log('create');
        doc = pdf.prototype.build.call(this);
    }
       
    if(doc.pages.length > 1){
+      console.log('add');
        doc.addPage();
    }
    
