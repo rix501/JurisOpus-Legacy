@@ -19,11 +19,12 @@ var pdf = Object.makeSubclass();
 
 pdf.prototype.build = function(options){
     options || (options = {});
-        
+    
     var doc = new PDFDocument({
         size: (options.pdfSize) ? options.pdfSize : "legal",
         align: (options.pdfAlign) ? options.pdfAlign : "justify",
-        layout: (options.pdflayout) ? options.pdflayout : "portrait"
+        layout: (options.pdflayout) ? options.pdflayout : "portrait",
+        margins: (options.pdfMargins) ? options.pdfMargins : undefined
     });
     
     doc.registerFont('Arial', './modules/pdf/Fonts/arial.ttf');

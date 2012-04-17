@@ -28,7 +28,7 @@ module.exports = function(informe){
 	};
 
 	informeparadiligenciar.prototype.addHeader = function(doc, data){
-	    doc.font('Helvetica-Bold', 14)
+	    doc.font('Arial-Bold', 14)
 	    .text('Casos para diligenciar');
 	  
 	    doc.moveDown();
@@ -43,7 +43,7 @@ module.exports = function(informe){
 	        .lineTo(936, 612 - 72 + 10)
 	        .stroke();
 
-	        doc.font('Helvetica', 10)
+	        doc.font('Arial', 10)
 	        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
 
 	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
@@ -110,7 +110,7 @@ module.exports = function(informe){
 	    .lineTo(936 , doc.y)
 	    .stroke();
 	    
-	    doc.font('Helvetica-Bold', 14)
+	    doc.font('Arial-Bold', 14)
 	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
 
 	    return doc;
@@ -118,12 +118,11 @@ module.exports = function(informe){
 	};
 	informeparadiligenciar.prototype.addCases = function(doc, data){
 	    // caso - residencial - nombre - edificio - apto - causal - observaciones
-	    var row = [];
+	    var rows = [];
 	    var that = this;
 
 	    _.each(data, function(single){
-	        row = [
-	            
+	        rows.push([   
 	            {title: single.residencial},
 	            {title: single.edificio},
 	            {title: single.apartamento},
@@ -133,10 +132,10 @@ module.exports = function(informe){
 	            {title: single.caso},
 	            {title: single.primeraComparecencia},
 	            {title: single.causalIniciales}
-	        ];
-
-	        that.table.addRow(row);
+	        ]);
 	    });
+
+	    this.table.addRows(rows, {margin: 5});
 	};
 
 	return informeparadiligenciar;

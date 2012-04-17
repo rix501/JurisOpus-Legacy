@@ -192,6 +192,11 @@ module.exports = function(Backbone, Models) {
                            attr[key] = '-';
                            model.set(attr);
                        }
+
+                       if(attribute == '00-00-0000'){
+                           attr[key] = '-';
+                           model.set(attr);
+                       }
                        
                    });           
                 });

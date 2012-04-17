@@ -28,7 +28,7 @@ module.exports = function(informe){
     };
 
     informepresentados.prototype.addHeader = function(doc, data){
-        doc.font('Helvetica-Bold', 14)
+        doc.font('Arial-Bold', 14)
         .text('Casos presentados  ');
       
         doc.moveDown();
@@ -43,7 +43,7 @@ module.exports = function(informe){
             .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.left + 10)
             .stroke();
 
-            doc.font('Helvetica', 10)
+            doc.font('Arial', 10)
             .text('Fecha del dia de hoy',doc.x, doc.page.height - doc.page.margins.left + 14);
 
             doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
@@ -78,14 +78,14 @@ module.exports = function(informe){
                 align: 'center'
             },
             {
-                title: "Presentacion",
+                title: "Presentación",
                 width: 80,
                 align: 'center'
             }
         ];
 
         var font = {
-            type: 'Helvetica',
+            type: 'Arial',
             size: 9
         }
 
@@ -99,7 +99,7 @@ module.exports = function(informe){
         .lineTo(doc.page.width - doc.page.margins.left , doc.y)
         .stroke();
         
-        doc.font('Helvetica-Bold', 14)
+        doc.font('Arial-Bold', 14)
         .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
 
         return doc;
@@ -107,21 +107,21 @@ module.exports = function(informe){
     };
     informepresentados.prototype.addCases = function(doc, data){
         // caso - residencial - nombre - edificio - apto - causal - observaciones
-        var row = [];
+        var rows = [];
         var that = this;
 
         _.each(data, function(single){
-            row = [
+            rows.push([
                 {title: single.residencial},
                 {title: single.edificio},
                 {title: single.apartamento},
                 {title: single.nombre},
                 {title: single.causalIniciales},
                 {title: single.presentacion}
-            ];
-
-            that.table.addRow(row);
+            ]);
         });
+
+        this.table.addRows(rows, {margin: 5});
     };
 
 	return informepresentados;

@@ -10,8 +10,14 @@ module.exports = function(informe){
 	        options.pdflayout = 'landscape';
 	        options.pdfSize = 'legal';
 	        options.pdfAlign = 'left';
+	        options.pdfMargins = {
+				top: 72,
+				left: 72,
+				bottom: 108,
+				right: 72
+	        };
 
-	        doc = informe.prototype.build.call(this, options);       
+	        doc = informe.prototype.build.call(this, options);  
 	    }
 
 	    if(doc.pages.length > 1){
@@ -29,43 +35,86 @@ module.exports = function(informe){
 	    	this.drawTable(doc, residencialCol);
 	    }, this));
 	    
-	    //this.drawTable(doc, data);
-
 	    this.addFooter(doc);
 
 	    return doc;
 	};
 
 	informefacturacion.prototype.addHeader = function(doc, data){
-	    doc.font('Helvetica-Bold', 14)
-	    .text('INFORME DE VISTAS  ' + data[0].primeraComparecencia)
-	    .text('SALA: ' + data[0].sala + ' HORA CITADA: ' + data[0].hora,{
+	    doc.font('Arial-Bold', 10);
+
+	    var y = doc.y;
+
+	    doc.text('PMB 237')
+	    .text('PO Box 2500')
+	    .text('Trujillo Alto, PR 00977-2500');
+
+	    doc.y = y;
+
+	    doc.font('Arial-Bold', 12)
+	    .text('HECTOR A. SANTIAGO', doc.x, doc.y, {
+	    	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    	align: 'center'
+	    })
+	    .font('Arial-Bold', 10)
+	    .text('Abogado Notario', doc.x, doc.y, {
+	    	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    	align: 'center'
+	    });
+
+	    doc.y = y;
+
+	    doc.text('Tel. (787) 294-6397, 6398 / Fax (787) 294-6399', doc.x, doc.y, {
+	    	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    	align: 'right'
 	    });
 	  
 	    doc.moveDown();
+	    doc.moveDown();
+	    doc.moveDown();
+
+	    doc.text('Mes facturado: septiembre 2012', doc.x, doc.y, {
+	    	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    	align: 'center'
+	    });
 	};
 
 	informefacturacion.prototype.addFooter = function(doc){
 	    _.each(doc.pages, function(page, index, pages){
 	        doc.page = page;
 
-	        doc.moveTo(doc.x, 612 - 72 + 10) 
+	        var x = doc.x;
+
+	        doc.moveTo(doc.x, doc.page.height - doc.page.margins.bottom + 15) 
 	        .lineWidth(0.5)                        
-	        .lineTo(936, 612 - 72 + 10)
+	        .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.bottom + 15)
 	        .stroke();
 
-	        doc.font('Helvetica', 10)
-	        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+	        var certString = 'CERTIFICO: Que la presente factura es correcta y que la misma no ha sido pagada en toda ni en parte';
 
-	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
+	        doc.font('Arial', 10);
+	        doc.text(certString, doc.x, doc.page.height - doc.page.margins.bottom + 24)
+	        .moveUp()
+	        .text('______________________________', x + doc.widthOfString(certString) + 10)
+	        .text('Lcdo. Héctor A. Santiago Romero', x + doc.widthOfString(certString) + 16);
+
+	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20,{
+	        	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    		align: 'right'
+	        });
+
+	        doc.x = 72;
 	    });
 	};
 
 	informefacturacion.prototype.drawTable = function(doc, data){
 	    var residencial = data[0].residencial;
-	    console.log('Residencial: ' + residencial);
 
-	    doc.font('Helvetica-Bold', 14)
+	    if(doc.y >= doc.page.height - doc.page.margins.bottom){
+	    	doc.addPage();
+	    }
+
+	    doc.font('Arial-Bold', 12)
 	    .text('Residencial: ' + residencial, doc.x, doc.y + 14);
 
 	    var columns = [
@@ -142,7 +191,7 @@ module.exports = function(informe){
 	    ];
 
 	    var font = {
-	        type: 'Helvetica',
+	        type: 'Arial',
 	        size: 9
 	    }
 
@@ -155,22 +204,26 @@ module.exports = function(informe){
 	    .lineWidth(2)
 	    .lineTo(936 , doc.y + 10)
 	    .stroke();
-	    
-	    doc.font('Helvetica-Bold', 14)
-	    .text('Total de Casos: ' + data.length, doc.x, doc.y + 14);
+
+	    var totalString = 'Total de casos para residencial ' + residencial + ': ' + data.length;
+		
+	    doc.font('Arial-Bold', 12)
+	    .text(totalString, doc.x, doc.y + 14)
+	    .moveUp()
+	    .text('Cargo por casos facturados: $' , doc.x + doc.widthOfString(totalString) + 20);
+
+	    doc.x = 72;
 
 	    return doc;
-
 	};
+
 	informefacturacion.prototype.addCases = function(doc, data){
 	    // caso - residencial - nombre - edificio - apto - causal - observaciones
-	    var row = [];
+	    var rows = [];
 	    var that = this;
 
 	    _.each(data, function(single){
-	        row = [
-	            
-	            //{title: single.residencial},
+	        rows.push([
 	            {title: single.nombre},
 	            {title: single.edificio},
 	            {title: single.apartamento},
@@ -185,10 +238,10 @@ module.exports = function(informe){
 	            {title: single.sentencia},
 	            {title: single.lanzamiento},
 	            {title: single.observaciones}
-	        ];
-
-	        that.table.addRow(row);
+	        ]);
 	    });
+
+	    this.table.addRows(rows, {margin: 5});
 	};
 
 	return informefacturacion;

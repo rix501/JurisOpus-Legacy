@@ -4,8 +4,6 @@ var PDFTable = function(doc, columns, options){
     this.doc = doc;
     this.options = options;
     this.columns = columns;
-
-    this.addHeaders();
 };
 
 PDFTable.prototype.addHeaders = function(){  
@@ -77,30 +75,23 @@ PDFTable.prototype.addCheckbox = function(element, width, prevWidth, align){
     this.doc.y = y;
 };
 
-PDFTable.prototype.addRow = function(row){
-    var nextY = this.doc.y + this.doc.currentLineHeight(true);
-
+PDFTable.prototype.addRow = function(row, options){
     var currentY = this.doc.y;
     var greatestY = this.doc.y;
-
-    if(nextY + this.doc.currentLineHeight(true) + this.doc.page.margins.bottom > this.doc.page.height){
-        this.doc.addPage();
-        this.addHeaders();
-        currentY = greatestY = this.doc.y;
-    }
 
     _.each(row, _.bind(function(element, index){
         var align = ( !_.isUndefined(this.columns[index].align) ) ? this.columns[index].align : 'left';
         var type = ( !_.isUndefined(this.columns[index].type) ) ? this.columns[index].type : 'text';
         var width = this.columns[index].width;
         var prevWidth = ( index === 0 ) ? 0 : this.columns[index-1].width;
+        var rowMargin = ( !_.isUndefined( options.margin ) ) ? options.margin : 0;
+
+        this.doc.y = currentY + rowMargin;
 
         if(type == 'checkbox'){
-            this.doc.y = currentY;
             this.addCheckbox(element, width, prevWidth, align);
         }
         else if(type == 'text'){
-            this.doc.y = currentY;
             this.doc.text(element.title, this.doc.x + prevWidth, this.doc.y, { width: width, align: align });
             if(this.doc.y > greatestY){
                 greatestY = this.doc.y;
@@ -112,10 +103,26 @@ PDFTable.prototype.addRow = function(row){
     this.doc.y = greatestY;
 };
 
-PDFTable.prototype.addRows = function(rows){
-    _.each(rows, function(row){
-        this.addRow(row);
-    });
+PDFTable.prototype.addRows = function(rows, options){
+    _.each(rows, _.bind(function(row, index){
+        var nextY = this.doc.y + this.doc.currentLineHeight(true);
+
+        if(index === 0 && ( 24.7 + nextY + this.doc.currentLineHeight(true) + this.doc.page.margins.bottom > this.doc.page.height ) ){
+            this.doc.addPage();
+            this.addHeaders();
+            nextY = this.doc.y + this.doc.currentLineHeight(true);
+        }
+        else if(index === 0){
+            this.addHeaders();
+        }
+
+        if(nextY + this.doc.currentLineHeight(true) + this.doc.page.margins.bottom > this.doc.page.height){
+            this.doc.addPage();
+            this.addHeaders();
+        }
+
+        this.addRow(row, options);
+    }, this));
 };
 
 module.exports = PDFTable;
