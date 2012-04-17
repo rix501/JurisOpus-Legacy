@@ -21,9 +21,18 @@ $(document).ready(function(){
             this.causales = new Models.Causales();
             this.casos = new Models.Casos();
 
+            $('#loading-modal').modal({
+                keyboard: false,
+                backdrop: 'static',
+                show: true
+            });
+
+            var that = this;
+
             this.residenciales.fetch({
                 success: function(){
                     dispatcher.trigger('loaded:residenciales');
+                    that.loaded();
                 },
                 error:function(err){
                     dispatcher.trigger('error:residenciales');
@@ -34,6 +43,7 @@ $(document).ready(function(){
             this.causales.fetch({
                 success: function(){
                     dispatcher.trigger('loaded:causales');
+                    that.loaded();
                 },
                 error:function(err){
                     dispatcher.trigger('error:causales');
@@ -44,6 +54,7 @@ $(document).ready(function(){
             this.casos.fetch({
                 success: function(){
                     dispatcher.trigger('loaded:casos');
+                    that.loaded();
                 },
                 error:function(err){
                     dispatcher.trigger('error:casos');
@@ -52,6 +63,13 @@ $(document).ready(function(){
             });
 
             this.currentView = null;
+        },
+        loadedCount: 0,
+        loaded: function(){
+            this.loadedCount++;
+            if(this.loadedCount == 3){
+                $('#loading-modal').modal('hide');
+            }
         },
         entrar: function() {
             this.containerEntrarView = new ContainerEntrarView();
