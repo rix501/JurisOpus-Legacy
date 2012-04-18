@@ -225,7 +225,12 @@ $(document).ready(function(){
                     viewObj.successMessage('Caso guardado');
                     submitSpinner.stop();
                 },
-                error: function(){
+                error: function(model, error, options){
+                    if(error.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
+
                     viewObj.errorMessage('<strong>Error:</strong> Hubo un error guardando');
                     submitSpinner.stop();
                 }
@@ -559,6 +564,10 @@ $(document).ready(function(){
                     viewObj.successMessage('Caso editado y guardado');
                 },
                 error: function(model,err){
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     viewObj.errorMessage('<strong>Error:</strong> Intente de guardar otra vez');
                 }
             });
@@ -980,7 +989,10 @@ $(document).ready(function(){
                     }.bind(this), 2000);
                 },
                 error: function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1110,7 +1122,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1266,7 +1281,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1392,7 +1410,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1535,7 +1556,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1662,7 +1686,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1785,7 +1812,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')
@@ -1924,7 +1954,10 @@ $(document).ready(function(){
                     }, this), 2000);
                 }, this),
                 error: _.bind(function(err){
-                    console.log(err);
+                    if(err.status == 403){
+                        window.location.replace('/login');
+                        return;
+                    }
                     $(modal).find('.modal-footer .label')
                     .attr('class','label important')
                     .html('Hubo error guardando')

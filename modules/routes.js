@@ -10,8 +10,8 @@ exports.setup = function(app, Models){
     ]; 
      
     var checkAuth = function(req, res, next){
-        if(app.settings.env === 'development')
-            req.session.auth = true;
+        //if(app.settings.env === 'development')
+        //    req.session.auth = true;
         
         if(req.url === "/login"){
             if(req.session && req.session.auth){
@@ -29,8 +29,12 @@ exports.setup = function(app, Models){
             return;
         }
         
-        res.redirect('/login');
-        return;
+        if(typeof req.headers['x-requested-with'] !== 'undefined'){
+            res.send({error: 'access denied'}, 403);
+        }
+        else{
+            res.redirect('/login');
+        }
     };
     
     var checkUser = function(username, password, cb){

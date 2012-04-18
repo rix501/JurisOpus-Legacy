@@ -7,7 +7,7 @@ process.env.NODE_ENV = app.settings.env;
 
 app.configure(function(){
 	app.use(express.bodyParser());
-	app.use(express.cookieParser());
+	app.use(express.cookieParser('pop-pop'));
 	app.use(express.session({ secret: "JurisSecret"}));
 	app.use(express.methodOverride());
 	app.use(app.router);
