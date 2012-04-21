@@ -174,6 +174,13 @@ module.exports = function(Backbone, Models) {
                 this.pdfInforme(query, options);           
         },
         pdfInforme: function(query, options){
+            var pdfObj = {
+                type: 'informes',
+                template: query.pdfTemplate,
+                dataSource: [],
+                args: query.args
+            }
+
             var resSuccess = options.success;
             var resError = options.error;
             
@@ -208,8 +215,10 @@ module.exports = function(Backbone, Models) {
                     
                     return;
                 }
+
+                pdfObj.dataSource = data;
                 
-                var pdf = pdfFactory(query.type, query.pdfTemplate, data, resSuccess);
+                pdfFactory(pdfObj, resSuccess);
             };
             
             var q;
@@ -228,12 +237,13 @@ module.exports = function(Backbone, Models) {
                     q = queries.getCasosInformePresentados();
                     break;
                 case 'informefacturacion':
-                    q = queries.getCasosInformeFacturacion();
+                    var args = query.args.split('/')
+                    q = queries.getCasosInformeFacturacion(args[0], args[1]);
                     break;
                 default:
                     break;
             }
-             
+            
             options.query = q.query; 
             options.args = q.args;
 
@@ -243,16 +253,13 @@ module.exports = function(Backbone, Models) {
             var resSuccess = options.success;
             
             options.success = function(collection, fields){
+                var pdfObjs = [];
+
                 collection.each(function(model){
-                   var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
-                   var causal = model.get('causal').replace(/ /g, "").replace(/-/g, "").toLowerCase();
-                   
-                   model.set({
-                       pdfTemplate: causal,
-                       pdfTribunal: tribunal 
-                   });
-                   
-                   _.each(model.attributes, function(attribute, key){
+                    var tribunal = model.get('tribunal').replace(/ /g, "").toLowerCase();
+                    var causal = model.get('causal').replace(/ /g, "").replace(/-/g, "").toLowerCase();
+
+                    _.each(model.attributes, function(attribute, key){
                        var attr = {};
                        attr[key] = "";
                        
@@ -260,12 +267,21 @@ module.exports = function(Backbone, Models) {
                            attr[key] = utils.dateToString(attribute, true);
                            model.set(attr);
                        }  
-                   });           
+                    });  
+
+                    var pdfObj = {
+                        type: 'demandas',
+                        template: causal,
+                        dataSource: model.toJSON(),
+                        args: {
+                            tribunal: tribunal
+                        }
+                    }
+
+                    pdfObjs.push(pdfObj);
                 });
-                             
-                var data = collection.toJSON();
-                
-                var pdf = pdfFactory(query.type, '', data, resSuccess);
+                                
+                pdfFactory(pdfObjs, resSuccess);
             };
            
     	    var q = queries.getCasosPdf(query.casos); 

@@ -1,10 +1,10 @@
 module.exports = function(demanda){
 
     var pagoyreexamen = demanda.makeSubclass();
-    pagoyreexamen.prototype.draw = function(doc, data){
+    pagoyreexamen.prototype.draw = function(doc, data, args){
         data.causalDescription = 'DESAHUCIO POR INCUMPLIMIENTO DE CONTRATO, FALTA DE PAGO';
         
-        return demanda.prototype.draw.call(this, doc, data);
+        return demanda.prototype.draw.call(this, doc, data, args);
     };
     pagoyreexamen.prototype.drawBullets = function(doc,data){
         doc.text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial " + data.residencial +", ubicado en el Municipio de San Juan.",{

@@ -325,7 +325,7 @@ module.exports = {
             args: []
         }
     },
-    getCasosInformeFacturacion: function(){
+    getCasosInformeFacturacion: function(month, year){
         return {
             query: "SELECT \
                 ca.seleccionado, \
@@ -360,12 +360,14 @@ module.exports = {
                 ca.observaciones, \
                 ca.desistido\
             FROM Casos ca\
-            WHERE ca.completado = 0\
+            WHERE ca.completado = 0 \
+            AND MONTH(presentacion) = ?\
+            AND YEAR(presentacion) = ?\
             ORDER BY \
                 ca.residencial, \
                 ca.edificio, \
                 ca.apartamento;",
-            args: []
+            args: [month, year]
         }
     },
     createCaso: function(residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaFondo, sentencia, lanzamiento, observaciones){

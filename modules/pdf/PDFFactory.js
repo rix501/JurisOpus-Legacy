@@ -1,27 +1,20 @@
 var _ = require('underscore');
 
-var demandas = require('./demandas');
-var informes = require('./informes');
+var pdfs = {
+    demandas: require('./demandas'),
+    informes: require('./informes')
+}
 
-var PDFFactory = module.exports = function(type, template, data, cb){
+var PDFFactory = module.exports = function(pdfObjs, cb){
     var doc, pdf;
-        
-    if(type === "demandas"){
-        pdf = demandas;
-        if(_.isArray(data)){
-            //It's an array
-            _.each(data, function(single, index){
-                doc = pdf.templates[single.pdfTemplate].draw(doc, single);
-            });
-        }
-        else {
-            doc = pdf.templates[data.pdfTemplate].draw(doc, data);
-        }
-        
+
+    if(_.isArray(pdfObjs)){
+        _.each(pdfObjs, function(pdfObj, index){
+            doc = pdfs[pdfObj.type].templates[pdfObj.template].draw(doc, pdfObj.dataSource, pdfObj.args);
+        });
     }
-    else if(type === "informes"){
-        pdf = informes;
-        doc = pdf.templates[template].draw(doc, data);
+    else {
+        doc = pdfs[pdfObjs.type].templates[pdfObjs.template].draw(doc, pdfObjs.dataSource, pdfObjs.args);
     }
     
     return doc.output(cb);

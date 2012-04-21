@@ -1,9 +1,9 @@
 module.exports = function(demanda){
 	var reexamen = demanda.makeSubclass();
-	reexamen.prototype.draw = function(doc, data){
+	reexamen.prototype.draw = function(doc, data, args){
 	    data.causalDescription = 'DESAHUCIO POR INCUMPLIMIENTO DE CONTRATO';
 	    
-	    return demanda.prototype.draw.call(this, doc, data);
+	    return demanda.prototype.draw.call(this, doc, data, args);
 	};
 	reexamen.prototype.drawBullets = function(doc,data){
 	    doc.text("1. La parte compareciente es el agente administrador de cierto edificio propiedad de la Administración de Vivienda Pública, conocido como Residencial " + data.residencial +", ubicado en el Municipio de " + data.municipio +"*.",{

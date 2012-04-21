@@ -3,7 +3,7 @@ var _ = require('underscore');
 module.exports = function(informe){
 	
 	var informependientedeejecucion = informe.makeSubclass();
-	informependientedeejecucion.prototype.draw = function(doc, data){
+	informependientedeejecucion.prototype.draw = function(doc, data, args){
 	    var options = {};
 
 	    if(doc === undefined || doc === null){
@@ -20,7 +20,14 @@ module.exports = function(informe){
 
 	    this.addHeader(doc, data);
 	    
-	    this.drawTable(doc, data);
+	   	_(data)
+	    .chain()
+	    .groupBy(function(model){ 
+	    	return model.residencial; 
+	    })
+	    .each(_.bind(function(residencialCol, residencial){ 
+	    	this.drawTable(doc, residencialCol);
+	    }, this));
 
 	    this.addFooter(doc);
 
@@ -39,19 +46,31 @@ module.exports = function(informe){
 	    _.each(doc.pages, function(page, index, pages){
 	        doc.page = page;
 
-	        doc.moveTo(doc.x, 612 - 72 + 10) 
-	        .lineWidth(0.5)                        
-	        .lineTo(936, 612 - 72 + 10)
-	        .stroke();
+	        doc.moveTo(doc.x, doc.page.height - doc.page.margins.left + 10) 
+            .lineWidth(0.5)                        
+            .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.left + 10)
+            .stroke();
 
-	        doc.font('Arial', 10)
-	        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+            doc.font('Arial', 10);
+            //.text('Fecha del dia de hoy',doc.x, doc.page.height - doc.page.margins.left + 14);
 
-	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
+            doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.page.height - doc.page.margins.bottom + 20, {
+                width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+                align: 'right'
+            });
 	    });
 	};
 
 	informependientedeejecucion.prototype.drawTable = function(doc, data){
+		var residencial = data[0].residencial;
+
+	    if(doc.y >= doc.page.height - doc.page.margins.bottom){
+	    	doc.addPage();
+	    }
+
+	    doc.font('Arial-Bold', 12)
+	    .text('Residencial: ' + residencial, doc.x, doc.y + 14);
+
 	    var columns = [
 	        {
 	            title: "Caso",
@@ -107,13 +126,17 @@ module.exports = function(informe){
 	    this.addCases(doc, data);
 
 	    //Table footer
-	    doc.moveTo(doc.x,doc.y)
+	    doc.moveTo(doc.x,doc.y + 2)
 	    .lineWidth(2)
-	    .lineTo(936 , doc.y)
+	    .lineTo(936 , doc.y + 2)
 	    .stroke();
 	    
-	    doc.font('Arial-Bold', 14)
-	    .text('Casos para ver hoy: ' + data.length, doc.x, doc.y + 4);
+	   	var totalString = 'Total de casos para residencial ' + residencial + ': ' + data.length;
+		
+	    doc.font('Arial-Bold', 12)
+	    .text(totalString, doc.x, doc.y + 14);
+
+	    doc.x = 72;
 
 	    return doc;
 

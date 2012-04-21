@@ -4,7 +4,7 @@ var pdf = require('../pdf');
 var PDFTable = require('../PDFTable');
 
 var informe = pdf.makeSubclass();
-informe.prototype.draw = function(doc, data){
+informe.prototype.draw = function(doc, data, args){
 };
 
 informe.prototype.addTable = function(doc, columns, options){

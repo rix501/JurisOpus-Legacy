@@ -3,7 +3,7 @@ var _ = require('underscore');
 module.exports = function(informe){
 
 	var informedevistas = informe.makeSubclass();
-	informedevistas.prototype.draw = function(doc, data){
+	informedevistas.prototype.draw = function(doc, data, args){
 	    var options = {};
 
 	    if(doc === undefined || doc === null){
@@ -40,15 +40,18 @@ module.exports = function(informe){
 	    _.each(doc.pages, function(page, index, pages){
 	        doc.page = page;
 
-	        doc.moveTo(doc.x, 612 - 72 + 10) 
+	        doc.moveTo(doc.x, doc.page.height - doc.page.margins.bottom + 10) 
 	        .lineWidth(0.5)                        
-	        .lineTo(936, 612 - 72 + 10)
+	        .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.bottom + 10)
 	        .stroke();
 
-	        doc.font('Arial', 10)
-	        .text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
+	        doc.font('Arial', 10);
+	        //.text('Fecha del dia de hoy',doc.x, 612 - 72 + 14);
 
-	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
+	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.page.height - doc.page.margins.bottom + 20, {
+	        	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+	    		align: 'right'
+	        });
 	    });
 	};
 

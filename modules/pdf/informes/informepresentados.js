@@ -3,7 +3,7 @@ var _ = require('underscore');
 module.exports = function(informe){
 
 	var informepresentados = informe.makeSubclass();
-    informepresentados.prototype.draw = function(doc, data){
+    informepresentados.prototype.draw = function(doc, data, args){
         var options = {};
 
         if(doc === undefined || doc === null){
@@ -43,10 +43,13 @@ module.exports = function(informe){
             .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.left + 10)
             .stroke();
 
-            doc.font('Arial', 10)
-            .text('Fecha del dia de hoy',doc.x, doc.page.height - doc.page.margins.left + 14);
+            doc.font('Arial', 10);
+            //.text('Fecha del dia de hoy',doc.x, doc.page.height - doc.page.margins.left + 14);
 
-            doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20);
+            doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.page.height - doc.page.margins.bottom + 20, {
+                width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+                align: 'right'
+            });
         });
     };
 
@@ -94,9 +97,9 @@ module.exports = function(informe){
         this.addCases(doc, data);
 
         //Table footer
-        doc.moveTo(doc.x,doc.y)
+        doc.moveTo(doc.x,doc.y + 2)
         .lineWidth(2)
-        .lineTo(doc.page.width - doc.page.margins.left , doc.y)
+        .lineTo(doc.page.width - doc.page.margins.left , doc.y + 2)
         .stroke();
         
         doc.font('Arial-Bold', 14)

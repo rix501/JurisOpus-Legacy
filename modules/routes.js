@@ -6,12 +6,12 @@ exports.setup = function(app, Models){
         { id: 0, username: 'tester', password: 'jurisopus', email: '', role: 'tester' },
         { id: 0, username: 'kmirizarry', password: 'jurisopus', email: '', role: 'tester' },
         { id: 0, username: 'guillo', password: 'jurisopus', email: '', role: 'tester' },
-        { id: 1, username: 'rix', password: 'supersecret', email: 'rix501@gmail.com', role: 'admin' }
+        { id: 1, username: 'rix501', password: 'supersecret', email: 'rix501@gmail.com', role: 'admin' }
     ]; 
      
     var checkAuth = function(req, res, next){
-        //if(app.settings.env === 'development')
-        //    req.session.auth = true;
+        if(app.settings.env === 'development')
+            req.session.auth = true;
         
         if(req.url === "/login"){
             if(req.session && req.session.auth){

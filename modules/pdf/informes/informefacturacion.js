@@ -3,7 +3,7 @@ var _ = require('underscore');
 module.exports = function(informe){
 
 	var informefacturacion = informe.makeSubclass();
-	informefacturacion.prototype.draw = function(doc, data){
+	informefacturacion.prototype.draw = function(doc, data, args){
 	    var options = {};
 
 	    if(doc === undefined || doc === null){
@@ -24,7 +24,7 @@ module.exports = function(informe){
 	        doc.addPage();
 	    }
 
-	    this.addHeader(doc, data);
+	    this.addHeader(doc, data, args);
 
 	    _(data)
 	    .chain()
@@ -40,7 +40,7 @@ module.exports = function(informe){
 	    return doc;
 	};
 
-	informefacturacion.prototype.addHeader = function(doc, data){
+	informefacturacion.prototype.addHeader = function(doc, data, args){
 	    doc.font('Arial-Bold', 10);
 
 	    var y = doc.y;
@@ -73,7 +73,7 @@ module.exports = function(informe){
 	    doc.moveDown();
 	    doc.moveDown();
 
-	    doc.text('Mes facturado: septiembre 2012', doc.x, doc.y, {
+	    doc.text('Mes facturado: ' + args, doc.x, doc.y, {
 	    	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
 	    	align: 'center'
 	    });
@@ -85,25 +85,25 @@ module.exports = function(informe){
 
 	        var x = doc.x;
 
-	        doc.moveTo(doc.x, doc.page.height - doc.page.margins.bottom + 15) 
+	        doc.moveTo(doc.x, doc.page.height - doc.page.margins.bottom + 28) 
 	        .lineWidth(0.5)                        
-	        .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.bottom + 15)
+	        .lineTo(doc.page.width - doc.page.margins.left, doc.page.height - doc.page.margins.bottom + 28)
 	        .stroke();
 
 	        var certString = 'CERTIFICO: Que la presente factura es correcta y que la misma no ha sido pagada en toda ni en parte';
 
 	        doc.font('Arial', 10);
-	        doc.text(certString, doc.x, doc.page.height - doc.page.margins.bottom + 24)
+	        doc.text(certString, doc.x, doc.page.height - doc.page.margins.bottom + 37)
 	        .moveUp()
 	        .text('______________________________', x + doc.widthOfString(certString) + 10)
 	        .text('Lcdo. Héctor A. Santiago Romero', x + doc.widthOfString(certString) + 16);
 
-	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.y + 20,{
+			doc.x = 72;
+
+	        doc.text( (index + 1) + ' of ' + pages.length, doc.x, doc.page.height - doc.page.margins.bottom + 30, {
 	        	width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
 	    		align: 'right'
-	        });
-
-	        doc.x = 72;
+	        });	        
 	    });
 	};
 

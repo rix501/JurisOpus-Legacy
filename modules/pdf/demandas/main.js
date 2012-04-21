@@ -11,16 +11,18 @@ var tribunalHeaders = {
 //Falta de Pago - FP
 
 var demanda = pdf.makeSubclass();
-demanda.prototype.draw = function(doc, data){
+demanda.prototype.draw = function(doc, data, args){
    var y, x, width, height;
    
+   this.args = args;
+
+   console.log(this.args);
+
    if(doc === undefined || doc === null){
-      console.log('create');
        doc = pdf.prototype.build.call(this);
    }
       
    if(doc.pages.length > 1){
-      console.log('add');
        doc.addPage();
    }
    
@@ -46,6 +48,7 @@ demanda.prototype.drawFirstPage = function(doc, data){
     var y, x, width, height;
     
     this.drawMarginLines(doc);
+    console.log(this.args);
 
     doc.font('Arial-Bold', 11)
     .text('ESTADO LIBRE ASOCIADO DE PUERTO RICO',{
@@ -54,7 +57,7 @@ demanda.prototype.drawFirstPage = function(doc, data){
     .text('TRIBUNAL DE PRIMERA INSTANCIA',{
       align: 'center'
     })
-    .text(tribunalHeaders[data.pdfTribunal],{
+    .text(tribunalHeaders[this.args.tribunal],{
       align: 'center'
     });   
 
@@ -221,7 +224,7 @@ demanda.prototype.drawSecondPage = function(doc, data, isCopy){
     .text('TRIBUNAL DE PRIMERA INSTANCIA',{
     align: 'center'
     })
-    .text(tribunalHeaders[data.pdfTribunal],{
+    .text(tribunalHeaders[this.args.tribunal],{
     align: 'center'
     });   
 
