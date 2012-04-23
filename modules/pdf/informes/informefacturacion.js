@@ -25,6 +25,10 @@ module.exports = function(informe){
 	    }
 
 	    this.addHeader(doc, data, args);
+        
+        var monthlyAmount = 10500;
+
+        this.amountPerCase = monthlyAmount/data.length;
 
 	    _(data)
 	    .chain()
@@ -210,7 +214,7 @@ module.exports = function(informe){
 	    doc.font('Arial-Bold', 12)
 	    .text(totalString, doc.x, doc.y + 14)
 	    .moveUp()
-	    .text('Cargo por casos facturados: $' , doc.x + doc.widthOfString(totalString) + 20);
+	    .text('Cargo por casos facturados: $ ' + data.length * this.amountPerCase , doc.x + doc.widthOfString(totalString) + 20);
 
 	    doc.x = 72;
 
