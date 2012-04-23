@@ -94,7 +94,7 @@
                         <label for="casoRecibido">Caso Recibido:</label>
                         <input class="span2 datepicker" id="casoRecibido" name="casoRecibido" size="30" type="text">
                     </div>
-                    <div class="form-cell">
+                    <div class="form-cell" style="display: none;">
                         <label for="seleccionado">Seleccionado:</label>
                         <input type="checkbox" name="seleccionado" id="seleccionado" value="1">
                     </div>
@@ -723,6 +723,40 @@
             <p>Esto es una descripcion básica del informe</p>
             <p><button class="informependientedeejecucion print btn">Imprimir &raquo;</button></p>
         </div>
+    </script>
+    <script type="text/template" id="container-informes-form-template">
+        <div class="page-header"><h1>Informes Form</h1></div>
+        <form class="form-vertical well"> 
+            <fieldset>
+                <legend>Información</legend>
+                <label>Mes</label>
+                <input type="text" class="span3">
+            </fieldset>
+            <fieldset>
+                <legend>Email</legend>
+                <br />
+                <div class="clearfix form-row">
+                    <div class="form-cell">  
+                        <label>To</label>
+                        <input type="text" class="span3">
+                    </div>
+                    <div class="form-cell">  
+                        <label>From</label>
+                        <input type="text" class="span3">
+                    </div>
+                </div>
+                <label>Subject</label>
+                <input type="text" class="span6">
+                <label>Content</label>
+                <textarea class="span6" rows="6"></textarea>
+            </fieldset>
+            <fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn">Download</button>
+                    <button type="submit" class="btn disabled">Email</button>
+                </div>
+            </fieldset>
+        </form>
     </script>
 </head>
 <body>

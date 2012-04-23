@@ -220,3 +220,7 @@ tr.even.row_selected td {
 tr.odd.row_selected td {
     background-color: #9FAFD1 !important;
 }
+
+.form-actions {
+    background-color:  transparent !important;
+}

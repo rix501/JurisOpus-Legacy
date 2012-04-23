@@ -11,7 +11,8 @@ $(document).ready(function(){
             'editar/:caseId': 'editar',
             'demandas': 'demandas',
             'demandas/:listName': 'demandas',
-            'informes': 'informes'
+            'informes': 'informes',
+            'informes/:informeName': 'informes'
         },
         initialize: function() {
             this.pageView = new PageView();
@@ -158,10 +159,17 @@ $(document).ready(function(){
                 this.addedToDOM('demandas-actualizar'); 
             }
         },
-        informes: function(){
-            this.containerInformesView = new ContainerInformesView();
-            $('#content').empty();
-            $('#content').append(this.containerInformesView.render().el); 
+        informes: function(informeName){
+            if(!informeName){
+                this.containerInformesView = new ContainerInformesView();
+                $('#content').empty();
+                $('#content').append(this.containerInformesView.render().el); 
+            }
+            else {
+                this.containerInformesFormView = new ContainerInformesFormView();
+                $('#content').empty();
+                $('#content').append(this.containerInformesFormView.render().el); 
+            }
         },
         addedToDOM: function(view){
             _.defer(function(){

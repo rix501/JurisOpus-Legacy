@@ -210,11 +210,17 @@ module.exports = function(informe){
 	    .stroke();
 
 	    var totalString = 'Total de casos para residencial ' + residencial + ': ' + data.length;
+
+	   	var amountResidencial = Math.round(100 * data.length * this.amountPerCase) / 100;
+
+	   	var amountResidencialString = amountResidencial + "";
+		if (amountResidencialString.indexOf(".") == -1) {amountResidencialString += ".00"}
+		if (amountResidencialString.indexOf(".") == amountResidencialString.length-2) {amountResidencialString += "0"}
 		
 	    doc.font('Arial-Bold', 12)
 	    .text(totalString, doc.x, doc.y + 14)
 	    .moveUp()
-	    .text('Cargo por casos facturados: $ ' + data.length * this.amountPerCase , doc.x + doc.widthOfString(totalString) + 20);
+	    .text('Cargo por casos facturados: $ ' + amountResidencialString, doc.x + doc.widthOfString(totalString) + 20);
 
 	    doc.x = 72;
 

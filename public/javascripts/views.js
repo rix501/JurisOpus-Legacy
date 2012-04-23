@@ -690,6 +690,10 @@ $(document).ready(function(){
         }
     });
 
+    window.ContainerInformesFormView = ContainerView.extend({
+        template:  _.template($("#container-informes-form-template").html())
+    });
+
     window.ContainerCasosTableView = ContainerView.extend({
         events: {
             'click .nav li a': 'selectNav'
