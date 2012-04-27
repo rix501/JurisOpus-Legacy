@@ -71,7 +71,7 @@
         filterFechaPresentacion: function(){
             return this.chain()
             .select(function(model){
-                return ((_.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000') && model.get('seleccionado') === 1);
+                return ((_.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000'));
             })
             .map(function(model){
                 return model.toJSON();
@@ -111,7 +111,7 @@
         filterSentencia: function(){
             return this.chain()
             .select(function(model){
-                return (model.get('desistido') === 1 || model.get('haLugar') === 1);
+                return (model.get('desistido') == 1 || model.get('haLugar') == 1);
             })
             .map(function(model){
                 return model.toJSON();
@@ -125,10 +125,10 @@
             return this.chain()
             .select(function(model){
                 return (
-                        model.get('haLugar') === 1 && 
+                        model.get('haLugar') == 1 && 
                         !_.isEmpty(model.get('sentencia')) &&  
                         model.get('sentencia')  !== '00-00-0000' &&
-                        ((new Date(model.get('sentencia')) - new Date())/ms2days) < lanzamiento
+                        ((new Date(model.get('sentencia').replace(/-/gi,'/')) - new Date())/ms2days) < lanzamiento
                     );
             })
             .map(function(model){
@@ -143,10 +143,10 @@
             return this.chain()
             .select(function(model){
                 return (
-                        model.get('haLugar') === 1 && 
+                        model.get('haLugar') == 1 && 
                         !_.isEmpty(model.get('sentencia')) &&  
                         model.get('sentencia')  !== '00-00-0000' &&
-                        ((new Date(model.get('sentencia')) - new Date())/ms2days) >= lanzamiento
+                        ((new Date(model.get('sentencia').replace(/-/gi,'/')) - new Date())/ms2days) >= lanzamiento
                     );
             })
             .map(function(model){
@@ -158,10 +158,10 @@
             return this.chain()
             .select(function(model){
                 if(marked){
-                    return (model.get('completado') === 1);
+                    return (model.get('completado') == 1);
                 }
 
-                return (model.get('completado') === 0);
+                return (model.get('completado') == 0);
             })
             .map(function(model){
                 return model.toJSON();
@@ -174,6 +174,9 @@
             return this.chain()
             .select(function(model){
                 return (model.get('causalIniciales').toLowerCase() === iniciales);
+            })
+            .select(function(model){
+                return ((_.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000'));
             })
             .map(function(model){
                 return model.toJSON();

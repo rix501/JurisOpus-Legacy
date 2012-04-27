@@ -26,9 +26,9 @@ module.exports = function(informe){
 
 	    this.addHeader(doc, data, args);
         
-        var monthlyAmount = 10500;
+        this.monthlyAmount = 10500;
 
-        this.amountPerCase = monthlyAmount/data.length;
+        this.amountPerCase = this.monthlyAmount/data.length;
 
 	    _(data)
 	    .chain()
@@ -39,6 +39,13 @@ module.exports = function(informe){
 	    	this.drawTable(doc, residencialCol);
 	    }, this));
 	    
+	    doc.moveDown();
+	    doc.moveDown();
+	    doc.moveDown();
+
+	    doc.font('Arial-Bold', 14)
+	    .text('Total a facturar: $ ' + this.monthlyAmount)
+
 	    this.addFooter(doc);
 
 	    return doc;

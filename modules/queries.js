@@ -132,7 +132,7 @@ module.exports = {
             	DATE_FORMAT(ultimo_reexamen, '" + dateFormatSP + "') AS 'ultimoReexamen', \
             	incumplimiento AS 'incumplimiento', \
             	caso AS 'caso', \
-            	DATE_FORMAT(presentacion, '" + dateFormatSP + "') AS 'presentacion', \
+            	DATE_FORMAT(CURDATE(), '" + dateFormatSP + "') AS 'presentacion', \
             	diligenciado AS 'diligenciado', \
             	DATE_FORMAT(diligenciado_en, '" + dateFormatSP + "') AS 'diligenciadoEn', \
             	sala AS 'sala', \
@@ -245,7 +245,7 @@ module.exports = {
         }
     },
     getCasosInformePendienteDeEjecucion: function(){
-        var fechaEjecutar = 50;
+        var fechaEjecutar = 25;
 
         return {
             query: "SELECT \

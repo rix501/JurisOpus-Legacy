@@ -455,7 +455,7 @@ $(document).ready(function(){
             if(this.model.get('residencial')){
                 this.$el.find('#residencial option').each(_.bind(function(index, element){
                     if($(element).text() === model.get('residencial')){
-                        this.$el.find('#residencial').val(index + 1);
+                        $(element).attr('selected', 'selected');
                     }
                 },this));
             }
@@ -468,7 +468,7 @@ $(document).ready(function(){
             if(this.model.get('causal')){
                 this.$el.find('#causal option').each(_.bind(function(index, element){
                     if($(element).text() === model.get('causal')){
-                        this.$el.find('#causal').val(index + 1);
+                        $(element).attr('selected', 'selected');
                     }
                 },this));
             }

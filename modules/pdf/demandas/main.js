@@ -16,8 +16,6 @@ demanda.prototype.draw = function(doc, data, args){
    
    this.args = args;
 
-   console.log(this.args);
-
    if(doc === undefined || doc === null){
        doc = pdf.prototype.build.call(this);
    }
@@ -29,6 +27,7 @@ demanda.prototype.draw = function(doc, data, args){
    data.year = new Date().getFullYear();
    
    this.drawFirstPage(doc, data);
+   doc.addPage();
    this.drawFirstPage(doc, data);
    
    this.drawSecondPage(doc, data, false);
@@ -48,7 +47,6 @@ demanda.prototype.drawFirstPage = function(doc, data){
     var y, x, width, height;
     
     this.drawMarginLines(doc);
-    console.log(this.args);
 
     doc.font('Arial-Bold', 11)
     .text('ESTADO LIBRE ASOCIADO DE PUERTO RICO',{

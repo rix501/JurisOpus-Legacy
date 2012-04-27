@@ -237,7 +237,7 @@ module.exports = function(Backbone, Models) {
                     q = queries.getCasosInformePresentados();
                     break;
                 case 'informefacturacion':
-                    var args = query.args.split('/')
+                    var args = query.args.split('-')
                     q = queries.getCasosInformeFacturacion(args[0], args[1]);
                     break;
                 default:
