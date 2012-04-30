@@ -634,7 +634,7 @@ $(document).ready(function(){
             
             var template = $.trim(classList.replace(/print/i,'').replace(/btn-primary/i,'').replace(/btn/i,''));
             
-            var url = "/pdf?type=informes&pdfTemplate=" + template;         
+            var url = "/pdf?type=informes&template=" + template;         
             
             //It's a modal
             if(event.target.parentNode.className.search(/modal/i) >= 0  ){

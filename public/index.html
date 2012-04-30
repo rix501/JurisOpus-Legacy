@@ -536,7 +536,7 @@
             <div class="modal-body">
                 <form class="form-vertical">
                     <fieldset>
-                        <label for="fecha">Fecha:</label>
+                        <label for="fecha">Fecha de Sentencia:</label>
                         <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">          
                     </fieldset>
                 </form>
@@ -666,9 +666,9 @@
         <div id="informedevistas-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
                 <a class="close" data-dismiss="alert">×</a>
+                <h3>¿Señalado para que fecha?</h3>
             </div>
             <div class="modal-body">
-                <h3>¿Señalado para que fecha?</h3>
                 <input class="span3 datepicker" size="30" type="text" />
             </div>
             <div class="modal-footer">
@@ -678,10 +678,10 @@
         </div>
         <div id="informeparadiligenciar-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
-               <a class="close" data-dismiss="modal">×</a>
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>¿Señalado para que fecha?</h3>
             </div>
             <div class="modal-body">
-                <h3>¿Señalado para que fecha?</h3>
                 <input class="span3 datepicker" size="30" type="text" />
             </div>
             <div class="modal-footer">
@@ -692,13 +692,29 @@
         <div id="informefacturacion-modal" class="modal hide fade in" style="display: none; ">
             <div class="modal-header">
                <a class="close" data-dismiss="modal">×</a>
+               <h3>¿Facturación para que mes? (mm-yyyy)</h3>
             </div>
             <div class="modal-body">
-                <h3>¿Facturación para que mes? (mm-yyyy)</h3>
                 <input class="span3" size="30" type="text" />
             </div>
             <div class="modal-footer">
                 <button class="informefacturacion btn print btn-primary">Imprimir</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        <div id="informepresentados-modal" class="modal hide fade in" style="display: none; ">
+            <div class="modal-header">
+               <a class="close" data-dismiss="modal">×</a>
+               <h3>¿Presentado entre que fechas?</h3>
+            </div>
+            <div class="modal-body">
+                <label for="fromDate">Desde:</label>
+                <input class="span3 datepicker fromDate" size="30" type="text" />
+                <label for="toDate">Hasta:</label>
+                <input class="span3 datepicker toDate" size="30" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button class="informepresentados btn print btn-primary">Imprimir</button>
                 <a href="#" class="btn" data-dismiss="modal">Cancel</a>
             </div>
         </div>
@@ -710,7 +726,7 @@
         <div class="span4 well">
             <h3>Casos para Diligenciar</h3>
             <p>Esto es una descripcion básica del informe</p>
-            <p><button class="btn informeparadiligenciar mod">Imprimir &raquo;</button></p>
+            <p><button class="informeparadiligenciar mod btn">Imprimir &raquo;</button></p>
         </div>
         <div class="span4 well">
             <h3>Facturación</h3>
@@ -720,7 +736,7 @@
         <div class="span4 well">
             <h3>Casos Presentados</h3>
             <p>Esto es una descripcion básica del informe</p>
-            <p><button class="informepresentados print btn">Imprimir &raquo;</button></p>
+            <p><button class="informepresentados mod btn">Imprimir &raquo;</button></p>
         </div>
         <div class="span4 well">
             <h3>Sentencias Pendientes de Ejecución</h3>

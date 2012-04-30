@@ -287,9 +287,8 @@ module.exports = {
             args: []
         }
     },
-    getCasosInformePresentados: function(){
+    getCasosInformePresentados: function(from, to){
         //ca.seleccionado = 1\
-
         return {
             query: "SELECT \
                 ca.seleccionado, \
@@ -320,9 +319,11 @@ module.exports = {
                 ca.completado, \
                 DATE_FORMAT(ca.ingresado, '" + dateFormatSP + "') AS 'ingresado'\
             FROM Casos ca\
-            WHERE (ca.caso IS Null OR ca.caso = '')\
-            AND ca.completado = 0;",
-            args: []
+            WHERE (ca.caso IS NULL OR ca.caso = '') \
+            AND ca.completado = 0 \
+            AND ca.presentacion >= STR_TO_DATE(?, '" + dateFormatEN + "') \
+            AND ca.presentacion <= STR_TO_DATE(?, '" + dateFormatEN + "');",
+            args: [from, to]
         }
     },
     getCasosInformeFacturacion: function(month, year){

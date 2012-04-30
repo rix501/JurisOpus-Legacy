@@ -176,7 +176,7 @@ module.exports = function(Backbone, Models) {
         pdfInforme: function(query, options){
             var pdfObj = {
                 type: 'informes',
-                template: query.pdfTemplate,
+                template: query.template,
                 dataSource: [],
                 args: query.args
             }
@@ -223,7 +223,7 @@ module.exports = function(Backbone, Models) {
             
             var q;
                     
-            switch(query.pdfTemplate){
+            switch(query.template){
                 case 'informedevistas':
                     q = queries.getCasosInformeDeVistas(query.args);
                     break;
@@ -234,7 +234,8 @@ module.exports = function(Backbone, Models) {
                     q = queries.getCasosInformePendienteDeEjecucion();
                     break;
                 case 'informepresentados':
-                    q = queries.getCasosInformePresentados();
+                    var args = query.args.split(',')
+                    q = queries.getCasosInformePresentados(args[0], args[1]);
                     break;
                 case 'informefacturacion':
                     var args = query.args.split('-')
