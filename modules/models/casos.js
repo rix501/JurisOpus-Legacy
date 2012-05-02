@@ -74,11 +74,13 @@ module.exports = function(Backbone, Models) {
                     this.get('vistaFondo'),
                     this.get('sentencia'),
                     this.get('lanzamiento'),
+                    this.get('lanzamientoRecibido'),
                     this.get('observaciones'),
                     this.get('rediligenciar'),
                     this.get('ejecutar'),
                     this.get('desistido'),
-                    this.get('haLugar')
+                    this.get('haLugar'),
+                    this.get('rebeldia')
                 )
             );
         },

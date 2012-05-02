@@ -465,7 +465,7 @@
                         <input class="span3" id="caso" name="caso" size="30" type="text">
                         <label for="sala">Sala:</label>
                         <input class="span3" id="sala" name="sala" size="30" type="text">
-                        <label for="fecha">Fecha:</label>
+                        <label for="fecha">Fecha de Primera Comparecencia:</label>
                         <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
                         <label for="hora">Hora:</label>
                         <input class="span3" id="hora" name="hora" size="30" type="text">
@@ -563,21 +563,8 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <fieldset>      
-                        <label class="radio inline">
-                            <input type="radio" name="tipoSentencia" id="haLugar" value="haLugar" checked="checked"> Ha Lugar
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="tipoSentencia" id="desistido" value="desistido"> Desistido
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="tipoSentencia" id="rebeldia" value="rebeldia"> Rebeldia
-                        </label>
-                        <br />
-                        <br />      
-                        <label for="radicar">Rebeldia:</label>
-                        <input class="span3 datepicker" id="rebeldia" name="rebeldia" size="30" type="text">             
-                        <label for="recibido">Fecha Sentencia:</label>
+                    <fieldset>                
+                        <label for="fecha">Fecha Sentencia:</label>
                         <input class="span3 datepicker" id="fecha" name="fecha" size="30" type="text">
                     </fieldset>
                 </form>
@@ -606,7 +593,7 @@
                 <form>
                     <fieldset>
                         <label for="recibido">Recibido:</label>
-                        <input class="span3" id="recibido" name="recibido" size="30" type="text">        
+                        <input class="span3 datepicker" id="recibido" name="recibido" size="30" type="text">        
                     </fieldset>
                 </form>
             </div>

@@ -1379,6 +1379,7 @@ $(document).ready(function(){
             var args = {
                 haLugar: $('#haLugar:checked').length,
                 desistido: $('#desistido:checked').length,
+                rebeldia: $('#rebeldia:checked').length,
                 segundaComparecencia: $('#segundaComparecencia').val(),
                 observaciones: $('#observaciones').val()
             };
@@ -1525,8 +1526,11 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
+            var lanzamiento = new Date( new Date( $('#fecha').val().replace(/-/gi,'/') ).getTime() + 1000 * 60 * 60 * 24 * 25);
+
             var args = {
-                sentencia: $('#fecha').val()
+                sentencia: $('#fecha').val(),
+                lanzamiento: (lanzamiento.getMonth() + 1) + '-' + lanzamiento.getDate() + '-' + lanzamiento.getFullYear()
             };
             
             var ids = '';
@@ -1651,12 +1655,11 @@ $(document).ready(function(){
         modalEdit: function(event){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
+            var lanzamiento = new Date( new Date( $('#fecha').val().replace(/-/gi,'/') ).getTime() + 1000 * 60 * 60 * 24 * 25);
+
             var args = {
-                haLugar: $('#haLugar:checked').length,
-                desistido: $('#desistido:checked').length,
-                sala: $('#sala').val(),
-                primeraComparecencia: $('#fecha').val(),
-                hora: $('#hora').val()
+                sentencia: $('#fecha').val(),
+                lanzamiento: (lanzamiento.getMonth() + 1) + '-' + lanzamiento.getDate() + '-' + lanzamiento.getFullYear()
             };
             
             var ids = '';
@@ -1779,10 +1782,7 @@ $(document).ready(function(){
             var modal = this.$el.find('#actualizar-bulk-modal');
             
             var args = {
-                //caso: $('#caso').val(),
-                sala: $('#sala').val(),
-                primeraComparecencia: $('#fecha').val(),
-                hora: $('#hora').val()
+                lanzamientoRecibido: $('#recibido').val()
             };
             
             var ids = '';

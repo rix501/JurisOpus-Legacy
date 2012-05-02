@@ -17,10 +17,12 @@ var variableToColumn = {
     vistaFondo: "vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "')",
     sentencia: "sentencia = STR_TO_DATE(?, '" + dateFormatEN + "')",
     lanzamiento: "lanzamiento = STR_TO_DATE(?, '" + dateFormatEN + "')",
+    lanzamientoRecibido: "lanzamiento_recibido = STR_TO_DATE(?, '" + dateFormatEN + "')",
     observaciones: "observaciones = ?",
     rediligenciar: "rediligenciar = ?",
     ejecutar: "ejecutar = ?",
     haLugar: "ha_lugar = ?",
+    rebeldia: "rebeldia = ?",
     desistido: "desistido = ?"
 };
 
@@ -72,10 +74,12 @@ module.exports = {
                DATE_FORMAT(vista_en_su_fondo, '" + dateFormatEN + "') AS 'vistaFondo', \
                DATE_FORMAT(sentencia, '" + dateFormatEN + "') AS 'sentencia', \
                DATE_FORMAT(lanzamiento, '" + dateFormatEN + "') AS 'lanzamiento', \
+               DATE_FORMAT(lanzamiento_recibido, '" + dateFormatEN + "') AS 'lanzamientoRecibido', \
                observaciones AS 'observaciones',\
                rediligenciar AS 'rediligenciar', \
                desistido AS 'desistido', \
                ha_lugar AS 'haLugar', \
+               rebeldia AS 'rebeldia', \
                ejecutar AS 'ejecutar'\
            FROM Casos ca;",
            args: []
@@ -470,7 +474,7 @@ module.exports = {
         	]
         }
     },
-    updateCaso: function(id, residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaFondo, sentencia, lanzamiento, observaciones, rediligenciar, ejecutar, desistido, haLugar){
+    updateCaso: function(id, residencial,edificio, apartamento, area, nombre,casoRecibido, seleccionado, completado, causal, rentaMensual, mesesAdeudados, deudaRenta, deudaRentaNegativa, deudaRecibida, deudaTotal, ultimoReexamen, incumplimiento, caso, presentacion, diligenciado, diligenciadoEn, sala, hora, primeraComparecencia, segundaComparecencia, vistaFondo, sentencia, lanzamiento, lanzamientoRecibido, observaciones, rediligenciar, ejecutar, desistido, haLugar, rebeldia){
         return {
             query: "UPDATE Casos\
             SET\
@@ -502,11 +506,13 @@ module.exports = {
             	vista_en_su_fondo = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	sentencia = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	lanzamiento = STR_TO_DATE(?, '" + dateFormatEN + "') , \
+                lanzamiento_recibido = STR_TO_DATE(?, '" + dateFormatEN + "') , \
             	observaciones = ? ,\
             	rediligenciar = ? ,\
             	ejecutar = ? ,\
                 desistido = ?,\
-                ha_lugar = ?\
+                ha_lugar = ?,\
+                rebeldia = ? \
             WHERE\
             Casos.id = ?;",
             args: [
@@ -537,12 +543,14 @@ module.exports = {
             	segundaComparecencia, 
             	vistaFondo, 
             	sentencia, 
-            	lanzamiento, 
+            	lanzamiento,
+                lanzamientoRecibido, 
             	observaciones,
             	rediligenciar,
             	ejecutar,
                 desistido,
                 haLugar,
+                rebeldia,
             	id
             ]
         }

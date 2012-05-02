@@ -7,7 +7,6 @@ Models.Caso = Backbone.Model.extend({
 Models.Casos = Backbone.Collection.extend({
     model: Models.Caso,
     url: '/casos',
-    constLanzamiento: 26,
     search: function(query, options){
         options.data = query;
         
@@ -71,7 +70,7 @@ Models.Casos = Backbone.Collection.extend({
     filterFechaPresentacion: function(){
         return this.chain()
         .select(function(model){
-            return ((_.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000'));
+            return (model.get('completado') == 0 && _.isEmpty(model.get('presentacion')) || model.get('presentacion') == '00-00-0000');
         })
         .map(function(model){
             return model.toJSON();
@@ -81,7 +80,12 @@ Models.Casos = Backbone.Collection.extend({
     filterSalaHoraDia: function(){
         return this.chain()
         .select(function(model){
-            return (_.isEmpty(model.get('sala')) && !_.isEmpty(model.get('presentacion')));
+            return (
+                model.get('completado') == 0 && 
+                _.isEmpty(model.get('sala')) && 
+                !_.isEmpty(model.get('presentacion')) && 
+                model.get('presentacion') !== '00-00-0000'
+            );
         })
         .map(function(model){
             return model.toJSON();
@@ -91,7 +95,14 @@ Models.Casos = Backbone.Collection.extend({
     filterInfoPrimeraVista: function(date){
         return this.chain()
         .select(function(model){
-            return (!_.isEmpty(model.get('primeraComparecencia')) && model.get('desistido') != 1 && model.get('haLugar') != 1 && model.get('rebeldia') != 1);
+            return ( 
+                model.get('completado') == 0 && 
+                !_.isEmpty(model.get('primeraComparecencia')) && 
+                model.get('primeraComparecencia') !== '00-00-0000' && 
+                model.get('desistido') != 1 && 
+                model.get('haLugar') != 1 && 
+                model.get('rebeldia') != 1
+            );
         })
         .map(function(model){
             return model.toJSON();
@@ -102,7 +113,9 @@ Models.Casos = Backbone.Collection.extend({
         return this.chain()
         .select(function(model){
             return (
-                ( model.get('desistido') == 1 ||  model.get('haLugar') == 1 ||  model.get('rebeldia') == 1 ) &&
+                model.get('completado') == 0 &&
+                model.get('desistido') == 0 &&
+                (model.get('haLugar') == 1 || model.get('rebeldia') == 1 ) &&
                 ( _.isEmpty(model.get('sentencia')) || model.get('sentencia')  == '00-00-0000' )
             );
         })
@@ -112,16 +125,17 @@ Models.Casos = Backbone.Collection.extend({
         .value();
     },
     filterHaLugar: function(){
-        var lanzamiento = this.constLanzamiento;
+        var lanzamiento = 26;
         var ms2days = (1000 * 60 * 60 * 24);
 
         return this.chain()
         .select(function(model){
             return (
-                    model.get('haLugar') == 1 && 
+                    model.get('completado') == 0 &&
+                    (model.get('haLugar') == 1 || model.get('rebeldia') == 1 ) && 
                     !_.isEmpty(model.get('sentencia')) &&  
                     model.get('sentencia')  !== '00-00-0000' &&
-                    ((new Date(model.get('sentencia').replace(/-/gi,'/')) - new Date())/ms2days) < lanzamiento
+                    ((new Date() - (new Date(model.get('sentencia').replace(/-/gi,'/'))))/ms2days) < lanzamiento
                 );
         })
         .map(function(model){
@@ -130,16 +144,17 @@ Models.Casos = Backbone.Collection.extend({
         .value();
     },
     filterLanzamiento: function(){
-        var lanzamiento = this.constLanzamiento;
+        var lanzamiento = 26;
         var ms2days = (1000 * 60 * 60 * 24);
 
         return this.chain()
         .select(function(model){
             return (
-                    model.get('haLugar') == 1 && 
+                    model.get('completado') == 0 &&
+                    (model.get('haLugar') == 1 || model.get('rebeldia') == 1 ) && 
                     !_.isEmpty(model.get('sentencia')) &&  
                     model.get('sentencia')  !== '00-00-0000' &&
-                    ((new Date(model.get('sentencia').replace(/-/gi,'/')) - new Date())/ms2days) >= lanzamiento
+                    ((new Date() - (new Date(model.get('sentencia').replace(/-/gi,'/'))))/ms2days) >= lanzamiento
                 );
         })
         .map(function(model){
